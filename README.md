@@ -23,8 +23,8 @@ Deze module bestaat uit een [Arduino uno] die verbonden is met een bluetooth mod
 
 1. Systeem die alle toestellen met die zichtbaar zijn via bluetooth in een lijst zet en bijhoud op welk tijdstip die gedetecteerd werd. Als je dan te weten komt welk toestel van welke leerling is kun je deze module je aan de ingang van de school plaatsen. Zo kan je zien welke leerlingen te op tijd waren en welke te laat.
 2. Je plaatst 3 van deze modules in een kamer en laat deze alle toestellen en deze hun afstand doorsturen naar een hoofdmodule. Deze kan dan berekenen waar in deze driehoek het toestel zich ongeveer bevind, op deze manier kan je je toestel terugvinden als je die verloren hebt.<br>
-   ![Toestel localiseren](consept/Device_Localiseren.png)
-   In bovenstaande foto zie je 3 modules die elk hetzelfde toestel zien samen met de afstand van de module, dus ze weten het toestel ligt ergens op de licht groene circel, de master module krijgt van de 2 andere modules de afstand binnen dat het toestel van de slave modules verwijderd is. Zo kan de master module berekenen waar het toestel zicht werkelijk bevind.
+![Toestel localiseren](consept/Device_Localiseren.png)<br>
+In bovenstaande foto zie je 3 modules die elk hetzelfde toestel zien samen met de afstand van de module, dus ze weten het toestel ligt ergens op de licht groene circel, de master module krijgt van de 2 andere modules de afstand binnen dat het toestel van de slave modules verwijderd is. Zo kan de master module berekenen waar het toestel zicht werkelijk bevind.
 3. Systeem detecteerd wanneer je in een kamer bent, die vervolgens commando stuurt naar een andere service die het licht zal aan of uit doen.
 
 ## Benodigdheden
