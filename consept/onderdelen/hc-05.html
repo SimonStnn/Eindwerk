@@ -11,7 +11,6 @@
    <link rel="stylesheet" href="header.css">
    <link rel="stylesheet" href="navbar.css">
    <link rel="stylesheet" href="content.css">
-   <link rel="stylesheet" href="hc-05.css">
 </head>
 
 <body>
@@ -21,18 +20,23 @@
    </div>
 
    <nav>
-      <ul>
+      <ul class="pages">
          <li><a href="arduino.html">Arduino</a></li>
          <li><a class="active" href="hc-05.html">HC-05</a></li>
+      </ul>
+      <ul class="internal">
+         <li><a href="#pinout-table">Pinout</a></li>
+         <li><a href="#where-to-use">Where to use</a></li>
+         <li><a href="#how-to-use">How to use</a></li>
       </ul>
    </nav>
 
    <div class="content">
 
-      <img src="images/HC-05-Bluetooth-Module.jpg" alt="HC-05">
-      <img src="images/HC-05-Bluetooth-Module-Pinout.png" alt="Pinout HC-05">
+      <img width="49%" src="images/HC-05-Bluetooth-Module.jpg" alt="HC-05">
+      <img width="49%" src="images/HC-05-Bluetooth-Module-Pinout.png" alt="Pinout HC-05">
 
-      <table class="pinout">
+      <table id="pinout-table" class="pinout">
          <tr>
             <th>Pin Number</th>
             <th>Pin Name</th>
@@ -89,7 +93,9 @@
             <td>Used to control the Key/Enable pin to toggle between Data and command Mode</td>
          </tr>
       </table>
+
       <h2>HC-05 Default Settings</h2>
+      <p>
       <ul>
          <li>Default Bluetooth Name: “HC-05”</li>
          <li>Default Password: 1234 or 0000</li>
@@ -99,18 +105,58 @@
          <li>Command Mode Baud Rate: 38400, 8, N, 1</li>
          <li>Default firmware: LINVOR</li>
       </ul>
+      </p>
 
       <h2>HC-05 Technical Specifications</h2>
+      <p>
       <ul>
          <li> Serial Bluetooth module for Arduino and other microcontrollers</li>
          <li> Operating Voltage: 4V to 6V (Typically +5V)</li>
          <li> Operating Current: 30mA</li>
-         <li> Range: < 100m Works with Serial communication (USART) and TTL compatible Follows IEEE 802.15.1 standardized</li>
-         <li> protocol Uses Frequency-Hopping Spread spectrum (FHSS) Can operate in Master, Slave or Master/Slave mode Can be</li>
+         <li> Range: < 100m Works with Serial communication (USART) and TTL compatible Follows IEEE 802.15.1
+               standardized</li>
+         <li> protocol Uses Frequency-Hopping Spread spectrum (FHSS) Can operate in Master, Slave or Master/Slave mode
+            Can be</li>
          <li> easily interfaced with Laptop or Mobile phones with Bluetooth Supported baud rate:</li>
          <li> 9600,19200,38400,57600,115200,230400,460800. </li>
       </ul>
+      </p>
+      <h2 id="where-to-use">Where to use HC-05 Bluetooth module</h2>
+      <p>
+         The HC-05 is a popular module which can add two-way (full-duplex) wireless functionality to your projects. You
+         can use
+         this module to communicate between two microcontrollers like Arduino or communicate with any device with
+         Bluetooth
+         functionality like a Phone or Laptop. There are many android applications that are already available which
+         makes this
+         process a lot easier. The module communicates with the help of USART at 9600 baud rate hence it is easy to
+         interface
+         with any microcontroller that supports USART. We can also configure the default values of the module by using
+         the
+         command mode. So if you looking for a Wireless module that could transfer data from your computer or mobile
+         phone to
+         microcontroller or vice versa then this module might be the right choice for you. However do not expect this
+         module to
+         transfer multimedia like photos or songs; you might have to look into the CSR8645 module for that.
+      </p>
+
+      <h2 id="how-to-use">How to Use the HC-05 Bluetooth module</h2>
+      <p>
+         The HC-05 has two operating modes, one is the Data mode in which it can send and receive data from other Bluetooth
+         devices and the other is the AT Command mode where the default device settings can be changed. We can operate the device
+         in either of these two modes by using the key pin as explained in the pin description.
          
+         It is very easy to pair the HC-05 module with microcontrollers because it operates using the Serial Port Protocol (SPP).
+         Simply power the module with +5V and connect the Rx pin of the module to the Tx of MCU and Tx pin of module to Rx of MCU
+         as shown in the figure below
+      </p>
+      <img src="images/HC-05-Bluetooth-Module-Circuit-Connections.png" alt="HC-05 Bluetooth Module Circuit Connections">
+      <p>
+         During power up the key pin can be grounded to enter into Command mode, if left free it will by default enter into the
+         data mode. As soon as the module is powered you should be able to discover the Bluetooth device as “HC-05” then connect
+         with it using the default password 1234 and start communicating with it. The name password and other default parameters
+         can be changed by entering into the
+      </p>
 
    </div>
 

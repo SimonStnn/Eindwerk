@@ -14,43 +14,43 @@ div.content {
    width: 75%;
    margin: auto;
 }
-/* Images */
+/* Images
 div.content img {
    width: 49%;
-}
+} */
 /* End images */
 
 /* Table */
-table {
+div.content table {
    width: 100%;
    border: 1px solid var(--table-border-color);
 }
 
-table,
-table tr td {
+div.content table,
+div.content table tr td {
    border: 1px solid var(--table-border-color);
    border-collapse: collapse;
    padding: var(--table-td-padding);
 }
 
-table tr:nth-child(odd) {
+div.content table tr:nth-child(odd) {
    background-color: var(--table-tr-odd-child-background-color);
 }
-table tr:nth-child(even) {
+div.content table tr:nth-child(even) {
    background-color: var(--table-tr-even-child-background-color);
 }
 
-table th {
+div.content table th {
    color: var(--table-th-font-color);
    background-color: var(--table-th-backround-color);
 }
-table tr ul {
+div.content table tr ul {
    margin: 0;
 }
 /* End table */
 
 /* List */
-ul li {
+div.content ul li {
    list-style-type: var(--list-style-type);
 }
 /* End list */

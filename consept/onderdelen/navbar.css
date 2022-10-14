@@ -4,9 +4,14 @@
    --navbar-li-hover-color: #111;
    --navbar-li-active-color: var(--theme-active-item-color);
    --navbar-li-active-hover-color: rgb(35, 75, 195);
+
+   --navbar-li-internal-hover-color:rgb(110, 140, 225);
+   --navbar-li-internal-font-color: black;
+
+   --transition-time: .1s;
 }
 
-nav, nav ul {
+nav, nav ul.pages , nav ul.internal{
    list-style-type: none;
    margin: 0;
    padding: 0;
@@ -16,20 +21,20 @@ nav, nav ul {
    top: 0;
 }
 
-nav ul li {
+nav ul.pages li , nav ul.internal li{
    float: left;
 }
 
-nav ul li a {
+nav ul.pages li a , nav ul.internal li a{
    display: block;
    color: var(--navbar-font-color);
    text-align: center;
    padding: 14px 16px;
    text-decoration: none;
-   transition: .1s background-color;
+   transition: var(--transition-time) background-color;
 }
 
-nav ul li a:hover {
+nav ul.pages li a:hover {
    background-color: var(--navbar-li-hover-color);
 }
 
@@ -38,4 +43,17 @@ nav .active {
 }
 nav .active:hover {
    background-color: var(--navbar-li-active-hover-color);
+}
+
+nav ul.internal{
+   background-color: lightgray;
+}
+
+nav ul.internal li a{
+   padding: 8px 10px;
+   color: var(--navbar-li-internal-font-color);
+}
+
+nav ul.internal li a:hover {
+   background-color: var(--navbar-li-internal-hover-color);
 }
