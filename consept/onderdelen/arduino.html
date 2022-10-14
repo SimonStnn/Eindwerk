@@ -16,15 +16,439 @@
 <body>
    <div class="header">
       <h1>Arduino</h1>
-      <p>Micro controller</p>
+      <p>Micro controller, ardiuno uno</p>
    </div>
 
    <nav>
-      <ul>
-         <li><a class="active" href="arduino.html">Arduino</a></li>
+      <ul class="pages">
+         <li><a class="active" href="#">Arduino</a></li>
          <li><a href="hc-05.html">HC-05</a></li>
       </ul>
+      <ul class="internal">
+         <li><a href="#board">The Board</a></li>
+         <li><a href="#ratings">Ratings</a></li>
+         <li><a href="#board-operation">Board Operation</a></li>
+         <li><a href="#connector-pinouts">Connector Pinouts</a></li>
+         <li><a href="#mechanical-info">Mechanical Information</a></li>
+      </ul>
    </nav>
+
+   <div class="content">
+      <p>
+         The Arduino UNO R3 is the perfect board to get familiar with electronics and coding. This versatile
+         microcontroller
+         is equipped with the well-known ATmega328P and the ATMega 16U2 Processor.
+         This board will give you a great first experience within the world of Arduino.
+      </p>
+
+      <h2 id="board">The Board</h2>
+      <p>
+         The UNO board is the flagship product of Arduino. Regardless if you are new to the world of electronics or will
+         use
+         the UNO as a tool for education purposes or industry-related tasks.
+      </p>
+      <p>
+         <b>First entry to electronics</b>: If this is your first project within coding and electronics, get started
+         with our most used
+         and documented board; Arduino UNO. It is equipped with the well-known ATmega328P processor, 14 digital
+         input/output pins, 6 analog inputs, USB connections, ICSP header and reset button. This board includes
+         everything
+         you will need for a great first experience with Arduino.
+      </p>
+      <p>
+         <b>Industry-standard development board</b>: Using the Arduino UNO board in industries, there are a range of
+         companies using the UNO board as the brain for their PLC's.
+      </p>
+      <p>
+         <b>Education purposes</b>: Although the UNO board has been with us for about ten years, it is still widely used
+         for
+         various education purposes and scientific projects. The board's high standard and top quality performance makes
+         it a great resource to capture real time from sensors and to trigger complex laboratory equipment to mention a
+         few examples.
+
+      </p>
+
+      <h2 id="ratings">Ratings</h2>
+      <h3>Recommended Operating Conditions</h3>
+      <table>
+         <tr>
+            <th>Symbol</th>
+            <th>Description</th>
+            <th>Min</th>
+            <th>Max</th>
+         </tr>
+         <tr>
+            <td></td>
+            <td>Conservative thermal limits for the whole board:</td>
+            <td>-40 °C (-40°F)</td>
+            <td>85 °C ( 185°F)</td>
+         </tr>
+      </table>
+      <ul>
+         <b>NOTE</b>: In extreme temperatures, EEPROM, voltage regulator, and the crystal oscillator, might not
+         work as expected due to the extreme temperature conditions
+      </ul>
+      <h3>Power Consumption</h3>
+      <table>
+         <tr>
+            <th>Symbol</th>
+            <th>Description</th>
+            <th>Min</th>
+            <th>Typ</th>
+            <th>Max</th>
+            <th>Unit</th>
+         </tr>
+         <tr>
+            <td>VINMax</td>
+            <td>Maximum input voltage from VIN pad</td>
+            <td>6</td>
+            <td>-</td>
+            <td>20</td>
+            <td>V</td>
+         </tr>
+         <tr>
+            <td>VUSBMax</td>
+            <td>Maximum input voltage from USB connector</td>
+            <td></td>
+            <td>-</td>
+            <td>5.5</td>
+            <td>V</td>
+         </tr>
+         <tr>
+            <td>PMax</td>
+            <td>Maximum Power Consumption</td>
+            <td>-</td>
+            <td>-</td>
+            <td>xx</td>
+            <td>mA</td>
+         </tr>
+      </table>
+
+      <h2 id="functional-overview">Functional Overview</h2>
+      <h3>Board Topology</h3>
+      <img width="70%" src="images/ArduinoTopView.png" alt="Arduino top view">
+      <table>
+         <tr>
+            <th>Ref.</th>
+            <th>Description</th>
+            <th>Ref.</th>
+            <th>Description</th>
+         </tr>
+         <tr>
+            <td>X1</td>
+            <td>Power jack 2.1x5.5mm</td>
+            <td>U1</td>
+            <td>SPX1117M3-L-5 Regulator</td>
+         </tr>
+         <tr>
+            <td>X2</td>
+            <td>USB B Connector</td>
+            <td>U3</td>
+            <td>ATMEGA16U2 Module</td>
+         </tr>
+         <tr>
+            <td>PC1</td>
+            <td>EEE-1EA470WP 25V SMD Capacitor</td>
+            <td>U5</td>
+            <td>LMV358LIST-A.9 IC</td>
+         </tr>
+         <tr>
+            <td>PC2</td>
+            <td>EEE-1EA470WP 25V SMD Capacitor</td>
+            <td>F1</td>
+            <td>Chip Capacitor, High Density</td>
+         </tr>
+         <tr>
+            <td>D1</td>
+            <td>CGRA4007-G Rectifier</td>
+            <td>ICSP</td>
+            <td>Pin header connector (through hole 6)</td>
+         </tr>
+         <tr>
+            <td>J-ZU4</td>
+            <td>ATMEGA328P Module</td>
+            <td>ISCP 1</td>
+            <td>Pin header connector (through hole 6)</td>
+         </tr>
+         <tr>
+            <td>Y1</td>
+            <td>ECS-160-20-4X-DU Oscillator</td>
+            <td></td>
+            <td></td>
+         </tr>
+      </table>
+
+      <h3>Processor</h3>
+      <p>
+         The Main Processor is a ATmega328P running at up tp 20 MHz. Most of its pins are connected to the external
+         headers, however some are reserved for internal communication with the USB Bridge coprocessor.
+      </p>
+
+      <h3>Power Tree</h3>
+      <img src="images/ArduinoPowerTree.png" alt="Power tree">
+
+      <h2 id="board-operation">Board Operation</h2>
+      <h3>Getting Started - IDE</h3>
+      <p>
+         If you want to program your Arduino UNO while offline you need to install the Arduino Desktop IDE [1] To
+         connect
+         the Arduino UNO to your computer, you’ll need a Micro-B USB cable. This also provides power to the board, as
+         indicated by the LED.
+      </p>
+      <h3>Getting Started - Arduino Web Editor</h3>
+      <p>
+         All Arduino boards, including this one, work out-of-the-box on the Arduino Web Editor [2], by just installing a
+         simple
+         plugin.
+      </p>
+      <p>
+         The Arduino Web Editor is hosted online, therefore it will always be up-to-date with the latest features and
+         support
+         for all boards. Follow [3] to start coding on the browser and upload your sketches onto your board.
+
+      </p>
+      <h3>Getting Started - Arduino IoT Cloud</h3>
+      <p>
+         All Arduino IoT enabled products are supported on Arduino IoT Cloud which allows you to Log, graph and analyze
+         sensor data, trigger events, and automate your home or business.
+      </p>
+      <h3>Sample Sketches</h3>
+      <p>
+         Sample sketches for the Arduino XXX can be found either in the “Examples” menu in the Arduino IDE or in the
+         “Documentation” section of the Arduino Pro website [4].
+
+      </p>
+      <h3>Online Resources</h3>
+      <p>
+         Now that you have gone through the basics of what you can do with the board you can explore the endless
+         possibilities it provides by checking exciting projects on ProjectHub [5], the Arduino Library Reference [6]
+         and the
+         online store [7] where you will be able to complement your board with sensors, actuators and more.
+      </p>
+      <h3>Board Recovery</h3>
+      <p>
+         All Arduino boards have a built-in bootloader which allows flashing the board via USB. In case a sketch locks up the
+         processor and the board is not reachable anymore via USB it is possible to enter bootloader mode by doubletapping the
+         reset button right after power up.
+      </p>
+      <h2 id="connector-pinouts">Connector Pinouts</h2>
+      <img src="images/ArduinoConnectorPinouts.png" alt="Connector pinout">
+      <h3>Analog</h3>
+      <table>
+         <tr>
+            <th>Pin</th>
+            <th>Function</th>
+            <th>Type</th>
+            <th>Description</th>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>NC</td>
+            <td>NC</td>
+            <td>Not connected</td>
+         </tr>
+         <tr>
+            <td>2</td>
+            <td>IOREF</td>
+            <td>IOREF</td>
+            <td>Reference for digital logic V - connected to 5V</td>
+         </tr>
+         <tr>
+            <td>3</td>
+            <td>Reset</td>
+            <td>Reset</td>
+            <td>Reset</td>
+         </tr>
+         <tr>
+            <td>4</td>
+            <td>+3V3</td>
+            <td>Power</td>
+            <td>+3V3 Power Rail</td>
+         </tr>
+         <tr>
+            <td>5</td>
+            <td>+5V</td>
+            <td>Power</td>
+            <td>+5V Power Rail</td>
+         </tr>
+         <tr>
+            <td>6</td>
+            <td>GND</td>
+            <td>Power</td>
+            <td>Ground</td>
+         </tr>
+         <tr>
+            <td>7</td>
+            <td>GND</td>
+            <td>Power</td>
+            <td>Ground</td>
+         </tr>
+         <tr>
+            <td>8</td>
+            <td>VIN</td>
+            <td>Power</td>
+            <td>Voltage Input</td>
+         </tr>
+         <tr>
+            <td>9</td>
+            <td>A0</td>
+            <td>Analog/GPIO</td>
+            <td>Analog input 0 /GPIO</td>
+         </tr>
+         <tr>
+            <td>10</td>
+            <td>A1</td>
+            <td>Analog/GPIO</td>
+            <td>Analog input 1 /GPIO</td>
+         </tr>
+         <tr>
+            <td>11</td>
+            <td>A2</td>
+            <td>Analog/GPIO</td>
+            <td>Analog input 2 /GPIO</td>
+         </tr>
+         <tr>
+            <td>12</td>
+            <td>A3</td>
+            <td>Analog/GPIO</td>
+            <td>Analog input 3 /GPIO</td>
+         </tr>
+         <tr>
+            <td>13</td>
+            <td>A4/SDA</td>
+            <td>Analog input/I2C</td>
+            <td>Analog input 4/I2C Data line</td>
+         </tr>
+         <tr>
+            <td>14</td>
+            <td>A5/SCL</td>
+            <td>Analog input/I2C</td>
+            <td>Analog input 5/I2C Clock line</td>
+         </tr>
+      </table>
+
+      <h3>Digital</h3>
+      <table>
+         <tr>
+            <th>Pin</th>
+            <th>Function</th>
+            <th>Type</th>
+            <th>Description</th>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>D0</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 0/GPIO</td>
+         </tr>
+         <tr>
+            <td>2</td>
+            <td>D1</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 1/GPIO</td>
+         </tr>
+         <tr>
+            <td>3</td>
+            <td>D2</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 2/GPIO</td>
+         </tr>
+         <tr>
+            <td>4</td>
+            <td>D3</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 3/GPIO</td>
+         </tr>
+         <tr>
+            <td>5</td>
+            <td>D4</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 4/GPIO</td>
+         </tr>
+         <tr>
+            <td>6</td>
+            <td>D5</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 5/GPIO</td>
+         </tr>
+         <tr>
+            <td>7</td>
+            <td>D6</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 6/GPIO</td>
+         </tr>
+         <tr>
+            <td>8</td>
+            <td>D7</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 7/GPIO</td>
+         </tr>
+         <tr>
+            <td>9</td>
+            <td>D8</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 8/GPIO</td>
+         </tr>
+         <tr>
+            <td>10</td>
+            <td>D9</td>
+            <td>Digital/GPIO</td>
+            <td>Digital pin 9/GPIO</td>
+         </tr>
+         <tr>
+            <td>11</td>
+            <td>SS</td>
+            <td>Digital</td>
+            <td>SPI Chip Select</td>
+         </tr>
+         <tr>
+            <td>12</td>
+            <td>MOSI</td>
+            <td>Digital</td>
+            <td>SPI1 Main Out Secondary In</td>
+         </tr>
+         <tr>
+            <td>13</td>
+            <td>MISO</td>
+            <td>Digital</td>
+            <td>SPI Main In Secondary Out</td>
+         </tr>
+         <tr>
+            <td>14</td>
+            <td>SCK</td>
+            <td>Digital</td>
+            <td>SPI serial clock output</td>
+         </tr>
+         <tr>
+            <td>15</td>
+            <td>GND</td>
+            <td>Power</td>
+            <td>Ground</td>
+         </tr>
+         <tr>
+            <td>16</td>
+            <td>AREF</td>
+            <td>Digital</td>
+            <td>Analog reference voltage</td>
+         </tr>
+         <tr>
+            <td>17</td>
+            <td>A4/SD4</td>
+            <td>Digital</td>
+            <td>Analog input 4/I2C Data line (duplicated</td>
+         </tr>
+         <tr>
+            <td>18</td>
+            <td>A5/SD5</td>
+            <td>Digital</td>
+            <td>Analog input 5/I2C Clock line (duplicated)</td>
+         </tr>
+      </table>
+
+      <h2 id="mechanical-info">Mechanical Information</h2>
+      <h3>Board Outline & Mounting Holes</h3>
+      <img src="images/ArduinoBoardOutline.png" alt="">
+   </div>
 
 </body>
 

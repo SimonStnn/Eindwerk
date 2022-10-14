@@ -41,6 +41,7 @@ nav ul.pages li a:hover {
 nav .active {
    background-color: var(--navbar-li-active-color);
 }
+
 nav .active:hover {
    background-color: var(--navbar-li-active-hover-color);
 }
