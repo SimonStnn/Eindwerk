@@ -5,34 +5,213 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>HC-05</title>
+   <title>Raspberry pi 3</title>
 
+   <link rel="stylesheet" href="style.css">
    <link rel="stylesheet" href="header.css">
    <link rel="stylesheet" href="navbar.css">
-   <link rel="stylesheet" href="style.css">
+   <link rel="stylesheet" href="content.css">
 </head>
 
 <body>
    <div class="header">
-      <h1>HC-05</h1>
-      <p>Bluetooth module</p>
+      <h1>Raspberry pi 3</h1>
+      <p>Super computer</p>
    </div>
 
    <nav>
       <ul class="pages">
+         <li><a class="active" href="rpi.html">Raspberry pi</a></li>
          <li><a href="arduino.html">Arduino</a></li>
-         <li><a class="active" href="hc-05.html">HC-05</a></li>
+         <li><a href="hc-05.html">HC-05</a></li>
       </ul>
       <ul class="internal">
-         <li><a href="#pinout-table">Pinout</a></li>
-         <li><a href="#where-to-use">Where to use</a></li>
-         <li><a href="#how-to-use">How to use</a></li>
+         <li><a href="#overview">Overview</a></li>
+         <li><a href="#specs">Specifications</a></li>
+         <li><a href="#"></a></li>
       </ul>
    </nav>
 
    <div class="content">
+      <img id="overview" width="100%" src="images/rpiTopView.png" alt="Overview images rpi">
 
+      <p>
+         The Raspberry Pi 3 Model B+ is the latest product in the Raspberry Pi 3 range,
+         boasting a 64-bit quad core processor running at 1.4GHz, dual-band 2.4GHz
+         and 5GHz wireless LAN, Bluetooth 4.2/BLE, faster Ethernet, and PoE capability
+         via a separate PoE HAT.
+      </p>
+      <p>
+         The dual-band wireless LAN comes with modular compliance certification,
+         allowing the board to be designed into end products with significantly reduced
+         wireless LAN compliance testing, improving both cost and time to market.
+      </p>
+      <p>
+         The Raspberry Pi 3 Model B+ maintains the same mechanical footprint as both
+         the Raspberry Pi 2 Model B and the Raspberry Pi 3 Model B.
+      </p>
+
+      <h2 id="specs">Specifications</h2>
+      <table>
+         <tr>
+            <th></th>
+            <th></th>
+         </tr>
+         <tr>
+            <td>Processor</td>
+            <td>Broadcom BCM2837B0, Cortex-A53
+               64-bit SoC @ 1.4GHz</td>
+         </tr>
+         <tr>
+            <td>Memory</td>
+            <td>1GB LPDDR2 SDRAM</td>
+         </tr>
+         <tr>
+            <td>Connectivity</td>
+            <td>
+               <ul>
+                  <li>2.4GHz and 5GHz IEEE 802.11.b/g/n/ac wireless
+                     LAN, Bluetooth 4.2, BLE</li>
+                  <li>Gigabit Ethernet over USB 2.0 (maximum throughput 300Mbps)</li>
+                  <li>4 × USB 2.0 ports</li>
+               </ul>
+            </td>
+         </tr>
+         <tr>
+            <td>Access</td>
+            <td>Extended 40-pin GPIO header</td>
+         </tr>
+         <tr>
+            <td>Video & sound</td>
+            <td>
+               <ul>
+                  <li>1 x full size HDMI</li>
+                  <li>MIPI DSI display port</li>
+                  <li>MIPI CSI camera port</li>
+                  <li>4 pole stereo output and composite video port</li>
+               </ul>
+            </td>
+         </tr>
+         <tr>
+            <td>Multimedia</td>
+            <td>H.264, MPEG-4 decode (1080p30); H.264 encode
+               (1080p30); OpenGL ES 1.1, 2.0 graphics</td>
+         </tr>
+         <tr>
+            <td>SD card support</td>
+            <td>Micro SD format for loading operating system and
+               data storage.</td>
+         </tr>
+         <tr>
+            <td>Input power</td>
+            <td>
+               <ul>
+                  <li>5V/2.5A DC via micro USB connector</li>
+                  <li>5V DC via GPIO header</li>
+                  <li>Power over Ethernet (PoE)–enabled (requires
+                     separate PoE HAT)</li>
+               </ul>
+            </td>
+         </tr>
+         <tr>
+            <td>Environment</td>
+            <td>Operating temperature, 0-50°C.</td>
+         </tr>
+         <tr>
+            <td>Compliance</td>
+            <td>For a full list of local and regional product approvals,
+               please visit <a href=" www.raspberrypi.org/products/raspberry -
+            pi-3-model-b+">www.raspberrypi.org/products/raspberry -
+                  pi-3-model-b+</a>.</td>
+         </tr>
+         <tr>
+            <td>Production lifetime</td>
+            <td>The Raspberry Pi 3 Model B+ will remain in production
+               until at least January 2023.</td>
+         </tr>
+      </table>
+
+      <h2 id="Physical-specs">Physical Specifications</h2>
+      <img width="100%" src="images/rpiPhysicalSpecs.png" alt="Physical Specifications">
+      <h3>Warnings</h3>
+      <ul>
+         <li>
+            <p>
+               This product should only be connected to an external power supply rated at 5V/2.5 A DC. Any external
+               power
+               supply used with the Raspberry Pi 3 Model B+ shall comply with relevant regulations and standards
+               applicable
+               in the country of intended use.
+            </p>
+         </li>
+         <li>
+            <p>
+               This product should be operated in a well-ventilated environment and, if used inside a case, the case
+               should
+               not be covered.
+            </p>
+         </li>
+         <li>
+            <p>
+               Whilst in use, this product should be placed on a stable, flat, non-conductive surface and should not be
+               contacted by conductive items.
+            </p>
+         </li>
+         <li>
+            <p>
+               The connection of incompatible devices to the GPIO connection may affect compliance, result in damage to
+               the unit, and invalidate the warranty.
+            </p>
+         </li>
+         <li>
+            <p>
+               All peripherals used with this product should comply with relevant standards for the country of use and
+               be
+               marked accordingly to ensure that safety and performance requirements are met. These articles include but
+               are not limited to keyboards, monitors, and mice when used in conjunction with the Raspberry Pi.
+            </p>
+         </li>
+         <li>
+            <p>
+               All peripherals used with this product should comply with relevant standards for the country of use and
+               be
+               marked accordingly to ensure that safety and performance requirements are met. These articles include but
+               are not limited to keyboards, monitors, and mice when used in conjunction with the Raspberry Pi.
+            </p>
+         </li>
+      </ul>
+      <h3>Safety Instructions</h3>
+      <b>To avoid malfunction of or damage to this product, please observe the following</b>:
+      <ul>
+         <li>
+            <p>
+               Do not expose to water or moisture, or place on a conductive surface whilst in operation.
+            </p>
+         </li>
+         <li>
+            <p>
+               Do not expose to heat from any source; the Raspberry Pi 3 Model B+ is designed for reliable operation at
+               normal ambient temperatures.
+            </p>
+         </li>
+         <li>
+            <p>
+               Take care whilst handling to avoid mechanical or electrical damage to the printed circuit board and
+               connectors.
+            </p>
+         </li>
+         <li>
+            <p>
+               Whilst it is powered, avoid handling the printed circuit board, or only handle it by the edges to
+               minimise the
+               risk of electrostatic discharge damage.
+            </p>
+         </li>
+      </ul>
    </div>
+
+   Source: <a
+      href="https://static.raspberrypi.org/files/product-briefs/Raspberry-Pi-Model-Bplus-Product-Brief.pdf">https://static.raspberrypi.org/files/product-briefs/Raspberry-Pi-Model-Bplus-Product-Brief.pdf</a>
 
 </body>
 
