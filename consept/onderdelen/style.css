@@ -5,6 +5,10 @@
    --theme-active-item-color: royalblue;
 }
 
+html{
+   scroll-behavior: smooth;
+}
+
 body {
    margin: 0;
    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
