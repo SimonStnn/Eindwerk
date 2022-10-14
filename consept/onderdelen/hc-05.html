@@ -11,6 +11,7 @@
    <link rel="stylesheet" href="header.css">
    <link rel="stylesheet" href="navbar.css">
    <link rel="stylesheet" href="content.css">
+   <link rel="stylesheet" href="hc-05.css">
 </head>
 
 <body>
@@ -28,6 +29,63 @@
 
    <div class="content">
       
+      <img src="images/HC-05-Bluetooth-Module.jpg" alt="HC-05">
+      <img src="images/HC-05-Bluetooth-Module-Pinout.png" alt="Pinout HC-05">
+
+      <table class="pinout">
+         <tr>
+            <th>Pin Number</th>
+            <th>Pin Name</th>
+            <th>Description</th>
+         </tr>
+         <tr>
+            <td>1</td>
+            <td>Enable / key</td>
+            <td>This pin is used to toggle between Data Mode (set low) and AT command mode (set high). By default it is in Data mode</td>
+         </tr>
+         <tr>
+            <td>2</td>
+            <td>Vcc</td>
+            <td>Powers the module. Connect to +5V Supply voltage</td>
+         </tr>
+         <tr>
+            <td>3</td>
+            <td>Ground</td>
+            <td>Ground pin of module, connect to system ground.</td>
+         </tr>
+         <tr>
+            <td>4</td>
+            <td>TX - Transmitter</td>
+            <td>Transmits Serial Data. Everything received via Bluetooth will be given out by this pin as serial data.</td>
+         </tr>
+         <tr>
+            <td>5</td>
+            <td>TR - Receiver</td>
+            <td>Receive Serial Data. Every serial data given to this pin will be broadcasted via Bluetooth.</td>
+         </tr>
+         <tr>
+            <td>6</td>
+            <td>State</td>
+            <td>The state pin is connected to on board LED, it can be used as a feedback to check if Bluetooth is working properly.</td>
+         </tr>
+         <tr>
+            <td>7</td>
+            <td>LED</td>
+            <td>
+               Indicates the status of Module
+               <ul>
+                  <li>Blink once in 2 sec: Module has entered Command Mode</li>
+                  <li>Repeated Blinking: Waiting for connection in Data Mode</li>
+                  <li>Blink twice in 1 sec: Connection successful in Data Mode</li>
+               </ul>
+            </td>
+         </tr>
+         <tr>
+            <td>8</td>
+            <td>Button</td>
+            <td>Used to control the Key/Enable pin to toggle between Data and command Mode</td>
+         </tr>
+      </table>
    </div>
 
 </body>
