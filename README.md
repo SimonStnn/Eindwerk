@@ -25,52 +25,73 @@ Deze module bestaat uit een [Arduino uno] die verbonden is met een bluetooth mod
 2. Je plaatst 3 van deze modules in een kamer en laat deze alle toestellen en deze hun afstand doorsturen naar een hoofdmodule. Deze kan dan berekenen waar in deze driehoek het toestel zich ongeveer bevind, op deze manier kan je je toestel terugvinden als je die verloren hebt.<br>
 ![Toestel localiseren](consept/Device_Localiseren.png)<br>
 In bovenstaande foto zie je 3 modules die elk hetzelfde toestel zien samen met de afstand van de module, dus ze weten het toestel ligt ergens op de licht groene circel, de master module krijgt van de 2 andere modules de afstand binnen dat het toestel van de slave modules verwijderd is. Zo kan de master module berekenen waar het toestel zicht werkelijk bevind.
-3. Systeem detecteerd wanneer je in een kamer bent, die vervolgens commando stuurt naar een andere service die het licht zal aan of uit doen.
+3. Systeem detecteerd wanneer je in een kamer bent, die vervolgens commando stuurt naar een home assistent die het licht zal aan of uit doen.
 
-## Benodigdheden
+# Benodigdheden
 
-### Master module
+## Master module
 
-#### Hardware
+### Hardware
 
--  [Raspberry pi 3]
--  [7-segment display]
--  [LCD scherm]
-
-#### Software
-
--  Python script
--  Webserver
--  Database
-
-### Slave moule
-
-#### Hardware
-
--  [Arduino uno]
--  [HC-05] bluetooth module
+-  #### [Raspberry pi 3]<br>
+   Deze is het centrum van alles wat gebeurt.
+-  #### [7-segment display]<br>
+   Hiervan zullen er 2 naast elkaar staan, zodat je cijfers kan weergeven met 2 decimalen. Deze geven het aantal gevonden toestellen weer.
+-  #### [LCD scherm]<br>
+   Dit scherm geeft de namen of addressen van de toestellen weer die hij gevonden heeft. De afgebeelde addressen zullen automatisch veranderen. Om de x aantal seconden zal het volgende toestel afgebeeld worden.
+-  #### 2 [knop]pen<br>
+   Door deze knoppen in te drukken zal het vorige of volgende gevonden toestel weergegeven worden op het [LCD scherm].
 
 #### Software
 
--  Ardiuno script
+-  #### Python script<br>
+   Dit script zal alle data verwerken en berekeningen maken.
+-  #### Webserver<br>
+   Hierop zijn grafieken te zien, samen met een platte grond van de ruimte waar de modules zich gevinden. In deze platte grond zijn alle gevonden toestellen te zien, waar ze zich bevinden in de ruimte.<br>
+   Op een tweede pagina kun je het programma configureren(bv. het interval waarin de modules zullen scannen naar nieuwe toestellen).
+-  #### Database<br>
+   Hier word alle data opgeslagen over de gevonden toestellen:
+   -  Naam;
+   -  Address;
+   -  Positie;
+      -  x;
+      -  y;
+   -  (Posities van alle modules.)
+-  #### Home assistent<br>
+   Wanneer de master module een commando stuurt naar een homeassistent (zal bv. het licht van de kamer aan gaan).<br>
+   Er word een commando verstuurd als de module een toestel herkent en deze zich in de kamer bevind.
+
+## Slave moule
+
+### Hardware
+
+-  #### [Arduino uno]<br>
+   Bestuurt de [HC-05]. 
+-  #### [HC-05] bluetooth module<br>
+   Scant voor beschikbare toestellen.
+
+### Software
+
+-  Ardiuno script<br>
+   Laat de [HC-05] scannen voor beschikbare toestellen, om hierna de gevonden toestellen door te sturen naar de master module.
 
 [//]: # "These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax"
 
 <!-- Raspberry pi -->
 
-[raspberry pi 3]: https://www.google.com/search?q=raspberry+pi+3+&rlz=1C1QPHC_nlBE970BE970&ei=SBc_Y4OKK9D0kgWjuZ_wBg&ved=0ahUKEwiDzqSIl8z6AhVQuqQKHaPcB24Q4dUDCA4&uact=5&oq=raspberry+pi+3+&gs_lcp=Cgdnd3Mtd2l6EAMyBAgAEEMyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQyBQgAEIAEMgUIABCABDIFCAAQgAQ6CggAEEcQ1gQQsAM6BggAEB4QBzoHCAAQsQMQQzoLCAAQgAQQsQMQgwFKBAhBGABKBAhGGABQ6hlYwS5gpjtoBXABeACAAbUBiAHhA5IBAzIuMpgBAKABAaABArABAMgBCMABAQ&sclient=gws-wiz&safe=active&ssui=on
+[raspberry pi 3]: https://www.raspberrypi.com/products/raspberry-pi-3-model-b/
 
 <!-- Arduino -->
 
-[arduino uno]: https://www.google.com/search?q=arduino+uno&rlz=1C1QPHC_nlBE970BE970&ei=Qx0_Y8LjMI_3kgWR7qTwDw&oq=ardui&gs_lcp=Cgdnd3Mtd2l6EAMYATIKCAAQsQMQgwEQQzIKCAAQsQMQgwEQQzIECAAQQzIECAAQQzIECAAQQzIECAAQQzIECAAQQzIKCAAQsQMQgwEQQzIECAAQQzIECAAQQzoKCAAQRxDWBBCwAzoHCAAQsAMQQzoQCC4QsQMQgwEQxwEQ0QMQQzoRCC4QgAQQsQMQgwEQxwEQ0QM6EQguEIAEELEDEMcBENEDENQCOg4ILhCABBCxAxDHARDRAzoOCC4QgAQQsQMQgwEQ1AI6CAgAEIAEELEDSgQIQRgASgQIRhgAUKoJWPwNYPMeaANwAXgAgAFziAGQBJIBAzEuNJgBAKABAcgBCsABAQ&sclient=gws-wiz&safe=active&ssui=on
+[arduino uno]: https://store.arduino.cc/products/arduino-uno-rev3
 
 <!-- Bluetooth module -->
 
-[hc-05]: https://www.google.com/search?q=arduino+bluetooth+module+hc-05&rlz=1C1QPHC_nlBE970BE970&ei=eh0_Y8SkK8TpsAfz-6SYCA&oq=arduino+bluetooth+module.&gs_lcp=Cgdnd3Mtd2l6EAEYATIGCAAQHhAWMgYIABAeEBYyBggAEB4QFjIGCAAQHhAWMgYIABAeEBYyBggAEB4QFjIGCAAQHhAWMgYIABAeEBYyBggAEB4QFjIGCAAQHhAWOgoIABBHENYEELADOgcIABCwAxBDOgoIABCxAxCDARBDOgQIABBDOgUIABCABDoLCAAQgAQQsQMQgwFKBAhBGABKBAhGGABQ4gdYiiNg-zVoAXABeACAAXKIAd8DkgEDMy4ymAEAoAEByAEKwAEB&sclient=gws-wiz&safe=active&ssui=on
+[hc-05]: https://components101.com/wireless/hc-05-bluetooth-module
 
 <!-- 7-segment display -->
 
-[7-segment display]: https://www.google.com/search?q=7-segment+display&rlz=1C1QPHC_nlBE970BE970&oq=7-segme&aqs=chrome.1.69i57j0i512l9.2724j0j7&sourceid=chrome&ie=UTF-8&safe=active&ssui=on
+[7-segment display]: https://www.otronic.nl/a-65446199/segment-led-displays/7-segment-led-display-rood-0-56-inch/
 
 <!-- LCD scherm -->
 
@@ -78,5 +99,4 @@ In bovenstaande foto zie je 3 modules die elk hetzelfde toestel zien samen met d
 
  <!-- Button -->
 
-[knop]: https://www.google.com/search?q=knop+arduino&rlz=1C1QPHC_nlBE970BE970&ei=kjRAY4LfNOiU9u8Pm4SF8A8&ved=0ahUKEwiC8NeRp876AhVoiv0HHRtCAf4Q4dUDCA4&uact=5&oq=knop+arduino&gs_lcp=Cgdnd3Mtd2l6EAMyBQgAEIAEMgYIABAeEBY6CggAEEcQ1gQQsAM6BwgAELADEEM6DQgAEOQCENYEELADGAE6EgguEMcBENEDEMgDELADEEMYAjoECAAQQzoICAAQsQMQgwE6CwguEIAEELEDENQCOgsIABCABBCxAxCDAToICAAQgAQQsQM6DgguEIAEEMcBEK8BENQCOgUILhCABDoLCAAQgAQQsQMQyQM6CwguEIAEEMcBEK8BOggIABAeEA8QFjoICAAQHhAWEApKBAhBGABKBAhGGAFQZVjvlg1ghZkNaAdwAXgBgAHJAYgBpg2SAQYxMS41LjGYAQCgAQHIARHAAQHaAQYIARABGAnaAQYIAhABGAg&sclient=gws-wiz&safe=active&ssui=on
-
+[knop]: https://www.otronic.nl/a-60343296/schakelaars/drukknopje-moment-6x6x4/
