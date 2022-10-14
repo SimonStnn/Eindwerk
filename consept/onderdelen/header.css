@@ -1,0 +1,9 @@
+div.header {
+   /* background-color: gray; */
+   display: flex;
+   align-items: center;
+   flex-direction: column;
+}
+div.header p{
+   margin-top: 0;
+}

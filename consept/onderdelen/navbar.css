@@ -1,0 +1,36 @@
+:root{
+   --navbar-background-color: #333;
+   --navbar-font-color: white;
+   --navbar-li-hover-color: #111;
+   --navbar-li-active-color: #4caf50;
+}
+
+nav, nav ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+   background-color: var(--navbar-background-color);
+   position: sticky;
+   top: 0;
+}
+
+nav ul li {
+   float: left;
+}
+
+nav ul li a {
+   display: block;
+   color: var(--navbar-font-color);
+   text-align: center;
+   padding: 14px 16px;
+   text-decoration: none;
+}
+
+nav ul li a:hover {
+   background-color: var(--navbar-li-hover-color);
+}
+
+nav .active {
+   background-color: var(--navbar-li-active-color);
+}
