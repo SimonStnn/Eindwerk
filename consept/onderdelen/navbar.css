@@ -1,8 +1,8 @@
 :root{
-   --navbar-background-color: #333;
+   --navbar-background-color: var(--theme-dark-color);
    --navbar-font-color: white;
    --navbar-li-hover-color: #111;
-   --navbar-li-active-color: royalblue;
+   --navbar-li-active-color: var(--theme-active-item-color);
    --navbar-li-active-hover-color: rgb(35, 75, 195);
 }
 

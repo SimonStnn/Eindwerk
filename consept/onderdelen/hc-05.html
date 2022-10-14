@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 
 <head>
    <meta charset="UTF-8">
@@ -28,7 +28,7 @@
    </nav>
 
    <div class="content">
-      
+
       <img src="images/HC-05-Bluetooth-Module.jpg" alt="HC-05">
       <img src="images/HC-05-Bluetooth-Module-Pinout.png" alt="Pinout HC-05">
 
@@ -41,7 +41,8 @@
          <tr>
             <td>1</td>
             <td>Enable / key</td>
-            <td>This pin is used to toggle between Data Mode (set low) and AT command mode (set high). By default it is in Data mode</td>
+            <td>This pin is used to toggle between Data Mode (set low) and AT command mode (set high). By default it is
+               in Data mode</td>
          </tr>
          <tr>
             <td>2</td>
@@ -56,7 +57,8 @@
          <tr>
             <td>4</td>
             <td>TX - Transmitter</td>
-            <td>Transmits Serial Data. Everything received via Bluetooth will be given out by this pin as serial data.</td>
+            <td>Transmits Serial Data. Everything received via Bluetooth will be given out by this pin as serial data.
+            </td>
          </tr>
          <tr>
             <td>5</td>
@@ -66,7 +68,8 @@
          <tr>
             <td>6</td>
             <td>State</td>
-            <td>The state pin is connected to on board LED, it can be used as a feedback to check if Bluetooth is working properly.</td>
+            <td>The state pin is connected to on board LED, it can be used as a feedback to check if Bluetooth is
+               working properly.</td>
          </tr>
          <tr>
             <td>7</td>
@@ -86,6 +89,29 @@
             <td>Used to control the Key/Enable pin to toggle between Data and command Mode</td>
          </tr>
       </table>
+      <h2>HC-05 Default Settings</h2>
+      <ul>
+         <li>Default Bluetooth Name: “HC-05”</li>
+         <li>Default Password: 1234 or 0000</li>
+         <li>Default Communication: Slave</li>
+         <li>Default Mode: Data Mode</li>
+         <li>Data Mode Baud Rate: 9600, 8, N, 1</li>
+         <li>Command Mode Baud Rate: 38400, 8, N, 1</li>
+         <li>Default firmware: LINVOR</li>
+      </ul>
+
+      <h2>HC-05 Technical Specifications</h2>
+      <ul>
+         <li> Serial Bluetooth module for Arduino and other microcontrollers</li>
+         <li> Operating Voltage: 4V to 6V (Typically +5V)</li>
+         <li> Operating Current: 30mA</li>
+         <li> Range: < 100m Works with Serial communication (USART) and TTL compatible Follows IEEE 802.15.1 standardized</li>
+         <li> protocol Uses Frequency-Hopping Spread spectrum (FHSS) Can operate in Master, Slave or Master/Slave mode Can be</li>
+         <li> easily interfaced with Laptop or Mobile phones with Bluetooth Supported baud rate:</li>
+         <li> 9600,19200,38400,57600,115200,230400,460800. </li>
+      </ul>
+         
+
    </div>
 
 </body>

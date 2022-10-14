@@ -1,4 +1,56 @@
+:root {
+   /* Table */
+   --table-border-color: rgba(102, 102, 102, 0.3);
+   --table-th-backround-color: var(--theme-dark-color);
+   --table-th-font-color: #ffffff;
+   --table-tr-odd-child-background-color: #f1f1f1;
+   --table-tr-even-child-background-color: #ffffff;
+   --table-td-padding: 5px;
+
+   /* List */
+   --list-style-type: disc;
+}
 div.content {
-   width: 80%;
+   width: 75%;
    margin: auto;
 }
+/* Images */
+div.content img {
+   width: 49%;
+}
+/* End images */
+
+/* Table */
+table {
+   width: 100%;
+   border: 1px solid var(--table-border-color);
+}
+
+table,
+table tr td {
+   border: 1px solid var(--table-border-color);
+   border-collapse: collapse;
+   padding: var(--table-td-padding);
+}
+
+table tr:nth-child(odd) {
+   background-color: var(--table-tr-odd-child-background-color);
+}
+table tr:nth-child(even) {
+   background-color: var(--table-tr-even-child-background-color);
+}
+
+table th {
+   color: var(--table-th-font-color);
+   background-color: var(--table-th-backround-color);
+}
+table tr ul {
+   margin: 0;
+}
+/* End table */
+
+/* List */
+ul li {
+   list-style-type: var(--list-style-type);
+}
+/* End list */
