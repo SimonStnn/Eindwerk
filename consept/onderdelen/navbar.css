@@ -2,7 +2,8 @@
    --navbar-background-color: #333;
    --navbar-font-color: white;
    --navbar-li-hover-color: #111;
-   --navbar-li-active-color: #4caf50;
+   --navbar-li-active-color: royalblue;
+   --navbar-li-active-hover-color: rgb(35, 75, 195);
 }
 
 nav, nav ul {
@@ -25,7 +26,7 @@ nav ul li a {
    text-align: center;
    padding: 14px 16px;
    text-decoration: none;
-   transition: .1s;
+   transition: .1s background-color;
 }
 
 nav ul li a:hover {
@@ -34,4 +35,7 @@ nav ul li a:hover {
 
 nav .active {
    background-color: var(--navbar-li-active-color);
+}
+nav .active:hover {
+   background-color: var(--navbar-li-active-hover-color);
 }
