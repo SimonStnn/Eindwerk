@@ -1,4 +1,5 @@
 :root {
+   --content-width:75%;
    /* Table */
    --table-border-color: rgba(102, 102, 102, 0.3);
    --table-th-backround-color: var(--theme-dark-color);
@@ -6,19 +7,17 @@
    --table-tr-odd-child-background-color: #f1f1f1;
    --table-tr-even-child-background-color: #ffffff;
    --table-td-padding: 5px;
+   --table-th-padding: 5px;
 
    /* List */
    --list-style-type: disc;
+
+   /* Media */
 }
 div.content {
-   width: 75%;
+   width: var(--content-width);
    margin: auto;
 }
-/* Images
-div.content img {
-   width: 49%;
-} */
-/* End images */
 
 /* Table */
 div.content table {
@@ -41,6 +40,7 @@ div.content table tr:nth-child(even) {
 }
 
 div.content table th {
+   padding: var(--table-th-padding);
    color: var(--table-th-font-color);
    background-color: var(--table-th-backround-color);
 }
@@ -54,3 +54,21 @@ div.content ul li {
    list-style-type: var(--list-style-type);
 }
 /* End list */
+
+div.content div.two-items img{
+   width: 49%;
+}
+
+/* Handle screen resizing */
+@media only screen and (min-width: 800px) {
+  div.content img{
+   width: 588px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  div.content img {
+   width: 100%;
+}
+}
+/* End handle screen resizing */
+
