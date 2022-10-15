@@ -1,6 +1,8 @@
 :root {
    --background-color: white;
 
+   --theme-navbar-font-color:white;
+
    --theme-dark-color: #333;
    --theme-active-item-color: royalblue;
 }

@@ -1,5 +1,6 @@
 div.header {
-   /* background-color: gray; */
+   color: var(--theme-navbar-font-color);
+   background-color: var(--theme-active-item-color);
    display: flex;
    align-items: center;
    flex-direction: column;
