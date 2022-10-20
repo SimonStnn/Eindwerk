@@ -11,6 +11,10 @@
 
    --transition-time: .1s;
 }
+nav{
+   box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.4) ;
+
+}
 
 nav, nav ul.pages , nav ul.internal{
    list-style-type: none;
