@@ -28,9 +28,12 @@
          <li><a href="oled.html">Oled</a></li>
       </ul>
       <ul class="internal">
-         <li><a href="#overview">Overview</a></li>
+         <li><a href="#pinout">Pinout</a></li>
          <li><a href="#specs">Specifications</a></li>
-         <li><a href="#physical-specs">Physical Specifications</a></li>
+         <li><a href="#connectors">Board Connectors</a></li>
+         <li><a href="#where-used">Where is it used</a></li>
+         <li><a href="#how-use">How to use</a></li>
+         <li><a href="#dimensions">Dimensions</a></li>
       </ul>
    </nav>
 
@@ -38,182 +41,227 @@
       <img id="overview" src="images/rpiTopView.png" alt="Overview images rpi">
 
       <p>
-         The Raspberry Pi 3 Model B+ is the latest product in the Raspberry Pi 3 range,
-         boasting a 64-bit quad core processor running at 1.4GHz, dual-band 2.4GHz
-         and 5GHz wireless LAN, Bluetooth 4.2/BLE, faster Ethernet, and PoE capability
-         via a separate PoE HAT.
-      </p>
-      <p>
-         The dual-band wireless LAN comes with modular compliance certification,
-         allowing the board to be designed into end products with significantly reduced
-         wireless LAN compliance testing, improving both cost and time to market.
-      </p>
-      <p>
-         The Raspberry Pi 3 Model B+ maintains the same mechanical footprint as both
-         the Raspberry Pi 2 Model B and the Raspberry Pi 3 Model B.
+         Raspberry pi 3 is a development board in PI series. It can be considered as a single board computer that works
+         on LINUX
+         operating system. The board not only has tons of features it also has terrific processing speed making it
+         suitable for
+         advanced applications. PI board is specifically designed for hobbyist and engineers who are interested in LINUX
+         systems
+         and IoT (Internet of Things).
       </p>
 
-      <h2 id="specs">Specifications</h2>
+      <h2 id="pinout">Pin Configuration</h2>
+      <img src="images/rpiPinout.png" alt="Pinout">
+      <table>
+         <tr>
+            <th>Pin Group</th>
+            <th>Pin Name</th>
+            <th>Description</th>
+         </tr>
+         <tr>
+            <td>POWER SOURCE</td>
+            <td></td>
+            <td></td>
+         </tr>
+         <tr>
+            <td>COMMUNICATION INTERFACE</td>
+            <td>UART Interface(RXD, TXD) [(GPIO15,GPIO14)]</td>
+            <td>UART (Universal Asynchronous Receiver Transmitter) used for interfacing sensors and other devices.</td>
+         </tr>
+         <tr>
+            <td>SPI Interface(MOSI, MISO, CLK,CE) x 2 [SPI0-(GPIO10 ,GPIO9, GPIO11 ,GPIO8)] [SPI1--(GPIO20 ,GPIO19,
+               GPIO21 ,GPIO7)]</td>
+            <td>SPI (Serial Peripheral Interface) used for communicating with other boards or peripherals.</td>
+            <td></td>
+         </tr>
+         <tr>
+            <td>TWI Interface(SDA, SCL) x 2 [(GPIO2, GPIO3)] [(ID_SD,ID_SC)]</td>
+            <td>TWI (Two Wire Interface) Interface can be used to connect peripherals.</td>
+            <td></td>
+         </tr>
+         <tr>
+            <td>INPUT OUTPUT PINS</td>
+            <td>26 I/O</td>
+            <td>Although these some pins have multiple functionsthey can be considered as I/O pins.</td>
+         </tr>
+         <tr>
+            <td>PWM</td>
+            <td>Hardware PWM available on GPIO12, GPIO13, GPIO18, GPIO19</td>
+            <td>
+               <p>
+                  These 4 channels can provide PWM (Pulse Width Modulation) outputs.
+               </p>
+               <p>
+                  *Software PWM available on all pins
+            </td>
+            </p>
+         </tr>
+         <tr>
+            <td>EXTERNAL INTERRUPTS</td>
+            <td>All I/O</td>
+            <td>In the board all I/O pins can be used as Interrupts.</td>
+         </tr>
+      </table>
+
+      <h2 id="specs">Technical Specifications</h2>
       <table>
          <tr>
             <th></th>
             <th></th>
          </tr>
          <tr>
-            <td>Processor</td>
-            <td>Broadcom BCM2837B0, Cortex-A53
-               64-bit SoC @ 1.4GHz</td>
+            <td>Microprocessor</td>
+            <td>Broadcom BCM2837 64bit Quad Core Processor</td>
          </tr>
          <tr>
-            <td>Memory</td>
-            <td>1GB LPDDR2 SDRAM</td>
+            <td>Processor Operating Voltage</td>
+            <td>3.3V</td>
          </tr>
          <tr>
-            <td>Connectivity</td>
+            <td>Raw Voltage input</td>
+            <td>5V, 2A power source</td>
+         </tr>
+         <tr>
+            <td>Maximum current through each I/O pin</td>
+            <td>16mA</td>
+         </tr>
+         <tr>
+            <td>Maximum total current drawn from all I/O pins</td>
+            <td>54mA</td>
+         </tr>
+         <tr>
+            <td>Flash Memory (Operating System)</td>
+            <td>16Gbytes SSD memory card</td>
+         </tr>
+         <tr>
+            <td>Internal RAM</td>
+            <td>1Gbytes DDR2</td>
+         </tr>
+         <tr>
+            <td>Clock Frequency</td>
+            <td>1.2GHz</td>
+         </tr>
+         <tr>
+            <td>GPU</td>
             <td>
-               <ul>
-                  <li>2.4GHz and 5GHz IEEE 802.11.b/g/n/ac wireless
-                     LAN, Bluetooth 4.2, BLE</li>
-                  <li>Gigabit Ethernet over USB 2.0 (maximum throughput 300Mbps)</li>
-                  <li>4 × USB 2.0 ports</li>
-               </ul>
+               <p>
+                  Dual Core Video Core IV® Multimedia Co-Processor. Provides Open GLES 2.0, hardware-accelerated Open VG, and 1080p30
+                  H.264 high- profile decode.
+               </p>
+               <p>
+                  Capable of 1Gpixel/s, 1.5Gtexel/s or 24GFLOPs with texture filtering and DMA infrastructure.
+               </p>
             </td>
          </tr>
          <tr>
-            <td>Access</td>
-            <td>Extended 40-pin GPIO header</td>
+            <td>Ethernet</td>
+            <td>10/100 Ethernet</td>
          </tr>
          <tr>
-            <td>Video & sound</td>
-            <td>
-               <ul>
-                  <li>1 x full size HDMI</li>
-                  <li>MIPI DSI display port</li>
-                  <li>MIPI CSI camera port</li>
-                  <li>4 pole stereo output and composite video port</li>
-               </ul>
-            </td>
+            <td>Wireless Connectivity</td>
+            <td>BCM43143 (802.11 b/g/n Wireless LAN and Bluetooth 4.1)</td>
          </tr>
          <tr>
-            <td>Multimedia</td>
-            <td>H.264, MPEG-4 decode (1080p30); H.264 encode
-               (1080p30); OpenGL ES 1.1, 2.0 graphics</td>
-         </tr>
-         <tr>
-            <td>SD card support</td>
-            <td>Micro SD format for loading operating system and
-               data storage.</td>
-         </tr>
-         <tr>
-            <td>Input power</td>
-            <td>
-               <ul>
-                  <li>5V/2.5A DC via micro USB connector</li>
-                  <li>5V DC via GPIO header</li>
-                  <li>Power over Ethernet (PoE)–enabled (requires
-                     separate PoE HAT)</li>
-               </ul>
-            </td>
-         </tr>
-         <tr>
-            <td>Environment</td>
-            <td>Operating temperature, 0-50°C.</td>
-         </tr>
-         <tr>
-            <td>Compliance</td>
-            <td>For a full list of local and regional product approvals,
-               please visit <a href=" www.raspberrypi.org/products/raspberry -
-            pi-3-model-b+">www.raspberrypi.org/products/raspberry -
-                  pi-3-model-b+</a>.</td>
-         </tr>
-         <tr>
-            <td>Production lifetime</td>
-            <td>The Raspberry Pi 3 Model B+ will remain in production
-               until at least January 2023.</td>
+            <td>Operating Temperature</td>
+            <td>-40ºC to +85ºC</td>
          </tr>
       </table>
 
-      <h2 id="physical-specs">Physical Specifications</h2>
-      <img src="images/rpiPhysicalSpecs.png" alt="Physical Specifications">
-      <h3>Warnings</h3>
-      <ul>
-         <li>
-            <p>
-               This product should only be connected to an external power supply rated at 5V/2.5 A DC. Any external
-               power
-               supply used with the Raspberry Pi 3 Model B+ shall comply with relevant regulations and standards
-               applicable
-               in the country of intended use.
-            </p>
-         </li>
-         <li>
-            <p>
-               This product should be operated in a well-ventilated environment and, if used inside a case, the case
-               should
-               not be covered.
-            </p>
-         </li>
-         <li>
-            <p>
-               Whilst in use, this product should be placed on a stable, flat, non-conductive surface and should not be
-               contacted by conductive items.
-            </p>
-         </li>
-         <li>
-            <p>
-               The connection of incompatible devices to the GPIO connection may affect compliance, result in damage to
-               the unit, and invalidate the warranty.
-            </p>
-         </li>
-         <li>
-            <p>
-               All peripherals used with this product should comply with relevant standards for the country of use and
-               be
-               marked accordingly to ensure that safety and performance requirements are met. These articles include but
-               are not limited to keyboards, monitors, and mice when used in conjunction with the Raspberry Pi.
-            </p>
-         </li>
-         <li>
-            <p>
-               All peripherals used with this product should comply with relevant standards for the country of use and
-               be
-               marked accordingly to ensure that safety and performance requirements are met. These articles include but
-               are not limited to keyboards, monitors, and mice when used in conjunction with the Raspberry Pi.
-            </p>
-         </li>
-      </ul>
-      <h3>Safety Instructions</h3>
-      <b>To avoid malfunction of or damage to this product, please observe the following</b>:
-      <ul>
-         <li>
-            <p>
-               Do not expose to water or moisture, or place on a conductive surface whilst in operation.
-            </p>
-         </li>
-         <li>
-            <p>
-               Do not expose to heat from any source; the Raspberry Pi 3 Model B+ is designed for reliable operation at
-               normal ambient temperatures.
-            </p>
-         </li>
-         <li>
-            <p>
-               Take care whilst handling to avoid mechanical or electrical damage to the printed circuit board and
-               connectors.
-            </p>
-         </li>
-         <li>
-            <p>
-               Whilst it is powered, avoid handling the printed circuit board, or only handle it by the edges to
-               minimise the
-               risk of electrostatic discharge damage.
-            </p>
-         </li>
-      </ul>
-   </div>
+      <h2 id="connectors">Board Connectors</h2>
+      <table>
+         <tr>
+            <th>Ethernet</th>
+            <th>Base T Ethernet Socket</th>
+         </tr>
+         <tr>
+            <td>USB</td>
+            <td>2.0 (Four sockets)</td>
+         </tr>
+         <tr>
+            <td>Audio Output</td>
+            <td>3.5mm Jack and HDMI</td>
+         </tr>
+         <tr>
+            <td>Video output</td>
+            <td>HDMI</td>
+         </tr>
+         <tr>
+            <td>Camera Connector</td>
+            <td>15-pin MIPI Camera Serial Interface (CSI-2)</td>
+         </tr>
+         <tr>
+            <td>Display Connector</td>
+            <td>Display Serial Interface (DSI) 15 way flat flex cable connector with two data lanes and a clock lane.</td>
+         </tr>
+         <tr>
+            <td>Memory Card Slot</td>
+            <td>Push/Pull Micro SDIO</td>
+         </tr>
+      </table>
 
-   Source: <a
-      href="https://static.raspberrypi.org/files/product-briefs/Raspberry-Pi-Model-Bplus-Product-Brief.pdf">https://static.raspberrypi.org/files/product-briefs/Raspberry-Pi-Model-Bplus-Product-Brief.pdf</a>
+      <h2 id="where-used">Where is it used?</h2>
+      <p>
+         Raspberry pi platform is most used after Arduino. Although overall applications of PI are less it is most preferred when
+         developing advanced applications. Also the Raspberry pi is an open source platform where one can get a lot of related
+         information so you can customize the system depending on the need.
+      </p>
+      <p>
+         Here are few examples where Raspberry pi 3 is chosen over other microcontrollers and development boards:
+      </p>
+      <p>
+         <ol>
+            <li>
+               <p>
+                  Where the system processing is huge. Most Arduino boards all have clock speed of less than 100MHz, so they can perform
+                  functions limited to their capabilities. They cannot process high end programs for applications like Weather Station,
+                  Cloud server, gaming console etc. With 1.2GHz clock speed and 1 GB RAM Raspberry pi can perform all those advanced
+                  functions.
+               </p>
+            </li>
+            <li>
+               <p>
+                  Where wireless connectivity is needed. Raspberry pi 3 has wireless LAN and Bluetooth facility by which you can setup
+                  WIFI HOTSPOT for internet connectivity. For Internet of Things this feature is best suited.
+               </p>
+            </li>
+            <li>
+               <p>
+                  Raspberry pihad dedicated port for connecting touch LCD display which is a feature that completely omits the need of
+                  monitor.
+               </p>
+            </li>
+            <li>
+               <p>
+                  Raspberry pi also has dedicated camera port so one can connect camera without any hassle to the PI board.
+               </p>
+            </li>
+            <li>
+               <p>
+                  Raspberry pi also has PWM outputs for application use.
+               </p>
+            </li>
+         </ol>
+         <p>
+            There are many other features like HD steaming which further promote the use of Raspberry	pi.
+         </p>
+      </p>
+
+      <h2 id="how-use">How to use</h2>
+      <p>
+         As mentioned earlier PI is simply a computer on a single board so it cannot be used like Arduino development boards. For
+         the PI to start working we need to first install operating system. This feature is similar to our PC. The PI has
+         dedicated OS for it; any other OS will not work.
+      </p>
+
+      <h2 id="dimensions">Dimensions</h2>
+      <img src="images/rpiPhysicalSpecs.png" alt="Physical specs">
+
+   </div>
+   Source:
+   <li>
+      <a
+         href="https://components101.com/microcontrollers/raspberry-pi-3-pinout-features-datasheet">https://components101.com/microcontrollers/raspberry-pi-3-pinout-features-datasheet</a>
+   </li>
 
 </body>
 
