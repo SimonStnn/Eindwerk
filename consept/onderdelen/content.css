@@ -20,11 +20,10 @@ div.content {
 }
 
 /* Paragraphs */
-div.content p{
+div.content p {
    text-align: justify;
 }
 /* End paragraphs */
-
 
 /* Table */
 div.content table {

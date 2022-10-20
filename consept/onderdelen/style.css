@@ -1,15 +1,15 @@
 :root {
    --background-color: white;
 
-   --theme-navbar-font-color:white;
+   --theme-navbar-font-color: white;
 
    --theme-dark-color: #333;
    --theme-active-item-color: royalblue;
-   
+
    --theme-selected-item-trans: rgba(65, 105, 225, 0.75);
 }
 
-html{
+html {
    scroll-behavior: smooth;
 }
 
@@ -20,8 +20,7 @@ body {
    background-color: var(--background-color);
 }
 
-
 ::selection {
-  color: white;
-  background: var(--theme-selected-item-trans);
+   color: white;
+   background: var(--theme-selected-item-trans);
 }
