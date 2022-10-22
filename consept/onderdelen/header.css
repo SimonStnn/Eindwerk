@@ -5,6 +5,11 @@ div.header {
    align-items: center;
    flex-direction: column;
 }
+
+div.header {
+   text-shadow: 0 0 8px var(--theme-dark-color);
+}
+
 div.header p {
    margin-top: 0;
 }
