@@ -1,0 +1,8 @@
+WEBSOCKET:
+  # Url & port that the websocket will be hosted on
+  url: "10.250.3.99"
+  port: 7890
+
+BLUETOOTH:
+  # How long the script has to scan for devices
+  scan_duration: 8
