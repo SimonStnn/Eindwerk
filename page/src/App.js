@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Device from "./Device";
 
 const classes = ['rendering', 'object transfer', 'audio', 'information']
@@ -20,15 +21,18 @@ const samples = [
 ];
 
 function App() {
+  const [devices, setDevices] = useState([])
+
+
   return (
     <div className="App">
       <div className="container">
-        <Device name="Miscellaneous" addr="" majorClass="Miscellaneous" classes={["auc",...classes]} rssi="-47" />
+        <Device name="Miscellaneous" addr="" majorClass="Miscellaneous" classes={["auc", ...classes]} rssi="-47" />
         <Device name="Computer" addr="" majorClass="Computer" classes={classes} rssi="-31" />
-        <Device name="LAN/Network Access point" addr="" majorClass="LAN/Network Access point" classes={classes} rssi="-31" />
-        <Device name="Audio/Video" addr="" majorClass="Audio/Video" classes={classes} rssi="-31" />
-        <Device name="Peripheral" addr="" majorClass="Peripheral" classes={classes} rssi="-31" />
-        <Device name="Imaging" addr="" majorClass="Imaging" classes={classes} rssi="-31" />
+        <Device name="LAN/Network Access point" addr="" majorClass="LAN/Network Access point" classes={classes} rssi="-26" />
+        <Device name="Audio/Video" addr="" majorClass="Audio/Video" classes={classes} rssi="-53" />
+        <Device name="Peripheral" addr="" majorClass="Peripheral" classes={classes} rssi="-18" />
+        <Device name="Imaging" addr="" majorClass="Imaging" classes={classes} rssi="-23" />
         {/* {
           samples.map(({name, addr, majorClass, classes, rssi}) => {
             return (
