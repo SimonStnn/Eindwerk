@@ -1,12 +1,12 @@
-from bcolors import bcolors
+from .bcolors import bcolors
 
 class Device():
-    def __init__(self):
-        self.name: str = ""
-        self.addr: str = ""
-        self.majorClass: str = ""
-        self.classes: list = []
-        self.rssi: int = None
+    def __init__(self, name="", addr="", majorClass="", classes=[], rssi=None):
+        self.name: str = name.replace("'", "")
+        self.addr: str = addr
+        self.majorClass: str = majorClass
+        self.classes: list = classes
+        self.rssi: int = rssi
 
     def __str__(self):
         s = f"Name: '{bcolors.GREEN}{self.name}{bcolors.END}'\n"

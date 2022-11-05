@@ -1,7 +1,9 @@
+import time
 import select
 import bluetooth
 
-from device import Device
+from doubles.device import Device
+
 
 
 class MyDiscoverer(bluetooth.DeviceDiscoverer):
@@ -49,20 +51,26 @@ class MyDiscoverer(bluetooth.DeviceDiscoverer):
         self.done = True
 
 
-def scan(duration):
+async def scan(duration):
+    start_time = time.time()
     discoverer.find_devices(duration=duration)
 
     readfiles = [discoverer, ]
 
-    for i in range(512):
+    while True:
         rfds = select.select(readfiles, [], [])[0]
         if discoverer in rfds:
             discoverer.process_event()
-        if discoverer.done or i == 511:
+        if discoverer.done:
             break
+
+    interval = duration - (time.time() - start_time)
+    if interval <= 0:
+        interval = 0.1
+    time.sleep(interval)
+
+    print(f"--- Found {len(discoverer.devices)} devices")
 
     return discoverer.devices
 
-
-if __name__ == "scan":
-    discoverer = MyDiscoverer()
+discoverer = MyDiscoverer()

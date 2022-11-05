@@ -5,4 +5,4 @@ WEBSOCKET:
 
 BLUETOOTH:
   # How long the script has to scan for devices
-  scan_duration: 8
+  scan_duration: 5

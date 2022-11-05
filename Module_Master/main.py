@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 import asyncio
-
 from websocket import websocketServer
-from funcs import read_yaml
+
+from doubles.funcs import read_yaml
 
 # DC:A6:32:E7:BC:F0
 # 'F0:65:AE:2F:C5:D5', "Simon's A53", 5898764
@@ -10,6 +10,7 @@ from funcs import read_yaml
 CONFIG_WEBSOCKET = "WEBSOCKET"
 CONFIG_BLUETOOTH = "BLUETOOTH"
 
+print("something")
 
 if __name__ == "__main__":
     print("Startup\n-----")
@@ -18,12 +19,6 @@ if __name__ == "__main__":
     SCAN_DURATION = int(config[CONFIG_BLUETOOTH]["scan_duration"])
     URL = str(config[CONFIG_WEBSOCKET]["url"])
     PORT = str(config[CONFIG_WEBSOCKET]["port"])
-
-    # nearbyDevices = scan(SCAN_DURATION)
-    # print("Found devices:\n")
-    # for device in nearbyDevices:
-    #     print(device)
-    #     print("-----")
 
     print("Server listening on ws://"+ str(URL)+ ":" + str(PORT))
     asyncio.run(websocketServer(URL, PORT))
