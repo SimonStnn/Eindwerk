@@ -9,15 +9,31 @@
    width: 70%;
    height: 100vh;
    margin: auto;
-}
-.device-container {
-   width: 100%;
-
-   display: flex;
-   flex-flow: row wrap;
-   justify-content: space-evenly;
-}
-
-.satelite-container {
    
+   overflow-x: hidden;
+   overflow-y: auto;
+}
+
+h1 {
+   font-size: 1.7em;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+   background: rgba(0, 0, 0, 0.15);
 }

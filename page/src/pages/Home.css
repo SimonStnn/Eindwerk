@@ -1,0 +1,11 @@
+.satelite-container,
+.device-container {
+    width: 100%;
+
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+
+    row-gap: 15px;
+    column-gap: 15px;
+}

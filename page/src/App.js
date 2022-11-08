@@ -43,10 +43,9 @@ function App() {
             toggleSidebar={toggleSidebar}
             toggleIcon={toggleIcon}
          />
-
          <div className="container">
             <Routes>
-               <Route path="/" element={<Home devices={devices} />} />
+               <Route path="/" element={<Home satelites={[]} devices={devices} />} />
                <Route path="/contact" element={<Contact />} />
                <Route path="/settings" element={<Settings />} />
             </Routes>
