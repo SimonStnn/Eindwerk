@@ -1,0 +1,6 @@
+{
+    "showNames": true,
+    "websocket":{
+        "url": "ws://10.250.3.99:7890"
+    }
+}

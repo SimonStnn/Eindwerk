@@ -1,0 +1,65 @@
+:root {
+   --device-margin: 10px 5px;
+   --device-width: 300px;
+   --device-address-max-width:50px;
+   --device-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+   --device-border-radius: var(--style-border-radius);
+   --device-classes-background-color: rgba(0, 0, 0, 0.12);
+   --device-classes-font-size: 12px;
+   --device-classes-opacity: 50%;
+}
+
+.device {
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+
+   margin: var(--device-margin);
+   width: var(--device-width);
+   height: var(--device-height);
+   
+   border-radius: var(--device-border-radius);
+   box-shadow: var(--device-box-shadow);
+   min-width: 200px;
+}
+
+.device div.info img {
+   margin: 0;
+   padding: 0;
+}
+
+.device div.info {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.device div.info div {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   margin: 5px 15px;
+   text-align: center;
+   max-width: var(--device-address-max-width);
+}
+.device div.info div img {
+   padding: 10px 0;
+}
+.device div.info div div{
+   margin: 0;
+}
+.device div.classes {
+   background-color: var(--device-classes-background-color);
+   border-radius: 0 0 var(--device-border-radius) var(--device-border-radius);
+   
+   display: flex;
+   flex-direction: row;
+   text-align: center;
+   justify-content: left;
+}
+.device div.classes div{
+   margin: 0 6px 0 3px;
+   font-size: var(--device-classes-font-size);
+   opacity: var(--device-classes-opacity);
+}

@@ -1,0 +1,116 @@
+:root {
+   --sidebar-item-width: 120px;
+   --sidebar-hr-color: rgb(0, 0, 0, 0.1);
+   --sidebar-item-margin:3px 8px;
+   --sidebar-item-padding:12px;
+}
+
+.sidebar {
+   display: flex;
+   flex-direction: column;
+   /* justify-content: flex-end; */
+
+   z-index: 1; /* Stay on top */
+   overflow-x: hidden; /* Disable horizontal scroll */
+   
+   font-size: 18px;
+   
+   height: 100vh;
+   background-color: rgb(240, 240, 240);
+   
+   transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+}
+
+@media only screen and (max-width: 600px) {
+   .sidebar {
+      background-color: blue;
+      visibility: hidden;
+      width: 0;
+      min-width: 0;
+   }
+}
+
+.sidebar .logo {
+   /* background-color: red; */
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+   justify-content: left;
+   column-gap: 15px;
+   /* height: 50px; */
+   
+   margin: var(--sidebar-item-margin);
+   margin-top: 15px;
+   padding: var(--sidebar-item-padding);
+   
+
+   font-weight: bold;
+}
+.sidebar .logo img{
+}
+
+.sidebar hr {
+   display: flex;
+   justify-content: center;
+
+   width: 60%;
+   border: 2px solid transparent;
+   background-color: var(--sidebar-hr-color);
+   border-radius: 5px;
+}
+.sidebar .items {
+   display: flex;
+   flex-direction: column;
+   align-items: left;
+}
+
+.sidebar .items .sidebar-item {
+   display: flex;
+   flex-direction: row;
+
+   column-gap: 15px;
+
+   margin: var(--sidebar-item-margin);
+   padding: var(--sidebar-item-padding);
+   border-radius: 5px;
+
+   /* width: var(--sidebar-item-width); */
+
+   transition: background-color 0.2s;
+}
+.sidebar .items .sidebar-item div {
+}
+.sidebar .items .sidebar-item .active,
+.sidebar .width-toggle:hover,
+.sidebar .items .sidebar-item:hover {
+   background-color: rgb(220, 220, 220);
+}
+
+.sidebar a {
+   color: inherit;
+   text-decoration: none;
+}
+
+.sidebar .last {
+   justify-self: flex-end;
+
+}
+
+.sidebar .width-toggle {
+   display: flex;
+   justify-content: flex-end;
+   align-self: flex-end;
+   
+   margin: var(--sidebar-item-margin);
+   padding: var(--sidebar-item-padding);
+   border-radius: 5px;
+   
+   transition: background-color 0.2s;
+}
+.sidebar.open {
+   width: auto;
+   transition: .5s;
+}
+.sidebar.open hr{
+   width: 90%;
+}
