@@ -2,7 +2,7 @@ import React from 'react';
 import config from '../config.json';
 
 import uncatigorized from '../images/icons/devices/uncatigorized.svg';
-import miscellaneous from '../images/icons/devices/miscellaneous.svg';
+// import miscellaneous from '../images/icons/devices/miscellaneous.svg';
 import computer from '../images/icons/devices/computer.svg';
 import phone from '../images/icons/devices/phone.svg';
 import accessPoint from '../images/icons/devices/accessPoint.svg';

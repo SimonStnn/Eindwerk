@@ -1,8 +1,7 @@
 import React from "react";
-import { useState } from 'react';
-import Sidebar from '../Sidebar';
+// import { useState } from 'react';
 import Device from '../components/Device';
-import config from '../config.json';
+// import config from '../config.json';
 
 
 const samples = [
@@ -30,14 +29,14 @@ const samples = [
 ];
 
 
-const Home = () => {
+const Home = ({devices}) => {
     return (
        <>
-          <h2>Found devices</h2>
+          <h1>Found devices</h1>
           <div className="device-container">
-             <Device data={samples[0]} />
+             {/* <Device data={samples[0]} />
              <Device data={samples[1]} />
-             <Device data={samples[2]} />
+             <Device data={samples[2]} /> */}
              {devices.length ? (
                 devices.map((data, i) => {
                    return <Device data={data} key={i} />;

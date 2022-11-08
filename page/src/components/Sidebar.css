@@ -17,6 +17,8 @@
    
    height: 100vh;
    background-color: rgb(240, 240, 240);
+
+   user-select: none;
    
    transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
@@ -46,8 +48,7 @@
 
    font-weight: bold;
 }
-.sidebar .logo img{
-}
+
 
 .sidebar hr {
    display: flex;
@@ -78,8 +79,7 @@
 
    transition: background-color 0.2s;
 }
-.sidebar .items .sidebar-item div {
-}
+
 .sidebar .items .sidebar-item .active,
 .sidebar .width-toggle:hover,
 .sidebar .items .sidebar-item:hover {
