@@ -71,6 +71,7 @@
 .sidebar .items .sidebar-item {
    display: flex;
    flex-direction: row;
+   justify-content: left;
 
    column-gap: 15px;
 
@@ -111,5 +112,5 @@
    transition: .5s;
 }
 .sidebar.open hr{
-   width: 90%;
+   width: 85.8%;
 }
