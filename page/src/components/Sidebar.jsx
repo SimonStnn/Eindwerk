@@ -20,7 +20,7 @@ const SidebarItem = ({ icon, alt, text, link }) => {
    return (
       <div>
          <Link to={link} className="sidebar-item">
-            <img src={icon} alt={text + " Icon"} />
+            <img src={icon} alt={text + ' Icon'} />
             {sidebarOpen ? <div>{text}</div> : <></>}
          </Link>
       </div>
@@ -35,16 +35,12 @@ const Sidebar = ({ isOpen, toggleSidebar, toggleIcon }) => {
             <img src={icon_user} alt="Logo" />
             {sidebarOpen ? <div>Eindwerk</div> : <></>}
          </div>
-         <div className="items">
-            <hr />
-            <SidebarItem
-               icon={icon_home}
-               text="Home"
-               link={link_home}
-            />
+         <hr />
+         <div className="items main">
+            <SidebarItem icon={icon_home} text="Home" link={link_home} />
          </div>
-         <div className="items last">
-            <hr />
+         <hr />
+         <div className="items">
             <SidebarItem
                icon={icon_components}
                text="Components"

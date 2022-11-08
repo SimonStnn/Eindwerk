@@ -64,6 +64,9 @@
    flex-direction: column;
    align-items: left;
 }
+.sidebar .items.main {
+   flex-grow: 1;
+}
 
 .sidebar .items .sidebar-item {
    display: flex;
@@ -91,10 +94,6 @@
    text-decoration: none;
 }
 
-.sidebar .last {
-   justify-self: flex-end;
-
-}
 
 .sidebar .width-toggle {
    display: flex;
