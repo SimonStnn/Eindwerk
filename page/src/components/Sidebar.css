@@ -23,15 +23,6 @@
    transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
-/* @media only screen and (max-width: 600px) {
-   .sidebar {
-      background-color: blue;
-      visibility: hidden;
-      width: 0;
-      min-width: 0;
-   }
-} */
-
 .sidebar .logo {
    /* background-color: red; */
    display: flex;
