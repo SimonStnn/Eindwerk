@@ -13,7 +13,7 @@ import icon_settings from '../images/icons/sidebar/settings.svg';
 const link_home = '/';
 const link_contact = '/contact';
 const link_settings = '/settings';
-const link_components = '../../consept/onderdelen/arduino.html';
+const link_components = '/components';
 
 let sidebarOpen = false;
 const SidebarItem = ({ icon, alt, text, link }) => {
