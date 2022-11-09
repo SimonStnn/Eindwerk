@@ -1,39 +1,47 @@
 .App {
-   display: flex;
+    display: flex;
+    column-gap: 40px;
 }
 
 .container {
-   display: flex;
-   flex-direction: column;
-   
-   width: 70%;
-   height: 100vh;
-   margin: auto;
-   
-   overflow-x: hidden;
-   overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    width: 70%;
+    height: 100vh;
+    /* margin: auto; */
+
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+@media only screen and (max-width: 400px) {
+    .App{
+        column-gap: 20px;
+    }
 }
 
 h1 {
-   font-size: 1.7em;
+    font-size: 1.7em;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: transparent;
+    background: transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-   background: rgba(0, 0, 0, 0.15);
+    background: rgba(0, 0, 0, 0.15);
 }

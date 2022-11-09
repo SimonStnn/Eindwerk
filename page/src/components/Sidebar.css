@@ -20,7 +20,7 @@
 
    user-select: none;
    
-   transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+   transition: width height 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
 .sidebar .logo {
@@ -100,7 +100,6 @@
 }
 .sidebar.open {
    width: auto;
-   transition: .5s;
 }
 .sidebar.open hr{
    width: 85.8%;
