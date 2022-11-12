@@ -7,6 +7,7 @@ import './pages/Home.css'
 import './components/Sidebar.css';
 import './components/Satelite.css';
 import './components/Device.css';
+import './components/Canvas.css';
 
 import App from './App';
 
