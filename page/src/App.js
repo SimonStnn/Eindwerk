@@ -15,43 +15,48 @@ let toggleIcon = icon_sidebar_expand;
 
 const websocket = new WebSocket(config.websocket.url);
 function App() {
-   const [sidebarOpen, setSideBarOpen] = useState(false);
-   const toggleSidebar = () => {
-      if (sidebarOpen) toggleIcon = icon_sidebar_expand;
-      else toggleIcon = icon_sidebar_collapse;
+    const [sidebarOpen, setSideBarOpen] = useState(false);
+    const toggleSidebar = () => {
+        if (sidebarOpen) toggleIcon = icon_sidebar_expand;
+        else toggleIcon = icon_sidebar_collapse;
 
-      setSideBarOpen(!sidebarOpen);
-   };
+        setSideBarOpen(!sidebarOpen);
+    };
 
-   const [devices, setDevices] = useState([]);
+    const [devices, setDevices] = useState([]);
 
-   websocket.onopen = (e) => {
-      websocket.send('ROLE=client');
-   };
+    websocket.onopen = (e) => {
+        websocket.send('ROLE=client');
+    };
 
-   websocket.onmessage = ({ data }) => {
-      if (data.toLowerCase() === 'received') return;
-      console.log(data);
-      data = JSON.parse(data);
-      setDevices(data);
-   };
+    websocket.onmessage = ({ data }) => {
+        if (data.toLowerCase() === 'received') return;
+        console.log(data);
+        data = JSON.parse(data);
+        setDevices(data);
+    };
 
-   return (
-      <div className="App">
-         <Sidebar
-            isOpen={sidebarOpen}
-            toggleSidebar={toggleSidebar}
-            toggleIcon={toggleIcon}
-         />
-         <div className="container">
-            <Routes>
-               <Route path="/" element={<Home satelites={[]} devices={devices} />} />
-               <Route path="/contact" element={<Contact />} />
-               <Route path="/settings" element={<Settings />} />
-            </Routes>
-         </div>
-      </div>
-   );
+    return (
+        <div className="App">
+            <Sidebar
+                isOpen={sidebarOpen}
+                toggleSidebar={toggleSidebar}
+                toggleIcon={toggleIcon}
+            />
+            <div className="container">
+                <div className='container-content'>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={<Home satelites={[]} devices={devices} />}
+                        />
+                        <Route path="/contact" element={<Contact />} />
+                        <Route path="/settings" element={<Settings />} />
+                    </Routes>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default App;

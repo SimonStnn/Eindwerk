@@ -1,12 +1,12 @@
 .App {
     display: flex;
-    column-gap: 40px;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
+    align-items: center;
 
     width: 70%;
     height: 100vh;
@@ -16,10 +16,8 @@
     overflow-y: auto;
 }
 
-@media only screen and (max-width: 400px) {
-    .App{
-        column-gap: 20px;
-    }
+.container .container-content{
+    width: 90%;
 }
 
 h1 {
