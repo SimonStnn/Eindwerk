@@ -2,16 +2,14 @@ import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 import config from '../config.json';
 
-const svgHeight = 600;
+const svgHeight = 500;
 const svgWidth = svgHeight;
 
 const dot_radius = 6;
 
-
-
 const Canvas = ({ height, width }) => {
     const svgRef = useRef(null);
-    let svg;
+    const canvasRef = useRef(null)
     const [dots, setDots] = useState([
         {
             x: 100,
@@ -19,6 +17,10 @@ const Canvas = ({ height, width }) => {
         },
     ]);
     const [dotInfo, setDotInfo] = useState({
+        focusedDot: {
+            x: 0,
+            y: 0,
+        },
         visibible: false,
         x: 0,
         y: 0,
@@ -34,14 +36,18 @@ const Canvas = ({ height, width }) => {
                     visibility: visibible ? 'visible' : 'hidden',
                 }}
             >
-                DotInfo
+                <div className="title">Satelite</div>
+                <div>Position: {'{x, y}'}</div>
+                <div>Found devices: {'{num}'}</div>
             </div>
         );
     };
 
     useEffect(() => {
-        svg = svgRef.current;
-        // const parent = svg.parentElement;
+        // canvasRef.current.style = {
+        //     maxHeight: "1200px"
+        // } 
+        // console.log("Applied style");
     });
 
     const drawRoom = (points) => {
@@ -53,7 +59,8 @@ const Canvas = ({ height, width }) => {
                         const y = (point.y / 10) * svgWidth;
                         return x + ',' + y;
                     })}
-                    stroke="purple"
+                    stroke="black"
+                    strokeWidth={5}
                     fill="lightgray"
                 />
             </>
@@ -63,24 +70,30 @@ const Canvas = ({ height, width }) => {
     const HandleClick = (event) => {
         const eve_clientX = event.clientX;
         const eve_clientY = event.clientY;
-        const eve_offsetLeft = svg.parentElement.offsetLeft;
-        const eve_offsetTop = svg.parentElement.offsetTop;
-        const svg_width = svg.clientWidth;
-        const svg_height = svg.clientHeight;
+        const eve_offsetLeft = svgRef.current.parentElement.offsetLeft;
+        const eve_offsetTop = svgRef.current.parentElement.offsetTop;
+        const svg_width = svgRef.current.clientWidth;
+        const svg_height = svgRef.current.clientHeight;
         const par_width = event.target.parentElement.clientWidth;
         const par_height = event.target.parentElement.clientHeight;
         if (
-            eve_clientX === 0 ||
-            eve_clientY === 0 ||
-            eve_offsetLeft === 0 ||
-            eve_offsetTop === 0 ||
-            svg_width === 0 ||
-            svg_height === 0 ||
-            par_width === 0 ||
-            par_height === 0
+            !eve_clientX ||
+            !eve_clientY ||
+            !eve_offsetLeft ||
+            !eve_offsetTop ||
+            !svg_width ||
+            !svg_height ||
+            !par_width ||
+            !par_height
         ) {
             return;
         }
+
+        const container =
+            event.target.parentElement.parentElement.parentElement
+                .parentElement;
+        const canvas = event.target.parentElement.parentElement;
+
         setDots(() => {
             return [
                 ...dots,
@@ -88,33 +101,64 @@ const Canvas = ({ height, width }) => {
                     x:
                         ((eve_clientX - eve_offsetLeft) * svg_width) /
                             par_width -
-                        dot_radius * 2.4,
+                        dot_radius * 2.4 +
+                        canvas.scrollLeft,
                     y:
                         ((eve_clientY - eve_offsetTop) * svg_height) /
                             par_height -
-                        dot_radius * 2.4,
+                        dot_radius * 2.4 +
+                        canvas.scrollTop +
+                        container.scrollTop,
                 },
             ];
         });
         setDotInfo({
+            focusedDot: {
+                x: 0,
+                y: 0,
+            },
             visibible: false,
             x: 0,
             y: 0,
         });
     };
     const HandleDotClick = (event) => {
-        // const g = event.target.parentElement
         const eve_clientX = event.clientX;
         const eve_clientY = event.clientY;
+        const canvas = event.target.parentElement.parentElement.parentElement;
+        const scrollTop = canvas.scrollTop;
+        const scrollLeft = canvas.scrollLeft;
+
         setDotInfo({
+            focusedDot: {
+                x: eve_clientX + scrollLeft,
+                y: eve_clientY + scrollTop,
+            },
             visibible: true,
             x: eve_clientX,
             y: eve_clientY,
         });
     };
 
+    const HandleScroll = (event) => {
+        const scrollTop = event.currentTarget.scrollTop;
+        const scrollLeft = event.currentTarget.scrollLeft;
+
+        setDotInfo((prev) => {
+            return {
+                focusedDot: {
+                    x:prev.focusedDot.x,
+                    y: prev.focusedDot.y,
+                },
+                visibible: prev.visibible,
+                x: prev.focusedDot.x - scrollLeft,
+                y: prev.focusedDot.y - scrollTop, //+ svg_height //+ par_height,
+            };
+        });
+    };
+
     return (
-        <>
+        <div ref={canvasRef} className="canvas" onScroll={HandleScroll}>
             <svg
                 ref={svgRef}
                 height={svgHeight}
@@ -142,7 +186,7 @@ const Canvas = ({ height, width }) => {
                 })}
             </svg>
             <DotInfo {...dotInfo} />
-        </>
+        </div>
     );
 };
 

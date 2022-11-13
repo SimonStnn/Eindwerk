@@ -1,13 +1,31 @@
-.canvas{
-    /* border: red 3px solid; */
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-    border-radius: 5px;
-    /* background-color: #ff000075; */
+.container .container-content:has(.canvas) {
+    overflow: hidden;
 }
-.canvas svg{
-    padding: 15px;
+.canvas {
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+        rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+    border-radius: 5px;
+    overflow: auto;
+}
+.canvas svg {
+    transform: translate(15px, 15px);
 }
 .canvas div.dotInfo {
-    background-color: red;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 1px;
+
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 6px;
+
+    font-size: 12px;
+}
+.canvas div.dotInfo .title {
+    font-weight: bold;
+    font-size: 14px;
 }

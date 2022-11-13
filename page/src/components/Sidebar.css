@@ -17,6 +17,7 @@
    
    height: 100vh;
    background-color: rgb(240, 240, 240);
+   box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
 
    user-select: none;
    
