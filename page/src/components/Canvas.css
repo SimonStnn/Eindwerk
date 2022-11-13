@@ -24,8 +24,6 @@
     padding: 6px;
     white-space: nowrap;
 
-    z-index: 1;
-
     font-size: 12px;
 }
 .canvas div.dotInfo .title {
