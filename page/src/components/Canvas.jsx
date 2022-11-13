@@ -61,12 +61,13 @@ const Canvas = ({ height, width }) => {
     };
 
     const HandleClick = (event) => {
+        const svg = svgRef.current
         const eve_clientX = event.clientX;
         const eve_clientY = event.clientY;
-        const eve_offsetLeft = svgRef.current.parentElement.offsetLeft;
-        const eve_offsetTop = svgRef.current.parentElement.offsetTop;
-        const svg_width = svgRef.current.clientWidth;
-        const svg_height = svgRef.current.clientHeight;
+        const eve_offsetLeft = svg.parentElement.offsetLeft;
+        const eve_offsetTop = svg.parentElement.offsetTop;
+        const svg_width = svg.clientWidth;
+        const svg_height = svg.clientHeight;
         const par_width = event.target.parentElement.clientWidth;
         const par_height = event.target.parentElement.clientHeight;
         if (
