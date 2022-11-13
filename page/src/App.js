@@ -23,6 +23,32 @@ function App() {
         setSideBarOpen(!sidebarOpen);
     };
 
+    const [satelites, setSatelites] = useState([
+        {
+            x: 100,
+            y: 100,
+            name: 'Rechter hoek',
+            addr: 'adresje',
+        },
+        {
+            x: 200,
+            y: 100,
+            name: 'Deurpost',
+            addr: 'mail',
+        },
+        {
+            x: 300,
+            y: 100,
+            name: 'Grond',
+            addr: 'joepie',
+        },
+        {
+            x: 400,
+            y: 100,
+            name: 'Raam',
+            addr: 'hehe',
+        },
+    ]);
     const [devices, setDevices] = useState([]);
 
     websocket.onopen = (e) => {
@@ -44,13 +70,23 @@ function App() {
                 toggleIcon={toggleIcon}
             />
             <div className="container">
-                <div className='container-content'>
+                <div className="container-content">
                     <Routes>
                         <Route
                             path="/"
-                            element={<Home satelites={[]} devices={devices} />}
+                            element={
+                                <Home satelites={satelites} devices={devices} />
+                            }
                         />
-                        <Route path="/contact" element={<Contact />} />
+                        <Route
+                            path="/contact"
+                            element={
+                                <Contact
+                                    satelites={satelites}
+                                    devices={devices}
+                                />
+                            }
+                        />
                         <Route path="/settings" element={<Settings />} />
                     </Routes>
                 </div>

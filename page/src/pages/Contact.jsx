@@ -1,11 +1,11 @@
 import React from 'react';
 import Canvas from '../components/Canvas';
 
-const Contact = () => {
+const Contact = ({ satelites, devices }) => {
     return (
         <>
             <h1>Canvas</h1>
-            <Canvas />
+            <Canvas satelites={satelites} devices={devices} />
         </>
     );
 };
