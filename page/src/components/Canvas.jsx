@@ -7,7 +7,7 @@ const svgWidth = svgHeight;
 
 const dot_radius = 6;
 
-const Canvas = ({ height, width }) => {
+const Canvas = ({ height, width, satelites }) => {
     const svgRef = useRef(null);
     const canvasRef = useRef(null)
     const [dots, setDots] = useState([
