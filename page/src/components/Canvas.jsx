@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import config from '../config.json';
 
 const svgHeight = 500;
@@ -25,70 +25,75 @@ const emptyDotsInfo = {
 };
 
 const Canvas = ({ height, width, satelites, devices }) => {
-    class Dot {
-        constructor(x, y) {
-            this.x = x;
-            this.y = y;
-        }
+    const Dot = useMemo(() => {
+        return class Dot {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
 
-        getDotSVG(i) {
-            return (
-                <g
-                    key={i}
-                    onClick={(event) => {
-                        const eve_clientX = event.clientX;
-                        const eve_clientY = event.clientY;
-                        const canvas =
-                            event.target.parentElement.parentElement
-                                .parentElement;
-                        const scrollTop = canvas.scrollTop;
-                        const scrollLeft = canvas.scrollLeft;
+            getDotSVG(i) {
+                return (
+                    <g
+                        key={i}
+                        onClick={(event) => {
+                            const eve_clientX = event.clientX;
+                            const eve_clientY = event.clientY;
+                            const canvas =
+                                event.target.parentElement.parentElement
+                                    .parentElement;
+                            const scrollTop = canvas.scrollTop;
+                            const scrollLeft = canvas.scrollLeft;
 
-                        setDotInfo({
-                            focusedDot: {
-                                x: eve_clientX + scrollLeft,
-                                y: eve_clientY + scrollTop,
-                                // x: this.x + scrollLeft,
-                                // y: this.y + scrollTop,
-                            },
-                            visibible: true,
-                            x: eve_clientX,
-                            y: eve_clientY,
-                            // x: this.x,
-                            // y: this.y,
-                            dot: {
-                                name: this.name,
-                                addr: this.addr,
-                                x: this.x,
-                                y: this.y,
-                            },
-                            type: this.type,
-                        });
-                    }}
-                >
-                    <circle
-                        cx={this.x}
-                        cy={this.y}
-                        r={dot_radius}
-                        stroke={'#000'}
-                        strokeWidth={2}
-                        fill={'#0000ff75'}
-                    />
-                    <circle cx={this.x} cy={this.y} r={dot_radius / 2} />
-                </g>
-            );
-        }
-    }
-    class Satelite extends Dot {
-        constructor(x, y, name, addr) {
-            super(x, y, name, addr);
-            this.x = x;
-            this.y = y;
-            this.name = name;
-            this.addr = addr;
-            this.type = 'Satelite';
-        }
-    }
+                            setDotInfo({
+                                focusedDot: {
+                                    x: eve_clientX + scrollLeft,
+                                    y: eve_clientY + scrollTop,
+                                    // x: this.x + scrollLeft,
+                                    // y: this.y + scrollTop,
+                                },
+                                visibible: true,
+                                x: eve_clientX,
+                                y: eve_clientY,
+                                // x: this.x,
+                                // y: this.y,
+                                dot: {
+                                    name: this.name,
+                                    addr: this.addr,
+                                    x: this.x,
+                                    y: this.y,
+                                },
+                                type: this.type,
+                            });
+                        }}
+                    >
+                        <circle
+                            cx={this.x}
+                            cy={this.y}
+                            r={dot_radius}
+                            stroke={'#000'}
+                            strokeWidth={2}
+                            fill={'#0000ff75'}
+                        />
+                        <circle cx={this.x} cy={this.y} r={dot_radius / 2} />
+                    </g>
+                );
+            }
+        };
+    }, []);
+
+    const Satelite = useMemo(() => {
+        return class Satelite extends Dot {
+            constructor(x, y, name, addr) {
+                super(x, y, name, addr);
+                this.x = x;
+                this.y = y;
+                this.name = name;
+                this.addr = addr;
+                this.type = 'Satelite';
+            }
+        };
+    }, [Dot]);
 
     const svgRef = useRef(null);
     const canvasRef = useRef(null);
@@ -103,7 +108,7 @@ const Canvas = ({ height, width, satelites, devices }) => {
             }
             return [...sats];
         });
-    }, [satelites]);
+    }, [satelites, Satelite]);
 
     const DotInfo = ({ x, y, visibible, type, dot, focusedDot }) => {
         return (

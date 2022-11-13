@@ -23,7 +23,7 @@ function App() {
         setSideBarOpen(!sidebarOpen);
     };
 
-    const [satelites, setSatelites] = useState([
+    const [satelites, ] = useState([
         {
             x: 100,
             y: 100,
