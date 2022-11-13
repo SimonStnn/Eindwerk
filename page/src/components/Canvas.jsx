@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import config from '../config.json';
 
 const svgHeight = 500;
@@ -42,13 +42,6 @@ const Canvas = ({ height, width }) => {
             </div>
         );
     };
-
-    useEffect(() => {
-        // canvasRef.current.style = {
-        //     maxHeight: "1200px"
-        // } 
-        // console.log("Applied style");
-    });
 
     const drawRoom = (points) => {
         return (
