@@ -1,107 +1,109 @@
 :root {
-   --sidebar-item-width: 120px;
-   --sidebar-hr-color: rgb(0, 0, 0, 0.1);
-   --sidebar-item-margin:3px 8px;
-   --sidebar-item-padding:12px;
+    --sidebar-hr-color: rgb(0, 0, 0, 0.1);
+    --sidebar-item-margin: 3px 8px;
+    --sidebar-item-padding: 12px;
 }
-
+/* *{
+   transition: all .5s;
+} */
 .sidebar {
-   display: flex;
-   flex-direction: column;
-   /* justify-content: flex-end; */
+    display: flex;
+    flex-direction: column;
 
-   z-index: 1; /* Stay on top */
-   overflow-x: hidden; /* Disable horizontal scroll */
-   
-   font-size: 18px;
-   
-   height: 100vh;
-   background-color: rgb(240, 240, 240);
-   box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
+    z-index: 1; /* Stay on top */
+    overflow-x: hidden; /* Disable horizontal scroll */
 
-   user-select: none;
-   
-   transition: width height 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    font-size: 18px;
+
+    height: 100vh;
+    width: 64px;
+    background-color: rgb(240, 240, 240);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
+
+    user-select: none;
+
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
 .sidebar .logo {
-   /* background-color: red; */
-   display: flex;
-   flex-direction: row;
-   align-items: center;
-   justify-content: left;
-   column-gap: 15px;
-   /* height: 50px; */
-   
-   margin: var(--sidebar-item-margin);
-   margin-top: 15px;
-   padding: var(--sidebar-item-padding);
-   
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    column-gap: 15px;
 
-   font-weight: bold;
+    margin: var(--sidebar-item-margin);
+    margin-top: 15px;
+    padding: var(--sidebar-item-padding);
+
+    font-weight: bold;
 }
-
 
 .sidebar hr {
-   display: flex;
-   justify-content: center;
+    display: flex;
+    justify-content: center;
 
-   width: 60%;
-   border: 2px solid transparent;
-   background-color: var(--sidebar-hr-color);
-   border-radius: 5px;
+    width: 60%;
+    border: 2px solid transparent;
+    background-color: var(--sidebar-hr-color);
+    border-radius: 5px;
+
 }
 .sidebar .items {
-   display: flex;
-   flex-direction: column;
-   align-items: left;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
 }
 .sidebar .items.main {
-   flex-grow: 1;
+    flex-grow: 1;
 }
 
 .sidebar .items .sidebar-item {
-   display: flex;
-   flex-direction: row;
-   justify-content: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
 
-   column-gap: 15px;
+    column-gap: 15px;
 
-   margin: var(--sidebar-item-margin);
-   padding: var(--sidebar-item-padding);
-   border-radius: 5px;
+    margin: var(--sidebar-item-margin);
+    padding: var(--sidebar-item-padding);
+    border-radius: 5px;
 
-   /* width: var(--sidebar-item-width); */
-
-   transition: background-color 0.2s;
+    transition: background-color 0.2s;
 }
 
 .sidebar .items .sidebar-item .active,
 .sidebar .width-toggle:hover,
 .sidebar .items .sidebar-item:hover {
-   background-color: rgb(220, 220, 220);
+    background-color: rgb(220, 220, 220);
 }
 
 .sidebar a {
-   color: inherit;
-   text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
-
 
 .sidebar .width-toggle {
-   display: flex;
-   justify-content: flex-end;
-   align-self: flex-end;
-   
-   margin: var(--sidebar-item-margin);
-   padding: var(--sidebar-item-padding);
-   border-radius: 5px;
-   
-   transition: background-color 0.2s;
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+
+    margin: var(--sidebar-item-margin);
+    padding: var(--sidebar-item-padding);
+    border-radius: 5px;
+
+    transition: background-color 0.2s;
 }
 .sidebar.open {
-   width: auto;
+    width: auto;
 }
-.sidebar.open hr{
-   width: 85.8%;
+.sidebar.open hr {
+    width: 85.8%;
+}
+
+.sidebar .items .sidebar-item div {
+    /* visibility: hidden; */
+}
+.sidebar.open .items .sidebar-item div {
+    /* visibility: visible; */
 }
