@@ -35,7 +35,7 @@ const Device = ({ data }) => {
    })();
 
    const Classes = ({ classes }) => {
-      if (!classes.length) {
+      if (!classes?.length) {
          return (
             <>
                <div>No classes available</div>

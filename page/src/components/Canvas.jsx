@@ -2,10 +2,44 @@ import React from 'react';
 import { useRef, useState, useEffect, useMemo } from 'react';
 import config from '../config.json';
 
-const svgHeight = 500;
-const svgWidth = svgHeight;
+const padding = 10;
+const scale = 0.5;
+
+const svgHeight = 400 + padding * 2;
+const svgWidth = 800 + padding * 2;
 
 const dot_radius = 6;
+
+const sample_dots = [
+    {
+        name: 'Keuken1',
+        addr: '03:21:32:0d',
+        type: 'Sateliet',
+        x: 100,
+        y: 200,
+    },
+    {
+        name: 'Keuken2',
+        addr: '03:21:32:0d',
+        type: 'Satelietje',
+        x: 750,
+        y: 50,
+    },
+    {
+        name: 'Living',
+        addr: '03:21:32:0d',
+        type: 'uwu',
+        x: 100,
+        y: 100,
+    },
+    {
+        name: 'TV',
+        addr: '03:21:32:0d',
+        type: 'Maxim',
+        x: 550,
+        y: 350,
+    },
+];
 
 const emptyDotsInfo = {
     focusedDot: {
@@ -49,14 +83,10 @@ const Canvas = ({ height, width, satelites, devices }) => {
                                 focusedDot: {
                                     x: eve_clientX + scrollLeft,
                                     y: eve_clientY + scrollTop,
-                                    // x: this.x + scrollLeft,
-                                    // y: this.y + scrollTop,
                                 },
                                 visibible: true,
                                 x: eve_clientX,
                                 y: eve_clientY,
-                                // x: this.x,
-                                // y: this.y,
                                 dot: {
                                     name: this.name,
                                     addr: this.addr,
@@ -68,14 +98,18 @@ const Canvas = ({ height, width, satelites, devices }) => {
                         }}
                     >
                         <circle
-                            cx={this.x}
-                            cy={this.y}
+                            cx={parseInt(this.x) + padding}
+                            cy={parseInt(this.y) + padding}
                             r={dot_radius}
                             stroke={'#000'}
                             strokeWidth={2}
                             fill={'#0000ff75'}
                         />
-                        <circle cx={this.x} cy={this.y} r={dot_radius / 2} />
+                        <circle
+                            cx={parseInt(this.x) + padding}
+                            cy={parseInt(this.y) + padding}
+                            r={dot_radius / 2}
+                        />
                     </g>
                 );
             }
@@ -91,6 +125,34 @@ const Canvas = ({ height, width, satelites, devices }) => {
                 this.name = name;
                 this.addr = addr;
                 this.type = 'Satelite';
+                this.devices = [];
+            }
+        };
+    }, [Dot]);
+
+    const Device = useMemo(() => {
+        return class Device extends Dot {
+            constructor(x, y, name, mac, rssi) {
+                super(x, y, name, mac, rssi);
+                this.x = x;
+                this.y = y;
+                this.name = name;
+                this.mac = mac;
+                this.rssi = rssi;
+            }
+            
+            radius(i, signal_strength) {
+                return (
+                    <g key={i}>
+                        <circle
+                            cx={parseInt(this.x) + padding}
+                            cy={parseInt(this.y) + padding}
+                            r={signal_strength * scale}
+                            stroke={'#000'}
+                            strokeWidth={2}
+                        />
+                    </g>
+                );
             }
         };
     }, [Dot]);
@@ -103,12 +165,12 @@ const Canvas = ({ height, width, satelites, devices }) => {
     useEffect(() => {
         setDots(() => {
             const sats = [];
-            for (let sat of satelites) {
-                sats.push(new Satelite(sat.x, sat.y, sat.name, sat.addr));
+            for (const sat of satelites) {
+                sats.push(new Satelite(sat.x, sat.y, sat.name, sat.mac));
             }
             return [...sats];
         });
-    }, [satelites, Satelite]);
+    }, [satelites, devices, Satelite, Device]);
 
     const DotInfo = ({ x, y, visibible, type, dot, focusedDot }) => {
         return (
@@ -121,8 +183,10 @@ const Canvas = ({ height, width, satelites, devices }) => {
                 }}
             >
                 <div className="title">{type}</div>
-                <div>{dot.name}</div>
-                <div>{dot.addr}</div>
+                <div className="info">
+                    <div>{dot.name}</div>
+                    <div>{dot.addr}</div>
+                </div>
                 <div>
                     Position: {dot.x ? dot.x : 0}, {dot.y ? dot.y : 0}
                 </div>
@@ -135,9 +199,9 @@ const Canvas = ({ height, width, satelites, devices }) => {
             <>
                 <polygon
                     points={points.map((point) => {
-                        const x = (point.x / 10) * svgHeight;
-                        const y = (point.y / 10) * svgWidth;
-                        return x + ',' + y;
+                        const x = point.x * scale + padding;
+                        const y = point.y * scale + padding;
+                        return x + ',' + y + ' ';
                     })}
                     stroke="black"
                     strokeWidth={5}
@@ -231,10 +295,61 @@ const Canvas = ({ height, width, satelites, devices }) => {
             onClick={HandleClick}
         >
             <svg ref={svgRef} height={svgHeight} width={svgWidth}>
-                {/* <svg ref={svgRef} height={height} width={width}> */}
-                {drawRoom(config.rooms.test_room.corners)}
+                {drawRoom(config.rooms.Living.corners)}
                 {dots.map((dot, i) => {
                     return dot.getDotSVG(i);
+                })}
+                {dots.map((dot, i) => {
+                    console.log(dots);
+                    if (dot.addr !== '00:04:4b:84:44:74') return <></>;
+                    return dot.radius(i, 50);
+                })}
+                {sample_dots.map((dot, i) => {
+                    return (
+                        <g
+                            key={i}
+                            onClick={(event) => {
+                                const eve_clientX = event.clientX;
+                                const eve_clientY = event.clientY;
+                                const canvas =
+                                    event.target.parentElement.parentElement
+                                        .parentElement;
+                                const scrollTop = canvas.scrollTop;
+                                const scrollLeft = canvas.scrollLeft;
+
+                                setDotInfo({
+                                    focusedDot: {
+                                        x: eve_clientX + scrollLeft,
+                                        y: eve_clientY + scrollTop,
+                                    },
+                                    visibible: true,
+                                    x: eve_clientX,
+                                    y: eve_clientY,
+                                    dot: {
+                                        name: dot.name ? dot.name : 'name',
+                                        addr: dot.addr ? dot.addr : 'addr',
+                                        x: dot.x,
+                                        y: dot.y,
+                                    },
+                                    type: dot.type ? dot.type : 'type',
+                                });
+                            }}
+                        >
+                            <circle
+                                cx={parseInt(dot.x) + padding}
+                                cy={parseInt(dot.y) + padding}
+                                r={dot_radius}
+                                stroke={'#000'}
+                                strokeWidth={2}
+                                fill={'#0000ff75'}
+                            />
+                            <circle
+                                cx={parseInt(dot.x) + padding}
+                                cy={parseInt(dot.y) + padding}
+                                r={dot_radius / 2}
+                            />
+                        </g>
+                    );
                 })}
             </svg>
             <DotInfo {...dotInfo} />

@@ -37,6 +37,8 @@
     margin: 5px 15px;
     text-align: center;
     max-width: var(--device-address-max-width);
+
+    white-space: nowrap;
 }
 .device div.info div img {
     padding: 10px 0;

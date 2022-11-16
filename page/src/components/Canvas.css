@@ -6,6 +6,9 @@
         rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     border-radius: 5px;
     overflow: auto;
+    
+    /* max-height: 620px; */
+    min-height: 100%;
 }
 .canvas svg {
     transform: translate(15px, 15px);
@@ -16,7 +19,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 1px;
+    row-gap: 3px;
 
     background-color: white;
     border-radius: 5px;
@@ -29,4 +32,10 @@
 .canvas div.dotInfo .title {
     font-weight: bold;
     font-size: 14px;
+}
+.canvas div.dotInfo div.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

@@ -13,42 +13,11 @@ import icon_sidebar_collapse from './images/icons/sidebar/collapse.svg';
 
 let toggleIcon = icon_sidebar_expand;
 
+let collection = [];
+
 const websocket = new WebSocket(config.websocket.url);
 function App() {
-    const [sidebarOpen, setSideBarOpen] = useState(false);
-    const toggleSidebar = () => {
-        if (sidebarOpen) toggleIcon = icon_sidebar_expand;
-        else toggleIcon = icon_sidebar_collapse;
-
-        setSideBarOpen(!sidebarOpen);
-    };
-
-    const [satelites, ] = useState([
-        {
-            x: 100,
-            y: 100,
-            name: 'Rechter hoek',
-            addr: 'adresje',
-        },
-        {
-            x: 200,
-            y: 100,
-            name: 'Deurpost',
-            addr: 'mail',
-        },
-        {
-            x: 300,
-            y: 100,
-            name: 'Grond',
-            addr: 'joepie',
-        },
-        {
-            x: 400,
-            y: 100,
-            name: 'Raam',
-            addr: 'hehe',
-        },
-    ]);
+    const [satelites, setSatelites] = useState([]);
     const [devices, setDevices] = useState([]);
 
     websocket.onopen = (e) => {
@@ -57,18 +26,32 @@ function App() {
 
     websocket.onmessage = ({ data }) => {
         if (data.toLowerCase() === 'received') return;
-        console.log(data);
         data = JSON.parse(data);
-        setDevices(data);
+        console.log(data);
+
+        for (let i in collection) {
+            if (collection[i].satelite.mac === data.satelite.mac) {
+                collection.splice(i, 1);
+                break;
+            }
+        }
+        collection.push(data);
+
+        // console.log(collection);
+        const sats = [];
+        const devs = [];
+        for (let col of collection) {
+            sats.push(col.satelite);
+            devs.push(...col.devices);
+        }
+
+        setSatelites(data.satelite ? sats : satelites);
+        setDevices(data.devices ? devs : devices);
     };
 
     return (
         <div className="App">
-            <Sidebar
-                isOpen={sidebarOpen}
-                toggleSidebar={toggleSidebar}
-                toggleIcon={toggleIcon}
-            />
+            <Sidebar />
             <div className="container">
                 <div className="container-content">
                     <Routes>

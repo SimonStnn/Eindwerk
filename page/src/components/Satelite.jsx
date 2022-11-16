@@ -3,15 +3,15 @@ import React from 'react';
 import icon_satelite from '../images/icons/satelite.svg'
 
 const Satelite = ({ data }) => {
-    const { name, mac, ip, posx, posy } = data;
+    const { name, mac, ip, x, y } = data;
     return (
         <>
             <div className="satelite">
                 <div className="info">
                     <div className='section left'>
                         <img src={icon_satelite} alt="Satelite Icon" />
-                        <div className='coords'>X: {posx}</div>
-                        <div className='coords'>Y: {posy}</div>
+                        <div className='coords'>X: {x}</div>
+                        <div className='coords'>Y: {y}</div>
                     </div>
                     <div className='section right'>
                         <div>{name}</div>
