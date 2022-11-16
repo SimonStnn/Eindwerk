@@ -1,5 +1,7 @@
 .App {
     display: flex;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -14,15 +16,13 @@
 
     overflow-x: hidden;
     overflow-y: auto;
-
-    scrollbar-width: thin;
-    scrollbar-color: red blue;
+    overflow: none;
 }
 
 .container .container-content {
     width: 90%;
-    height: 100%;
-    margin-bottom: 20px;
+    /* height: 100%; */
+    /* margin-bottom: 20px; */
 }
 
 h1 {
