@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar';
 
 import Home from './pages/Home';
 import Contact from './pages/Contact';
+import Components from './pages/Components';
 import Settings from './pages/Settings';
 
 import icon_sidebar_expand from './images/icons/sidebar/expand.svg';
@@ -70,6 +71,7 @@ function App() {
                                 />
                             }
                         />
+                        <Route path="/components" element={<Components />} />
                         <Route path="/settings" element={<Settings />} />
                     </Routes>
                 </div>
