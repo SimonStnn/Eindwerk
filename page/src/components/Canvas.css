@@ -3,13 +3,9 @@
         rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     border-radius: 5px;
     overflow: scroll;
-    
-    /* max-height: 620px; */
-    /* min-height: 100%; */
-    /* height: 100%; */
 }
 
-.canvas div.dotInfo {
+div.dotInfo {
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -25,13 +21,32 @@
 
     font-size: 12px;
 }
-.canvas div.dotInfo .title {
+div.dotInfo .title {
     font-weight: bold;
     font-size: 14px;
 }
-.canvas div.dotInfo div.info {
+div.dotInfo div.info {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.dotInfo .dotInfo-button{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+
+    border-radius: 5px;
+    padding: 5px 0;
+
+    width: 100%;
+
+    user-select: none;
+
+    transition: .2s;
+}
+
+.dotInfo .dotInfo-button:hover{
+    background-color: rgb(220, 220, 220);
 }
