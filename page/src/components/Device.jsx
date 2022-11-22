@@ -11,7 +11,6 @@ import peripheral from '../images/icons/devices/peripheral.svg';
 import imaging from '../images/icons/devices/imaging.svg';
 
 const Device = ({ data }) => {
-   // console.log(data);
    const { name, addr, majorClass, classes, rssi } = data;
    const img = (() => {
       switch (majorClass) {
