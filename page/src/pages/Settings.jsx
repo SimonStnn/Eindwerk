@@ -1,6 +1,6 @@
-import config from '../config.json'
+import config from '../config.json';
 
-const Settings = ({ theme , setTheme}) => {
+const Settings = ({ theme, setTheme }) => {
     const toggleTheme = () => {
         switch (theme) {
             case config.themes.light:
@@ -13,10 +13,10 @@ const Settings = ({ theme , setTheme}) => {
     };
 
     return (
-        <>
+        <div className="settings">
             <h1>Settings</h1>
-            <button onClick={toggleTheme}>Toggle Theme: {theme}</button>
-        </>
+            Toggle Theme: <button onClick={toggleTheme}>{theme}</button>
+        </div>
     );
 };
 
