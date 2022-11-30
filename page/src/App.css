@@ -14,6 +14,11 @@
     padding: 0;
 }
 
+.App.theme-dark {
+    background-color: #333;
+    color: #ddd;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -46,18 +51,20 @@ h1 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: var(--scrollbar-background-color);
+    /* background: var(--scrollbar-background-color); */
+    background-color: transparent;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb-color);
+    /* background: var(--scrollbar-thumb-color);
     border-radius: 5px;
     border: var(--scrollbar-thumb-border-width) solid
-        var(--scrollbar-thumb-border-color);
+        var(--scrollbar-thumb-border-color); */
+    background: #999;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--scrollbar-thumb-hover-color);
+    /* background: var(--scrollbar-thumb-hover-color); */
 }
