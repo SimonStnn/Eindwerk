@@ -3,9 +3,21 @@
     --sidebar-item-margin: 3px 8px;
     --sidebar-item-padding: 12px;
 }
-/* *{
-   transition: all .5s;
-} */
+
+.App.theme-dark .sidebar{
+    background-color: #444;
+    color: #ddd;
+}
+.App.theme-dark .sidebar img{
+    filter: invert(100%) brightness(90%);
+}
+
+.App.theme-dark .sidebar .items .sidebar-item .active,
+.App.theme-dark .sidebar .width-toggle:hover,
+.App.theme-dark .sidebar .items .sidebar-item:hover {
+    background-color: #555;
+}
+
 .sidebar {
     display: flex;
     flex-direction: column;
@@ -22,7 +34,7 @@
 
     user-select: none;
 
-    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
 }
 
 .sidebar .logo {
@@ -99,11 +111,4 @@
 }
 .sidebar.open hr {
     width: 85.8%;
-}
-
-.sidebar .items .sidebar-item div {
-    /* visibility: hidden; */
-}
-.sidebar.open .items .sidebar-item div {
-    /* visibility: visible; */
 }
