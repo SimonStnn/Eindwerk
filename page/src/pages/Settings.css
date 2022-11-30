@@ -1,0 +1,17 @@
+.settings button {
+    padding: 3px 8px;
+
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 5px;
+    border: rgba(255, 255, 255, 0.1) solid 1px;
+
+    text-transform: capitalize;
+}
+
+.App.theme-light .settings button {
+    background-color: #ddd;
+}
+.App.theme-dark .settings button {
+    color: #eee;
+    background-color: #666;
+}
