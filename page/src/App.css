@@ -8,6 +8,13 @@
     --scrollbar-thumb-hover-color: rgba(0, 0, 0, 0.15);
 }
 
+*{
+    transition-property: color, background-color;
+    transition-duration: .5s;
+    transition-delay: 0;
+    transition-timing-function: ease;
+}
+
 .App {
     display: flex;
     margin: 0;
