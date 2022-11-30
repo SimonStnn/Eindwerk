@@ -34,7 +34,7 @@
 
     user-select: none;
 
-    transition: width 0.5s; /* 0.5 second transition effect to slide in the sidebar */
+    /* transition: width 0.5s; 0.5 second transition effect to slide in the sidebar */
 }
 
 .sidebar .logo {
