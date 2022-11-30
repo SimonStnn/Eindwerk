@@ -3,6 +3,12 @@
     "websocket": {
         "url": "ws://10.250.3.99:7890"
     },
+
+    "themes":{
+        "light": "light",
+        "dark": "dark"
+    },
+
     "rooms": {
         "test_room": {
             "corners": [
