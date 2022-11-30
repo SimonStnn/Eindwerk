@@ -9,3 +9,11 @@
     row-gap: 15px;
     column-gap: 15px;
 }
+
+.App.theme-dark :is(.device, .satelite) img{
+    filter: invert(100%) brightness(90%);
+}
+
+.device, .satelite{
+    border: rgba(255, 255, 255, 0.1) solid 1px;
+}
