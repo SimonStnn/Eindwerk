@@ -783,7 +783,7 @@ const device_samples = [
 const Home = ({ satelites, devices }) => {
     return (
         <>
-            <h1>Connected Satelites</h1>
+            <h1>Connected Satellites</h1>
             <div className="satelite-container">
                 {satelite_samples.map((data, i) => {
                     return <Satelite data={data} key={i} />;
@@ -793,7 +793,7 @@ const Home = ({ satelites, devices }) => {
                         return <Satelite data={data} key={i} />;
                     })
                 ) : (
-                    <>No Connected Satelites</>
+                    <>No Connected Satellites</>
                 )}
             </div>
             <h1>Found devices</h1>
