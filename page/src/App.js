@@ -3,21 +3,19 @@ import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import config from './config.json';
 import Sidebar from './components/Sidebar';
-
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import Components from './pages/Components';
 import Settings from './pages/Settings';
 
-import icon_sidebar_expand from './images/icons/sidebar/expand.svg';
-import icon_sidebar_collapse from './images/icons/sidebar/collapse.svg';
 
-let toggleIcon = icon_sidebar_expand;
+const THEME_DEFAULT = config.themes.dark;
 
-let collection = [];
-
-const websocket = new WebSocket(config.websocket.url);
 function App() {
+    const [theme, setTheme] = useState(THEME_DEFAULT);
+
+    const [collection, setCollection] = useState([]);
+    const websocket = new WebSocket(config.websocket.url);
     const [satelites, setSatelites] = useState([]);
     const [devices, setDevices] = useState([]);
 
@@ -30,15 +28,18 @@ function App() {
         data = JSON.parse(data);
         console.log(data);
 
-        for (let i in collection) {
-            if (collection[i].satelite.mac === data.satelite.mac) {
-                collection.splice(i, 1);
-                break;
+        setCollection(() => {
+            const col = [...collection];
+            for (let i in col) {
+                if (col[i].satelite.mac === data.satelite.mac) {
+                    col.splice(i, 1);
+                    break;
+                }
             }
-        }
-        collection.push(data);
+            col.push(data);
+            return col;
+        });
 
-        // console.log(collection);
         const sats = [];
         const devs = [];
         for (let col of collection) {
@@ -51,7 +52,9 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <div className={"App theme-" + theme}>
+            {/* <ThemeContext.Provider value={{ theme, setTheme }}> */}
+            {/* <div className={`theme-${theme}`}> */}
             <Sidebar />
             <div className="container">
                 <div className="container-content">
@@ -66,16 +69,23 @@ function App() {
                             path="/contact"
                             element={
                                 <Contact
-                                    satelites={satelites}
-                                    devices={devices}
+                                    collection={collection}
+                                    websocket={websocket}
                                 />
                             }
                         />
                         <Route path="/components" element={<Components />} />
-                        <Route path="/settings" element={<Settings />} />
+                        <Route
+                            path="/settings"
+                            element={
+                                <Settings theme={theme} setTheme={setTheme} />
+                            }
+                        />
                     </Routes>
                 </div>
             </div>
+            {/* </div> */}
+            {/* </ThemeContext.Provider> */}
         </div>
     );
 }
