@@ -21,6 +21,8 @@
     max-height: var(--satelite-max-height);
 
     border-radius: var(--satelite-border-radius);
+    border-color: var(--style-brown);
+
     box-shadow: var(--satelite-box-shadow);
 }
 

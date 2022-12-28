@@ -1,6 +1,8 @@
 :root {
    --style-background-color: white;
    --style-border-radius: 5px;
+
+   --style-brown: hsla(30, 30%, 50%, 0.4);
 }
 
 body {
