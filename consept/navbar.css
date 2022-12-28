@@ -1,0 +1,57 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 9px;
+    margin-bottom: 1px;
+
+    background-color: gray;
+
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+
+    text-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: left;
+    align-items: center;
+    flex-flow: row;
+
+    padding: 0 20px;
+
+    height: 40px;
+
+    color: #fff;
+    background-color: gray;
+
+    font-size: large;
+    font-weight: 500;
+}
+
+nav a {
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+    
+    padding:0 15px;
+
+    transition: background-color 0.2s;
+}
+nav a:hover {
+    background-color: royalblue;
+}
+
+nav div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+

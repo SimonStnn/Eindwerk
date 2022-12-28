@@ -1,0 +1,87 @@
+:root {
+    --sidebar-width:240px;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
+}
+body {
+    display: flex;
+    flex-direction: column;
+
+    margin: 0;
+    padding: 0;
+
+    height: 100%;
+    width: 100%;
+}
+
+body div.main {
+    display: flex;
+    flex-direction: row;
+
+    flex-grow: 1;
+}
+
+.content {
+    flex-grow: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+}
+.page {
+    width: calc(100% - var(--sidebar-width) - 10px);
+    margin-right: 300px;
+    margin-left: 10px;
+
+    text-align: justify;
+}
+
+.content-iframe {
+    width: 100%;
+    height: 100%;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+}
+/* 
+table {
+    border-collapse: collapse;
+    border: 1px rgba(0, 0, 0, 0.3) solid;
+}
+table th {
+    background-color: #333;
+    color: white;
+}
+table tr:nth-child(even) {
+    background-color: #bbb;
+}
+table tr:nth-child(even) {
+    background-color: #ddd;
+}
+table tr td {
+    border: 1px rgba(0, 0, 0, 0.2) solid;
+    margin: 10px;
+}
+
+@media only screen and (min-width: 800px) {
+    img {
+        width: 705px;
+    }
+}
+@media only screen and (max-width: 800px) {
+    img {
+        width: 100%;
+    }
+} */

@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="page">
+    <h1>Idee</h1>
+    <p>
+        De <b>master module</b> heeft als taak het ontvangen van bluetooth toestellen en deze naar een interne of
+        externe database sturen (MongoDB, prometheus, influxDB of nog andere). De master module zal een webserver
+        bevatten, waarmee je een Raspberry Pi kan configureren en gemakkelijk slave modules kan toevoegen. Hij zal data
+        ontvangen van één of meerdere slave modules en zal deze data ook moeten kunnen verwerken. Eénmaal deze data
+        verzameld word, kan deze gevisualiseerd worden op de webserver.
+    </p>
+    <p>
+        De master module zal bestaan uit een Raspberry Pi 3, een 7-segment display en een LCD
+        met twee drukknoppen. De 7-segment display zal het aantal gevonden bluetooth apparaten
+        weergeven. De LCD zal de naam van een beschikbaar toestel weergeven. Via de twee
+        drukknoppen kun je het volgende/vorige toestel uit de lijst met gevonden bluetooth
+        apparaten op de LCD plaatsen.
+    </p>
+    <p>
+        De <b>slave module</b> bestaat uit een ESP32 en een RGB ledje. Deze module zal kijken welke bluetooth toestellen
+        er zijn en deze om de x aantal seconden doorsturen naar de master module door middel van een http POST request.
+    </p>
+
+    <h3>App:</h3>
+    <ul>
+        <li>Python script</li>
+        <li>Webserver</li>
+        <li>Database</li>
+    </ul>
+
+    <h3>Hardware:</h3>
+    <ul>
+        <li>Raspberry pi 3</li>
+        <li>7-segment display</li>
+        <li>LCD</li>
+        <li>Drukknoppen</li>
+        <li>ESP32</li>
+        <li>RGB led</li>
+    </ul>
+
+    <h3>Opties:</h3>
+    <ul>
+        <li>
+            Een systeem die alle toestellen (die zichtbaar zijn via bluetooth) in een lijst zet en
+            bijhoud op welk tijdstip dat toestel gedetecteerd werd. Als je dan te weten komt
+            welk toestel van welke leerling is, kun je deze module aan de ingang van de school
+            plaatsen. Zo kan je zien welke leerlingen op tijd waren en welke te laat.
+        </li>
+        <li>
+            Je plaatst 3 van deze modules in een kamer en laat ze alle toestelle (en hun afstanden
+            t.o.v. deze modules) doorsturen naar een hoofdmodule. De hoofdmodule kan dan
+            berekenen waar in deze driehoek het toestel zich ongeveer bevind. Op deze manier
+            kan je je toestel terugvinden als je die verloren bent.
+        </li>
+        <li>
+            Een systeem dat detecteert wanneer je in een kamer bent, en vervolgens een
+            commando stuurt naar een andere service die het licht aan of uit zal doen.
+        </li>
+    </ul>
+
+</body>
+
+</html>
