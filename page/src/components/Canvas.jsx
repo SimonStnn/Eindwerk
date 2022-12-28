@@ -2,6 +2,7 @@ import React from 'react';
 import { useRef, useState, useEffect, useMemo } from 'react';
 
 import icon_move from '../images/icons/canvas/move.svg';
+import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 
 const padding = 10;
 const scale = 0.5;
@@ -206,11 +207,18 @@ const Canvas = ({ collection, websocket, room }) => {
                     {dot.y ? Math.floor(dot.y) : '?'}
                 </div>
                 {selectedDot?.moveble ? (
-                    <Button
-                        img={icon_move}
-                        text={'Move'}
-                        onClick={(event) => MoveDot(event, selectedDot)}
-                    />
+                    <>
+                        <Button
+                            img={icon_move}
+                            text={'Move'}
+                            onClick={(event) => MoveDot(event, selectedDot)}
+                        />
+                        <Button
+                            img={icon_movetoRoom}
+                            text={'To new room'}
+                            onClick={() =>{}}
+                        />
+                    </>
                 ) : (
                     <></>
                 )}
