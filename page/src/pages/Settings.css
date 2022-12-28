@@ -8,10 +8,21 @@
     text-transform: capitalize;
 }
 
+.App .settings button {
+    cursor: pointer;
+    border-color: var(--style-brown);
+
+}
 .App.theme-light .settings button {
     background-color: #ddd;
 }
 .App.theme-dark .settings button {
     color: #eee;
-    background-color: #666;
+    background-color: #444;
+}
+.App.theme-light .settings button:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.App.theme-dark .settings button:hover {
+    background-color: rgba(102, 102, 102, 0.7);
 }
