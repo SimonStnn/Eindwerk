@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRef, useState, useEffect, useMemo } from 'react';
-import config from '../config.json';
 
 import icon_move from '../images/icons/canvas/move.svg';
 
@@ -50,7 +49,7 @@ const emptyDotsInfo = {
     selectedDot: null,
 };
 
-const Canvas = ({ collection, websocket }) => {
+const Canvas = ({ collection, websocket, room }) => {
     const Dot = useMemo(() => {
         return class Dot {
             constructor(x, y) {
@@ -302,7 +301,7 @@ const Canvas = ({ collection, websocket }) => {
                 onClick={HandleClick}
             >
                 <svg ref={svgRef} height={svgHeight} width={svgWidth}>
-                    {drawRoom(config.rooms.Living.corners)}
+                    {drawRoom(room.corners)}
                     {/* {dots.map((dot, i) => {
                         for (const dev of dot.devices) {
                             if (dev.mac !== '00:04:4b:84:44:74') break;
