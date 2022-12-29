@@ -11,18 +11,18 @@
     position: relative;
     align-items: center;
 
-    border: 1px solid var(--style-brown);
+    border: 1px solid var(--style-brown-a);
     border-radius: var(--style-border-radius);
-    
+
     font-family: inherit;
     font-size: inherit;
-    
+
     padding: 0.25em 0.5em;
     margin: 0;
 
     cursor: pointer;
     outline: none;
 }
-.room-selector:focus-within{
+.room-selector:focus-within {
     background-color: red;
 }

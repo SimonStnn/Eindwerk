@@ -83,7 +83,7 @@
 .sidebar .items .sidebar-item .active,
 .sidebar .width-toggle:hover,
 .sidebar .items .sidebar-item:hover {
-    background-color: var(--style-brown);
+    background-color: var(--style-brown-a);
 }
 
 .sidebar a {
