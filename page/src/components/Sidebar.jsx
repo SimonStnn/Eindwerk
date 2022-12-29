@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // import { useState } from 'react';
 // import config from './config.json';
 
@@ -26,15 +26,19 @@ const Sidebar = () => {
         toggleIcon = sidebarOpen ? icon_sidebar_expand : icon_sidebar_collapse;
         setSideBarOpen(!sidebarOpen);
     };
-    const [active, setActive] = useState('Home');
 
     const SidebarItem = ({ icon, text, link }) => {
+        const location = useLocation();
+        const path = location.pathname.slice(1);
         return (
-            <div onClick={()=>setActive(text)}>
+            <div>
                 <Link
                     to={link}
                     className={
-                        active === text ? 'sidebar-item active' : 'sidebar-item'
+                        path === text.toLowerCase() ||
+                        (text === 'Home' && path === '')
+                            ? 'sidebar-item active'
+                            : 'sidebar-item'
                     }
                 >
                     <img src={icon} alt={text + ' Icon'} />
