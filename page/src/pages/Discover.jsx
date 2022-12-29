@@ -783,6 +783,10 @@ const Discover = ({ satelites, devices }) => {
     return (
         <div className="discover">
             <h1>Discover</h1>
+            <p>
+                Each found device from each satellite is displayed here, this means the same device could be multiple times in the list. This is because the same device was discovered by multiple satellites.
+            </p>
+            <hr />
             <h2>Connected Satellites</h2>
             <div className="satelite-container">
                 {/* {satelite_samples.map((data, i) => {
