@@ -2,7 +2,7 @@
     --satelite-margin: 10px 5px;
     --satelite-max-width: 250px;
     --satelite-max-height: 95px;
-    --satelite-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --satelite-box-shadow: rgba(0, 0, 0, 0.4) 0px 3px 8px;
     --satelite-border-radius: var(--style-border-radius);
     --satelite-classes-background-color: rgba(0, 0, 0, 0.12);
     --satelite-classes-font-size: 12px;
