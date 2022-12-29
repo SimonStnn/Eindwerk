@@ -15,6 +15,10 @@
     background-color: var(--theme-dark-background-color-light-4);
     color: var(--theme-dark-font-color);
 }
+.App.theme-light .sidebar {
+    background-color: var(--theme-light-background-color-e);
+    color: var(--theme-dark-font-color);
+}
 .App.theme-dark .sidebar img {
     filter: invert(1) brightness(0.9);
 }
@@ -80,7 +84,7 @@
     padding: var(--sidebar-item-padding);
     border-radius: var(--style-border-radius);
 
-    transition: background-color 0.2s;
+    transition: 0.2s;
 }
 
 .sidebar .items .sidebar-item.active,
