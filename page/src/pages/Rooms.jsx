@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Canvas from '../components/Canvas';
 import config from '../config.json';
 
-const default_room = config.rooms.Froidchapelle;
+const default_room = config.rooms['Froidchapelle'];
 const default_room_key = Object.keys(config.rooms).find(
     (room) => config.rooms[room] === default_room
 );
