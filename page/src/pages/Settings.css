@@ -1,5 +1,5 @@
 .settings button {
-    padding: 3px 8px;
+    padding: 0.25em 0.5em;
 
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     border-radius: 5px;
@@ -10,8 +10,7 @@
 
 .App .settings button {
     cursor: pointer;
-    border-color: var(--style-brown);
-
+    border-color: var(--style-brown-a);
 }
 .App.theme-light .settings button {
     background-color: #ddd;
@@ -25,4 +24,124 @@
 }
 .App.theme-dark .settings button:hover {
     background-color: rgba(102, 102, 102, 0.7);
+}
+
+input {
+    transition: background-color 0.2s;
+    border: 1px solid var(--style-brown-a);
+    border-radius: var(--style-border-radius);
+    padding: 0.25em 0.5em;
+    outline: none;
+    /* width: 100%; */
+}
+.App.theme-dark input {
+    background-color: #444;
+}
+.App.theme-light input {
+    background-color: #ddd;
+}
+
+.section,
+.object-section {
+    display: flex;
+    padding: 5px 15px;
+}
+.section {
+    flex-direction: row;
+    gap: 8px;
+}
+.object-section {
+    flex-direction: column;
+}
+.object-section .object-title {
+    display: flex;
+    flex-grow: 0.9;
+    justify-content: left;
+    align-items: left;
+    flex-direction: row;
+}
+.object-section .object-value {
+    display: flex;
+    flex-direction: column;
+}
+
+.App.theme-dark .object-section .number {
+    color: yellowgreen;
+}
+.App.theme-dark .object-section .string {
+    color: burlywood;
+}
+.App.theme-dark .object-section .boolean {
+    color: lightskyblue;
+}
+
+.App.theme-light .object-section .number {
+    color: green;
+}
+.App.theme-light .object-section .string {
+    color: brown;
+}
+.App.theme-light .object-section .boolean {
+    color: blue;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: 1px solid var(--style-brown-a);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: '';
+    height: 12px;
+    width: 12px;
+    left: 4px;
+    bottom: 3px;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+.App.theme-dark .slider:before {
+    background-color: white;
+}
+.App.theme-light .slider:before {
+    background-color: var(--style-brown);
+}
+
+input:checked + .slider {
+    background-color: var(--style-brown-a);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
 }
