@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import config from './config.json';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
-import Contact from './pages/Contact';
+import Rooms from './pages/Rooms';
 import Components from './pages/Components';
 import Settings from './pages/Settings';
 
@@ -66,9 +66,9 @@ function App() {
                             }
                         />
                         <Route
-                            path="/contact"
+                            path="/rooms"
                             element={
-                                <Contact
+                                <Rooms
                                     collection={collection}
                                     websocket={websocket}
                                 />

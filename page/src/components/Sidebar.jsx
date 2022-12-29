@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import icon_logo from '../images/icons/sidebar/logo.svg';
 
 import icon_home from '../images/icons/sidebar/home.svg';
-import icon_contact from '../images/icons/sidebar/contact.svg';
+import icon_rooms from '../images/icons/sidebar/rooms.svg';
 import icon_components from '../images/icons/sidebar/components.svg';
 import icon_settings from '../images/icons/sidebar/settings.svg';
 
@@ -16,7 +16,7 @@ import icon_sidebar_collapse from '../images/icons/sidebar/collapse.svg';
 let toggleIcon = icon_sidebar_expand;
 
 const link_home = '/';
-const link_contact = '/contact';
+const link_rooms = '/rooms';
 const link_settings = '/settings';
 const link_components = '/components';
 
@@ -53,11 +53,7 @@ const Sidebar = () => {
             <hr />
             <div className="items main">
                 <SidebarItem icon={icon_home} text="Home" link={link_home} />
-                <SidebarItem
-                    icon={icon_contact}
-                    text="Contact"
-                    link={link_contact}
-                />
+                <SidebarItem icon={icon_rooms} text="Rooms" link={link_rooms} />
             </div>
             <hr />
             <div className="items">

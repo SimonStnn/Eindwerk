@@ -8,7 +8,7 @@ const default_room_key = Object.keys(config.rooms).find(
     (room) => config.rooms[room] === default_room
 );
 
-const Contact = ({ collection, websocket }) => {
+const Rooms = ({ collection, websocket }) => {
     const [selectedRoom, setSelectedRoom] = useState(default_room);
     const [roomKey, setRoomKey] = useState(default_room_key);
 
@@ -21,7 +21,7 @@ const Contact = ({ collection, websocket }) => {
 
     return (
         <>
-            <h1>Canvas</h1>
+            <h1>Rooms</h1>
             <p>
                 <label htmlFor="rooms">Select a room: </label>
                 <select
@@ -49,4 +49,4 @@ const Contact = ({ collection, websocket }) => {
     );
 };
 
-export default Contact;
+export default Rooms;
