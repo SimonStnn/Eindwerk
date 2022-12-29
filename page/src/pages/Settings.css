@@ -10,7 +10,7 @@
 
 .App .settings button {
     cursor: pointer;
-    border-color: var(--style-brown-a);
+    border-color: var(--style-brown-6);
 }
 .App.theme-light .settings button {
     background-color: #ddd;
@@ -28,7 +28,7 @@
 
 input {
     transition: background-color 0.2s;
-    border: 1px solid var(--style-brown-a);
+    border: 1px solid var(--style-brown-6);
     border-radius: var(--style-border-radius);
     padding: 0.25em 0.5em;
     outline: none;
@@ -105,7 +105,7 @@ input {
     right: 0;
     bottom: 0;
     background-color: transparent;
-    border: 1px solid var(--style-brown-a);
+    border: 1px solid var(--style-brown-6);
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
@@ -128,7 +128,7 @@ input {
 }
 
 input:checked + .slider {
-    background-color: var(--style-brown-a);
+    background-color: var(--style-brown-6);
 }
 
 input:checked + .slider:before {
@@ -146,8 +146,8 @@ input:checked + .slider:before {
     border-radius: 50%;
 }
 
-.settings hr{
-    background-color: var(--style-brown-a);
-    border: 1px solid var(--style-brown-a);
+.settings hr {
+    background-color: var(--style-brown-6);
+    border: 1px solid var(--style-brown-6);
     border-radius: 2px;
 }

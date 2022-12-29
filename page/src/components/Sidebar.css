@@ -1,5 +1,6 @@
 :root {
-    --sidebar-hr-color: rgb(0, 0, 0, 0.1);
+    /* --sidebar-hr-color: rgb(0, 0, 0, 0.1); */
+    --sidebar-hr-color: var(--style-brown-6);
     --sidebar-item-margin: 3px 8px;
     --sidebar-item-padding: 12px;
 }
@@ -84,7 +85,7 @@
 .sidebar .items .sidebar-item.active,
 .sidebar .width-toggle:hover,
 .sidebar .items .sidebar-item:hover {
-    background-color: var(--style-brown-a);
+    background-color: var(--style-brown-6);
 }
 
 .sidebar a {

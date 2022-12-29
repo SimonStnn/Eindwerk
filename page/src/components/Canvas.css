@@ -43,8 +43,6 @@ div.dotInfo div.info {
     width: 100%;
 
     user-select: none;
-
-    /* transition: 0.2s; */
 }
 
 .dotInfo .dotInfo-button:hover {

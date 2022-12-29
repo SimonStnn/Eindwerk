@@ -14,14 +14,13 @@
     flex-direction: column;
     justify-content: center;
 
-
     width: var(--satelite-max-width);
     max-width: var(--satelite-max-width);
     height: var(--satelite-max-height);
     max-height: var(--satelite-max-height);
 
     border-radius: var(--satelite-border-radius);
-    border-color: var(--style-brown-a);
+    border-color: var(--style-brown-4);
 
     box-shadow: var(--satelite-box-shadow);
 }
@@ -45,7 +44,7 @@
 .satelite div.info div.section.left {
     /* max-width: 10px; */
     white-space: nowrap;
-    flex-grow: .5;
+    flex-grow: 0.5;
 }
 .satelite div.info div.section .coords {
     font-size: x-small;

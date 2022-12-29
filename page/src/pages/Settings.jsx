@@ -1,7 +1,7 @@
 import config from '../config.json';
 
-const ignored_settings = ['showNames'];
-// const ignored_settings = [];
+// const ignored_settings = ['showNames'];
+const ignored_settings = [];
 
 const Settings = ({ theme, setTheme }) => {
     const toggleTheme = () => {
