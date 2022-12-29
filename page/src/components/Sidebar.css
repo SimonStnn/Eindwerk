@@ -9,7 +9,7 @@
     color: #ddd;
 }
 .App.theme-dark .sidebar img {
-    filter: invert(100%) brightness(90%);
+    filter: invert(100%) brightness(.9);
 }
 
 .sidebar {
@@ -43,10 +43,11 @@
     padding: var(--sidebar-item-padding);
 
     font-weight: bold;
+
+    /* color: var(--style-brown); */
 }
-.sidebar .logo img {
-    filter: hue-rotate(30deg) saturate(30%) brightness(50%);
-}
+/* .sidebar .logo img {
+} */
 
 .sidebar hr {
     display: flex;

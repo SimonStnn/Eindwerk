@@ -145,3 +145,9 @@ input:checked + .slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+.settings hr{
+    background-color: var(--style-brown-a);
+    border: 1px solid var(--style-brown-a);
+    border-radius: 2px;
+}
