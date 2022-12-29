@@ -2,7 +2,7 @@
     --config-padding: 0 0 25px 0;
     --settings-button-padding: var(--style-input-padding);
 
-    --settings-col-gap:10px;
+    --settings-col-gap: 10px;
 }
 
 .config {
@@ -35,18 +35,17 @@
 .App .settings .config-button {
     margin: 10px;
     margin-left: 24px;
-
 }
 
 .App.theme-light .settings button {
-    background-color: var(--theme-light-background-color);
+    background-color: var(--theme-light-background-color-e);
 }
 .App.theme-dark .settings button {
     color: var(--theme-dark-font-color);
     background-color: var(--theme-dark-background-color-light-4);
 }
 .App.theme-light .settings button:hover {
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 .App.theme-dark .settings button:hover {
     background-color: var(--theme-dark-background-color-light-5);
@@ -55,7 +54,7 @@
 input {
     outline: none;
     padding: 5px 10px;
-    
+
     border: 1px solid var(--style-brown-6);
     border-radius: var(--style-border-radius);
     transition: background-color 0.2s;
@@ -64,7 +63,8 @@ input {
     background-color: var(--theme-dark-background-color-light-4);
 }
 .App.theme-light input {
-    background-color: var(--theme-light-background-color);
+    /* background-color: var(--theme-light-background-color-d); */
+    background-color: var(--theme-light-background-color-e);
 }
 
 /* File display */
@@ -96,20 +96,20 @@ input {
 }
 
 .App.theme-dark .object-section .number {
-    color: yellowgreen;
+    color: hsl(99, 28%, 73%);
 }
 .App.theme-dark .object-section .string {
-    color: burlywood;
+    color: hsl(17, 60%, 68%);
 }
 .App.theme-dark .object-section .boolean {
     color: lightskyblue;
 }
 
 .App.theme-light .object-section .number {
-    color: green;
+    color: hsl(99, 28%, 40%);
 }
 .App.theme-light .object-section .string {
-    color: brown;
+    color: hsl(17, 60%, 35%);
 }
 .App.theme-light .object-section .boolean {
     color: blue;
@@ -135,10 +135,9 @@ input {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: transparent;
     border: 1px solid var(--style-brown-4);
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
 }
 
 .slider:before {
