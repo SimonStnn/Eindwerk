@@ -4,11 +4,16 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import icon_move from '../images/icons/canvas/move.svg';
 import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 
-const padding = 10;
+const padding = 30;
 const scale = 0.5;
 
 const svgHeight = 400 + padding * 2;
 const svgWidth = 880 + padding * 2;
+
+// const ROOM_WALL_COLOR = 'hsl(30, 30%, 50%)';
+const ROOM_WALL_COLOR = 'var(--style-brown)';
+const ROOM_WALL_WIDTH = '4px';
+const ROOM_FILL = '#444';
 
 const dot_radius = 6;
 
@@ -216,7 +221,7 @@ const Canvas = ({ collection, websocket, room }) => {
                         <Button
                             img={icon_movetoRoom}
                             text={'To new room'}
-                            onClick={() =>{}}
+                            onClick={() => {}}
                         />
                     </>
                 ) : (
@@ -235,9 +240,9 @@ const Canvas = ({ collection, websocket, room }) => {
                         const y = point.y * scale + padding;
                         return x + ',' + y + ' ';
                     })}
-                    stroke="black"
-                    strokeWidth={5}
-                    fill="lightgray"
+                    stroke={ROOM_WALL_COLOR}
+                    strokeWidth={ROOM_WALL_WIDTH}
+                    fill={ROOM_FILL}
                 />
             </>
         );
@@ -263,14 +268,18 @@ const Canvas = ({ collection, websocket, room }) => {
             const [, dot] = moveDot;
 
             dot.setPosition(
-                Math.floor(((eve_clientX - eve_offsetLeft) * svg_width) / par_width +
-                    canvas.scrollLeft +
-                    container.scrollLeft -
-                    dot_radius * 1.6),
-                Math.floor(((eve_clientY - eve_offsetTop) * svg_height) / par_height +
-                    canvas.scrollTop +
-                    container.scrollTop -
-                    dot_radius * 1.6)
+                Math.floor(
+                    ((eve_clientX - eve_offsetLeft) * svg_width) / par_width +
+                        canvas.scrollLeft +
+                        container.scrollLeft -
+                        dot_radius * 1.6
+                ),
+                Math.floor(
+                    ((eve_clientY - eve_offsetTop) * svg_height) / par_height +
+                        canvas.scrollTop +
+                        container.scrollTop -
+                        dot_radius * 1.6
+                )
             );
             updatePosition(dot.addr, dot.x, dot.y);
             moveDot = moveDotDefault;
