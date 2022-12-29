@@ -1,14 +1,14 @@
 import React from 'react';
 import config from '../config.json';
 
-import uncatigorized from '../images/icons/devices/uncatigorized.svg';
+import uncatigorized from '../images/icons/device_types/uncatigorized.svg';
 // import miscellaneous from '../images/icons/devices/miscellaneous.svg';
-import computer from '../images/icons/devices/computer.svg';
-import phone from '../images/icons/devices/phone.svg';
-import accessPoint from '../images/icons/devices/accessPoint.svg';
-import audio from '../images/icons/devices/audio.svg';
-import peripheral from '../images/icons/devices/peripheral.svg';
-import imaging from '../images/icons/devices/imaging.svg';
+import computer from '../images/icons/device_types/computer.svg';
+import phone from '../images/icons/device_types/phone.svg';
+import accessPoint from '../images/icons/device_types/accessPoint.svg';
+import audio from '../images/icons/device_types/audio.svg';
+import peripheral from '../images/icons/device_types/peripheral.svg';
+import imaging from '../images/icons/device_types/imaging.svg';
 
 const Device = ({ data }) => {
    const { name, addr, majorClass, classes, rssi } = data;
