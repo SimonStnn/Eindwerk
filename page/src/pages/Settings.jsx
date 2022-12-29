@@ -1,5 +1,7 @@
 import config from '../config.json';
 
+// import icon_plus from '../images/icons/other/plus.svg';
+
 // const ignored_settings = ['showNames'];
 const ignored_settings = [];
 
@@ -39,14 +41,23 @@ const Settings = ({ theme, setTheme }) => {
             if (ignored_settings.includes(obj_key)) return null;
             const isObj = typeof obj[obj_key] === 'object';
             return (
-                <div key={i} className={isObj ? 'object-section' : 'section'}>
-                    <div className={isObj ? 'object-title' : 'title'}>
-                        {capitalize(obj_key)}:
+                <>
+                    <div
+                        key={i}
+                        className={isObj ? 'object-section' : 'section'}
+                    >
+                        <div className={isObj ? 'object-title' : 'title'}>
+                            {capitalize(obj_key)}:
+                        </div>
+                        <div className={isObj ? 'object-value' : ''}>
+                            {formatKey(obj[obj_key])}
+                        {/* <button className="config-button" n>
+                            <img src={icon_plus} alt="icon_plus" />
+                            Add to Object
+                        </button> */}
+                        </div>
                     </div>
-                    <div className={isObj ? 'object-value' : ''}>
-                        {formatKey(obj[obj_key])}
-                    </div>
-                </div>
+                </>
             );
         });
     }
@@ -89,11 +100,11 @@ const Settings = ({ theme, setTheme }) => {
     return (
         <div className="settings">
             <h1>Settings</h1>
-            Toggle Theme: <button onClick={toggleTheme}>{theme}</button>
+            <div className="inline">
+                Toggle Theme: <button onClick={toggleTheme}>{theme}</button>
+            </div>
             <hr />
-            <p>
-                Changes will <u>not be applied</u>.
-            </p>
+            <p>Changes will not be applied.</p>
             <h2>Config file</h2>
             <div className="config">{formatObject(config)}</div>
         </div>

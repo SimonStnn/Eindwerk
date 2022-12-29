@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import './App.css';
 import './pages/Home.css';
+import './pages/Discover.css';
 import './pages/Rooms.css';
 import './pages/Settings.css';
 import './components/Sidebar.css';

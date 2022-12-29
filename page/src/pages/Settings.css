@@ -1,6 +1,8 @@
 :root {
     --config-padding: 0 0 25px 0;
     --settings-button-padding: var(--style-input-padding);
+
+    --settings-col-gap:10px;
 }
 
 .config {
@@ -12,10 +14,29 @@
     text-transform: capitalize;
 }
 
+.settings .inline {
+    display: flex;
+    flex-direction: row;
+    column-gap: var(--settings-col-gap);
+}
+
 .App .settings button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    column-gap: var(--settings-col-gap);
+
     cursor: pointer;
     border: var(--style-border);
 }
+
+.App .settings .config-button {
+    margin: 10px;
+    margin-left: 24px;
+
+}
+
 .App.theme-light .settings button {
     background-color: var(--theme-light-background-color);
 }

@@ -5,9 +5,9 @@ import config from './config.json';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import Rooms from './pages/Rooms';
+import Discover from './pages/Discover';
 import Components from './pages/Components';
 import Settings from './pages/Settings';
-
 
 const THEME_DEFAULT = config.themes.dark;
 
@@ -52,25 +52,27 @@ function App() {
     };
 
     return (
-        <div className={"App theme-" + theme}>
-            {/* <ThemeContext.Provider value={{ theme, setTheme }}> */}
-            {/* <div className={`theme-${theme}`}> */}
+        <div className={'App theme-' + theme}>
             <Sidebar />
             <div className="container">
                 <div className="container-content">
                     <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <Home satelites={satelites} devices={devices} />
-                            }
-                        />
+                        <Route path="/" element={<Home />} />
                         <Route
                             path="/rooms"
                             element={
                                 <Rooms
                                     collection={collection}
                                     websocket={websocket}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/discover"
+                            element={
+                                <Discover
+                                    devices={devices}
+                                    satelites={satelites}
                                 />
                             }
                         />

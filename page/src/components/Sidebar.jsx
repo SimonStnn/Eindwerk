@@ -8,6 +8,7 @@ import icon_logo from '../images/icons/sidebar/logo.svg';
 
 import icon_home from '../images/icons/sidebar/home.svg';
 import icon_rooms from '../images/icons/sidebar/rooms.svg';
+import icon_discover from '../images/icons/sidebar/discover.svg';
 import icon_components from '../images/icons/sidebar/components.svg';
 import icon_settings from '../images/icons/sidebar/settings.svg';
 
@@ -17,8 +18,9 @@ let toggleIcon = icon_sidebar_expand;
 
 const link_home = '/';
 const link_rooms = '/rooms';
-const link_settings = '/settings';
+const link_discover = '/discover';
 const link_components = '/components';
+const link_settings = '/settings';
 
 const Sidebar = () => {
     const [sidebarOpen, setSideBarOpen] = useState(false);
@@ -59,6 +61,11 @@ const Sidebar = () => {
             <div className="items main">
                 <SidebarItem icon={icon_home} text="Home" link={link_home} />
                 <SidebarItem icon={icon_rooms} text="Rooms" link={link_rooms} />
+                <SidebarItem
+                    icon={icon_discover}
+                    text="Discover"
+                    link={link_discover}
+                />
             </div>
             <hr />
             <div className="items">
