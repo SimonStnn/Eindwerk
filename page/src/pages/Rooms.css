@@ -1,6 +1,10 @@
+:root {
+    --room-selector-padding:var(--style-input-padding);
+}
+
 .App.theme-dark .room-selector {
-    background-color: #444;
-    color: white;
+    background-color: var(--theme-dark-background-color-light-4);
+    color: var(--theme-dark-font-color);
 }
 .App.theme-light .room-selector {
     background-color: inherit;
@@ -11,18 +15,15 @@
     position: relative;
     align-items: center;
 
-    border: 1px solid var(--style-brown-6);
+    border: var(--style-border);
     border-radius: var(--style-border-radius);
 
     font-family: inherit;
     font-size: inherit;
 
-    padding: 0.25em 0.5em;
+    padding: var(--room-selector-padding);
     margin: 0;
 
     cursor: pointer;
     outline: none;
-}
-.room-selector:focus-within {
-    background-color: red;
 }

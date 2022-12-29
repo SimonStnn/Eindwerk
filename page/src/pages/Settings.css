@@ -1,49 +1,51 @@
-.config{
-    padding: 0 0 25px 0;
+:root {
+    --config-padding: 0 0 25px 0;
+    --settings-button-padding: var(--style-input-padding);
+}
+
+.config {
+    padding: var(--config-padding);
 }
 .settings button {
-    padding: 5px 20px;
-
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 5px;
-    border: rgba(255, 255, 255, 0.1) solid 1px;
-
+    padding: var(--settings-button-padding);
+    border-radius: var(--style-border-radius);
     text-transform: capitalize;
 }
 
 .App .settings button {
     cursor: pointer;
-    border-color: var(--style-brown-6);
+    border: var(--style-border);
 }
 .App.theme-light .settings button {
-    background-color: #ddd;
+    background-color: var(--theme-light-background-color);
 }
 .App.theme-dark .settings button {
-    color: #eee;
-    background-color: #444;
+    color: var(--theme-dark-font-color);
+    background-color: var(--theme-dark-background-color-light-4);
 }
 .App.theme-light .settings button:hover {
     background-color: rgba(0, 0, 0, 0.2);
 }
 .App.theme-dark .settings button:hover {
-    background-color: rgba(102, 102, 102, 0.7);
+    background-color: var(--theme-dark-background-color-light-5);
 }
 
 input {
-    transition: background-color 0.2s;
+    outline: none;
+    padding: 5px 10px;
+    
     border: 1px solid var(--style-brown-6);
     border-radius: var(--style-border-radius);
-    padding: 5px 10px;
-    outline: none;
-    /* width: 100%; */
+    transition: background-color 0.2s;
 }
 .App.theme-dark input {
-    background-color: #444;
+    background-color: var(--theme-dark-background-color-light-4);
 }
 .App.theme-light input {
-    background-color: #ddd;
+    background-color: var(--theme-light-background-color);
 }
 
+/* File display */
 .section,
 .object-section {
     display: flex;
@@ -91,6 +93,7 @@ input {
     color: blue;
 }
 
+/* Toggle checkbox */
 .switch {
     position: relative;
     display: inline-block;

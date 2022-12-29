@@ -1,13 +1,19 @@
 :root {
-    /* --sidebar-hr-color: rgb(0, 0, 0, 0.1); */
+    --sidebar-width: 64px;
     --sidebar-hr-color: var(--style-brown-6);
     --sidebar-item-margin: 3px 8px;
     --sidebar-item-padding: 12px;
+    --sidebar-font-size: 18px;
+    --sidebar-logo-col-gap: 15px;
+    --sidebar-logo-margin-top: 15px;
+    --sidebar-item-col-gap: var(--sidebar-logo-col-gap);
+    --sidebar-hr-width: 60%;
+    --sidebar-hr-open-width: 85.8%;
 }
 
 .App.theme-dark .sidebar {
-    background-color: #444;
-    color: #ddd;
+    background-color: var(--theme-dark-background-color-light-4);
+    color: var(--theme-dark-font-color);
 }
 .App.theme-dark .sidebar img {
     filter: invert(1) brightness(0.9);
@@ -20,12 +26,11 @@
     z-index: 1; /* Stay on top */
     overflow-x: hidden; /* Disable horizontal scroll */
 
-    font-size: 18px;
+    font-size: var(--sidebar-font-size);
 
     height: 100vh;
-    width: 64px;
-    background-color: rgb(240, 240, 240);
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 0px 8px;
+    width: var(--sidebar-width);
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 8px;
 
     user-select: none;
 
@@ -37,27 +42,23 @@
     flex-direction: row;
     align-items: center;
     justify-content: left;
-    column-gap: 15px;
+    column-gap: var(--sidebar-logo-col-gap);
 
     margin: var(--sidebar-item-margin);
-    margin-top: 15px;
+    margin-top: var(--sidebar-logo-margin-top);
     padding: var(--sidebar-item-padding);
 
     font-weight: bold;
-
-    /* color: var(--style-brown); */
 }
-/* .sidebar .logo img {
-} */
 
 .sidebar hr {
     display: flex;
     justify-content: center;
 
-    width: 60%;
+    width: var(--sidebar-hr-width);
     border: 2px solid transparent;
     background-color: var(--sidebar-hr-color);
-    border-radius: 5px;
+    border-radius: var(--style-border-radius);
 }
 .sidebar .items {
     display: flex;
@@ -73,11 +74,11 @@
     flex-direction: row;
     justify-content: left;
 
-    column-gap: 15px;
+    column-gap: var(--sidebar-item-col-gap);
 
     margin: var(--sidebar-item-margin);
     padding: var(--sidebar-item-padding);
-    border-radius: 5px;
+    border-radius: var(--style-border-radius);
 
     transition: background-color 0.2s;
 }
@@ -100,7 +101,7 @@
 
     margin: var(--sidebar-item-margin);
     padding: var(--sidebar-item-padding);
-    border-radius: 5px;
+    border-radius: var(--style-border-radius);
 
     transition: background-color 0.2s;
 }
@@ -108,5 +109,5 @@
     width: auto;
 }
 .sidebar.open hr {
-    width: 85.8%;
+    width: var(--sidebar-hr-open-width);
 }

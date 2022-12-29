@@ -18,7 +18,7 @@
     height: var(--device-height);
 
     border-radius: var(--device-border-radius);
-    border-color: var(--style-brown-4);
+    border: 1px solid var(--style-brown-4);
     box-shadow: var(--device-box-shadow);
     min-width: 200px;
 }

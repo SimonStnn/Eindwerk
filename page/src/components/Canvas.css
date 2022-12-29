@@ -1,9 +1,10 @@
 .canvas {
     border-radius: 5px;
-    border: 1px solid var(--style-brown-6);
-    box-shadow: rgba(0, 0, 0, 0.4) 0px 5px 15px;
+    border: var(--style-border);
+    box-shadow: var(--style-box-shadow);
     overflow: scroll;
 }
+
 .canvas::-webkit-scrollbar {
     width: 0;
     height: 0;

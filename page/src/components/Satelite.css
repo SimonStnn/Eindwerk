@@ -2,7 +2,7 @@
     --satelite-margin: 10px 5px;
     --satelite-max-width: 250px;
     --satelite-max-height: 95px;
-    --satelite-box-shadow: rgba(0, 0, 0, 0.4) 0px 3px 8px;
+    --satelite-box-shadow: var(--style-box-shadow);
     --satelite-border-radius: var(--style-border-radius);
     --satelite-classes-background-color: rgba(0, 0, 0, 0.12);
     --satelite-classes-font-size: 12px;
@@ -20,7 +20,7 @@
     max-height: var(--satelite-max-height);
 
     border-radius: var(--satelite-border-radius);
-    border-color: var(--style-brown-4);
+    border: 1px solid var(--style-brown-4);
 
     box-shadow: var(--satelite-box-shadow);
 }
@@ -28,7 +28,6 @@
 .satelite div.info {
     display: flex;
     flex-direction: row;
-    /* column-gap: 20px; */
     text-align: center;
 }
 
@@ -37,12 +36,10 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    /* margin: 15px; */
     padding: 8px;
     text-align: center;
 }
 .satelite div.info div.section.left {
-    /* max-width: 10px; */
     white-space: nowrap;
     flex-grow: 0.5;
 }
