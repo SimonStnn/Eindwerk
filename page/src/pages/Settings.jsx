@@ -41,7 +41,6 @@ const Settings = ({ theme, setTheme }) => {
             if (ignored_settings.includes(obj_key)) return null;
             const isObj = typeof obj[obj_key] === 'object';
             return (
-                <>
                     <div
                         key={i}
                         className={isObj ? 'object-section' : 'section'}
@@ -57,7 +56,6 @@ const Settings = ({ theme, setTheme }) => {
                         </button> */}
                         </div>
                     </div>
-                </>
             );
         });
     }
