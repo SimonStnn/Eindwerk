@@ -10,10 +10,26 @@
     column-gap: 15px;
 }
 
-.App.theme-dark :is(.device, .satelite) img{
+.App.theme-dark :is(.device, .satelite) img {
     filter: invert(100%) brightness(90%);
 }
 
-.device, .satelite{
+.device,
+.satelite {
     border: rgba(255, 255, 255, 0.1) solid 1px;
+}
+
+.home hr {
+    /* background-color: var(--style-brown-6);
+    border: 1px solid var(--style-brown-6);
+    border-radius: 2px;
+    */
+    margin: 40px 0; 
+
+    display: flex;
+    justify-content: center;
+
+    border: 2px solid transparent;
+    background-color: var(--sidebar-hr-color);
+    border-radius: 5px;
 }
