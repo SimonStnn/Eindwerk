@@ -4,6 +4,11 @@
     border: rgba(255, 255, 255, 0.1) solid 1px;
     overflow: scroll;
 }
+.canvas::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
 
 div.dotInfo {
     position: absolute;
