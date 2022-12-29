@@ -73,7 +73,7 @@ const Settings = ({ theme, setTheme }) => {
     }
     function formatBoolean(bool) {
         return (
-            <label className='switch'>
+            <label className="switch">
                 <input
                     type={'checkbox'}
                     className="boolean"
@@ -91,9 +91,11 @@ const Settings = ({ theme, setTheme }) => {
             <h1>Settings</h1>
             Toggle Theme: <button onClick={toggleTheme}>{theme}</button>
             <hr />
-            <p>Changes will not be aplied</p>
+            <p>
+                Changes will <u>not be applied</u>.
+            </p>
             <h2>Config file</h2>
-            {formatObject(config)}
+            <div className="config">{formatObject(config)}</div>
         </div>
     );
 };

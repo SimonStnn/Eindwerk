@@ -1,3 +1,6 @@
+.config{
+    padding: 0 0 25px 0;
+}
 .settings button {
     padding: 5px 20px;
 
@@ -44,7 +47,8 @@ input {
 .section,
 .object-section {
     display: flex;
-    padding: 5px 15px;
+    margin-top: 10px;
+    margin-left: 15px;
 }
 .section {
     flex-direction: row;
@@ -63,6 +67,8 @@ input {
 .object-section .object-value {
     display: flex;
     flex-direction: column;
+    margin-top: 2px;
+    border-left: 1px solid var(--style-brown-4);
 }
 
 .App.theme-dark .object-section .number {
@@ -105,7 +111,7 @@ input {
     right: 0;
     bottom: 0;
     background-color: transparent;
-    border: 1px solid var(--style-brown-6);
+    border: 1px solid var(--style-brown-4);
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
