@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import config from '../config.json';
+
+import icon_arrow_down from '../images/icons/other/arrow_down.svg';
 
 // import icon_plus from '../images/icons/other/plus.svg';
 
@@ -24,43 +27,55 @@ const Settings = ({ theme, setTheme }) => {
     function formatKey(keyObj) {
         switch (typeof keyObj) {
             case 'object':
-                return formatObject(keyObj);
+                return FormatObject(keyObj);
             case 'string':
-                return formatString(keyObj);
+                return FormatString(keyObj);
             case 'number':
-                return formatNumber(keyObj);
+                return FormatNumber(keyObj);
             case 'boolean':
-                return formatBoolean(keyObj);
+                return FormatBoolean(keyObj);
             default:
                 return <>{keyObj.toString()}</>;
         }
     }
 
-    function formatObject(obj) {
+    const FormatObject = (obj) => {
+        const [collapse, setCollapse] = useState(true);
+
         return Object.keys(obj).map((obj_key, i) => {
             if (ignored_settings.includes(obj_key)) return null;
             const isObj = typeof obj[obj_key] === 'object';
             return (
-                    <div
-                        key={i}
-                        className={isObj ? 'object-section' : 'section'}
-                    >
-                        <div className={isObj ? 'object-title' : 'title'}>
-                            {capitalize(obj_key)}:
-                        </div>
-                        <div className={isObj ? 'object-value' : ''}>
-                            {formatKey(obj[obj_key])}
+                <div key={i} className={isObj ? 'object-section' : 'section'}>
+                    <div className={isObj ? 'object-title' : 'title'}>
+                        {capitalize(obj_key)}:{' '}
+                        {isObj ? (
+                            <button
+                                className={`toggle-button ${
+                                    collapse ? 'flipped' : ''
+                                    }`}
+                                value={true}
+                                onClick={(e) => setCollapse(!collapse)}
+                            >
+                                <img src={icon_arrow_down} alt="arrow_down" />
+                            </button>
+                        ) : (
+                            <></>
+                        )}
+                    </div>
+                    <div className={isObj ? 'object-value' : ''}>
+                        {formatKey(obj[obj_key])}
                         {/* <button className="config-button" n>
                             <img src={icon_plus} alt="icon_plus" />
                             Add to Object
                         </button> */}
-                        </div>
                     </div>
+                </div>
             );
         });
-    }
+    };
 
-    function formatString(str) {
+    const FormatString = (str) => {
         return (
             <input
                 type={'text'}
@@ -69,8 +84,8 @@ const Settings = ({ theme, setTheme }) => {
                 readOnly
             ></input>
         );
-    }
-    function formatNumber(num) {
+    };
+    const FormatNumber = (num) => {
         return (
             <input
                 type={'text'}
@@ -79,8 +94,8 @@ const Settings = ({ theme, setTheme }) => {
                 readOnly
             ></input>
         );
-    }
-    function formatBoolean(bool) {
+    };
+    const FormatBoolean = (bool) => {
         return (
             <label className="switch">
                 <input
@@ -93,18 +108,21 @@ const Settings = ({ theme, setTheme }) => {
                 <span className="slider round"></span>
             </label>
         );
-    }
+    };
 
     return (
         <div className="settings">
             <h1>Settings</h1>
             <div className="inline">
-                Toggle Theme: <button onClick={toggleTheme}>{theme}</button>
+                Toggle Theme:{' '}
+                <button className="toggle-theme btn" onClick={toggleTheme}>
+                    {theme}
+                </button>
             </div>
             <hr />
             <p>Changes will not be applied.</p>
             <h2>Config file</h2>
-            <div className="config">{formatObject(config)}</div>
+            <div className="config">{FormatObject(config)}</div>
         </div>
     );
 };
