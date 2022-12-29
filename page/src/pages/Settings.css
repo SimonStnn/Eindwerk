@@ -29,6 +29,7 @@
 
     cursor: pointer;
     border: var(--style-border);
+    user-select: none;
 }
 
 .App .settings .config-button {
