@@ -40,6 +40,7 @@ const Sidebar = () => {
                             ? 'sidebar-item active'
                             : 'sidebar-item'
                     }
+                    title={text}
                 >
                     <img src={icon} alt={text + ' Icon'} />
                     {sidebarOpen ? <div>{text}</div> : <></>}

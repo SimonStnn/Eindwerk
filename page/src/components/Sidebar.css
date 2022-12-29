@@ -9,7 +9,7 @@
     color: #ddd;
 }
 .App.theme-dark .sidebar img {
-    filter: invert(100%) brightness(.9);
+    filter: invert(1) brightness(0.9);
 }
 
 .sidebar {
