@@ -80,7 +80,7 @@
     transition: background-color 0.2s;
 }
 
-.sidebar .items .sidebar-item .active,
+.sidebar .items .sidebar-item.active,
 .sidebar .width-toggle:hover,
 .sidebar .items .sidebar-item:hover {
     background-color: var(--style-brown-a);

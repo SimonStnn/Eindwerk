@@ -21,17 +21,22 @@ const link_settings = '/settings';
 const link_components = '/components';
 
 const Sidebar = () => {
-    // sidebarOpen = isOpen;
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const toggleSidebar = () => {
         toggleIcon = sidebarOpen ? icon_sidebar_expand : icon_sidebar_collapse;
         setSideBarOpen(!sidebarOpen);
     };
+    const [active, setActive] = useState('Home');
 
     const SidebarItem = ({ icon, text, link }) => {
         return (
-            <div>
-                <Link to={link} className="sidebar-item">
+            <div onClick={()=>setActive(text)}>
+                <Link
+                    to={link}
+                    className={
+                        active === text ? 'sidebar-item active' : 'sidebar-item'
+                    }
+                >
                     <img src={icon} alt={text + ' Icon'} />
                     {sidebarOpen ? <div>{text}</div> : <></>}
                 </Link>
