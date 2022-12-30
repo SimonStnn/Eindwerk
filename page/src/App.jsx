@@ -20,6 +20,7 @@ function App() {
     const [devices, setDevices] = useState([]);
 
     websocket.onopen = (e) => {
+        console.log("Connected to websocket: ", config.websocket.url);
         websocket.send('ROLE=client');
     };
 
