@@ -32,6 +32,9 @@
                 }
             ]
         },
+        "Empty room": {
+            "corners": []
+        },
         "Living": {
             "corners": [
                 {
@@ -104,7 +107,7 @@
                 }
             ]
         },
-        "Klaslokaal":{
+        "Klaslokaal": {
             "corners": []
         }
     }
