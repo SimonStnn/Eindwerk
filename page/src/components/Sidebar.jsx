@@ -13,7 +13,6 @@ import icon_components from '../images/icons/sidebar/components.svg';
 import icon_settings from '../images/icons/sidebar/settings.svg';
 
 import icon_sidebar_expand from '../images/icons/sidebar/expand.svg';
-import icon_sidebar_collapse from '../images/icons/sidebar/collapse.svg';
 let toggleIcon = icon_sidebar_expand;
 
 const link_home = '/';
@@ -25,7 +24,6 @@ const link_settings = '/settings';
 const Sidebar = () => {
     const [sidebarOpen, setSideBarOpen] = useState(false);
     const toggleSidebar = () => {
-        toggleIcon = sidebarOpen ? icon_sidebar_expand : icon_sidebar_collapse;
         setSideBarOpen(!sidebarOpen);
     };
 
@@ -44,8 +42,8 @@ const Sidebar = () => {
                     }
                     title={text}
                 >
-                    <img src={icon} alt={text + ' Icon'} />
-                    {sidebarOpen ? <div>{text}</div> : <></>}
+                    <img src={icon} alt={text + ' icon'} />
+                    <div className='text'>{text}</div>
                 </Link>
             </div>
         );
@@ -55,7 +53,7 @@ const Sidebar = () => {
         <div className={sidebarOpen ? 'sidebar open' : 'sidebar'}>
             <div className="logo">
                 <img src={icon_logo} alt="Logo" />
-                {sidebarOpen ? <div>Eindwerk</div> : <></>}
+                <div>Eindproef</div>
             </div>
             <hr />
             <div className="items main">
