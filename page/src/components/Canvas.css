@@ -3,12 +3,21 @@
     border: var(--style-border);
     box-shadow: var(--style-box-shadow);
     overflow: scroll;
+
+    width: fit-content;
+    height: fit-content;
+
+    max-width: 100%;
 }
 
 .canvas::-webkit-scrollbar {
     width: 0;
     height: 0;
     background-color: transparent;
+}
+
+.canvas .no-room {
+    padding: 25px;
 }
 
 div.dotInfo {
