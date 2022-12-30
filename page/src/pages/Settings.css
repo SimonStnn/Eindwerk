@@ -68,13 +68,13 @@ input {
 }
 
 /* File display */
-.section,
-.object-section {
+.settings .section,
+.settings .object-section {
     display: flex;
     margin-top: 10px;
     margin-left: 15px;
 }
-.section {
+.settings .section {
     flex-direction: row;
     align-items: baseline;
     gap: 8px;

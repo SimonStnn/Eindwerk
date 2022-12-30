@@ -1,5 +1,4 @@
 :root {
-    --satelite-margin: 10px 5px;
     --satelite-max-width: 250px;
     --satelite-max-height: 95px;
     --satelite-box-shadow: var(--style-box-shadow);
@@ -48,4 +47,6 @@
 }
 .satelite div.info div.section.right {
     flex-grow: 1;
+    gap: 5px;
+    margin: 0;
 }
