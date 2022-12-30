@@ -38,17 +38,17 @@
 }
 
 .App.theme-light .settings .toggle-theme {
-    background-color: var(--theme-light-background-color-e);
+    background-color: var(--theme-light-white-color-e);
 }
 .App.theme-dark .settings .toggle-theme {
     color: var(--theme-dark-font-color);
-    background-color: var(--theme-dark-background-color-light-4);
+    background-color: var(--theme-dark-gray-color-4);
 }
 .App.theme-light .settings .btn:hover {
     background-color: rgba(0, 0, 0, 0.1);
 }
 .App.theme-dark .settings .btn:hover {
-    background-color: var(--theme-dark-background-color-light-5);
+    background-color: var(--theme-dark-gray-color-5);
 }
 
 input {
@@ -60,11 +60,11 @@ input {
     transition: background-color 0.2s;
 }
 .App.theme-dark input {
-    background-color: var(--theme-dark-background-color-light-4);
+    background-color: var(--theme-dark-gray-color-4);
 }
 .App.theme-light input {
-    /* background-color: var(--theme-light-background-color-d); */
-    background-color: var(--theme-light-background-color-e);
+    /* background-color: var(--theme-light-white-color-d); */
+    background-color: var(--theme-light-white-color-e);
 }
 
 /* File display */

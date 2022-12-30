@@ -12,11 +12,11 @@
 }
 
 .App.theme-dark .sidebar {
-    background-color: var(--theme-dark-background-color-light-4);
+    background-color: var(--theme-dark-gray-color-4);
     color: var(--theme-dark-font-color);
 }
 .App.theme-light .sidebar {
-    background-color: var(--theme-light-background-color-e);
+    background-color: var(--theme-light-white-color-e);
     color: var(--theme-dark-font-color);
 }
 .App.theme-dark .sidebar img {
