@@ -8,6 +8,7 @@
         "dark": "dark"
     },
     "rooms": {
+        "sort_alphabetical": true,
         "test_room": {
             "corners": [
                 {

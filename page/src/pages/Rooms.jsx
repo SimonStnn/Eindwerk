@@ -19,7 +19,7 @@ const Rooms = ({ collection, websocket }) => {
     };
 
     return (
-        <div className='rooms'>
+        <div className="rooms">
             <h1>Rooms</h1>
             <p>
                 <label htmlFor="rooms">Select a room: </label>
@@ -30,13 +30,16 @@ const Rooms = ({ collection, websocket }) => {
                     value={roomKey}
                     onChange={handleRoomChange}
                 >
-                    {Object.keys(config.rooms).map((obj_key, i) => {
-                        return (
-                            <option key={i} value={obj_key}>
-                                {obj_key}
-                            </option>
-                        );
-                    })}
+                    {Object.keys(config.rooms)
+                        .sort()
+                        .map((obj_key, i) => {
+                            if (!config.rooms[obj_key]?.corners) return <></>;
+                            return (
+                                <option key={i} value={obj_key}>
+                                    {obj_key}
+                                </option>
+                            );
+                        })}
                 </select>
             </p>
             <Canvas
