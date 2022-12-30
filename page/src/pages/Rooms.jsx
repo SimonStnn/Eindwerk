@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Canvas from '../components/Canvas';
 import config from '../config.json';
 
-const default_room = config.rooms['Froidchapelle'];
+const default_room = config.rooms['Living'];
 const default_room_key = Object.keys(config.rooms).find(
     (room) => config.rooms[room] === default_room
 );
@@ -19,7 +19,7 @@ const Rooms = ({ collection, websocket }) => {
     };
 
     return (
-        <>
+        <div className='rooms'>
             <h1>Rooms</h1>
             <p>
                 <label htmlFor="rooms">Select a room: </label>
@@ -44,7 +44,7 @@ const Rooms = ({ collection, websocket }) => {
                 websocket={websocket}
                 room={selectedRoom}
             />
-        </>
+        </div>
     );
 };
 
