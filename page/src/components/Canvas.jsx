@@ -7,8 +7,6 @@ import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 const padding = 30;
 const scale = 0.5;
 
-const svgHeight = 400 + padding * 2;
-const svgWidth = 880 + padding * 2;
 
 // const ROOM_WALL_COLOR = 'hsl(30, 30%, 50%)';
 const ROOM_WALL_COLOR = 'var(--style-brown)';
@@ -309,6 +307,13 @@ const Canvas = ({ collection, websocket, room }) => {
         // Rest gets handled in HandleClick
     };
 
+    const maxX = room.corners.reduce((max, point) => Math.max(max, point.x), 0);
+    const maxY = room.corners.reduce((max, point) => Math.max(max, point.y), 0);
+
+    function isRoomAvailable(room) {
+        return room.corners.length === 0;
+    }
+
     return (
         <>
             <div
@@ -317,9 +322,16 @@ const Canvas = ({ collection, websocket, room }) => {
                 onScroll={HandleScroll}
                 onClick={HandleClick}
             >
-                <svg ref={svgRef} height={svgHeight} width={svgWidth}>
-                    {drawRoom(room.corners)}
-                    {/* {dots.map((dot, i) => {
+                {isRoomAvailable(room) ? (
+                    <div className="no-room">This room is not available.</div>
+                ) : (
+                    <svg
+                        ref={svgRef}
+                        height={(maxY + padding + padding) / 2 + padding}
+                        width={(maxX + padding + padding) / 2 + padding}
+                    >
+                        {drawRoom(room.corners)}
+                        {/* {dots.map((dot, i) => {
                         for (const dev of dot.devices) {
                             if (dev.mac !== '00:04:4b:84:44:74') break;
 
@@ -334,18 +346,20 @@ const Canvas = ({ collection, websocket, room }) => {
                                             strokeWidth={2}
                                             fill={'transparent'}
                                         />
-                                    </g>
-                                </>
-                            );
+                                        </g>
+                                        </>
+                                        );
                         }
                         return <></>;
                     })} */}
-                    {dots.map((dot, i) => {
-                        return dot.getDotSVG(i);
-                    })}
-                </svg>
+                        {dots.map((dot, i) => {
+                            return dot.getDotSVG(i);
+                        })}
+                    </svg>
+                )}
             </div>
             <DotInfo {...dotInfo} />
+            <hr />
         </>
     );
 };
