@@ -1,9 +1,9 @@
 :root {
-    --room-selector-padding:var(--style-input-padding);
+    --room-selector-padding: var(--style-input-padding);
 }
 
 .App.theme-dark .room-selector {
-    background-color: var(--theme-dark-background-color-light-4);
+    background-color: var(--theme-dark-gray-color-4);
     color: var(--theme-dark-font-color);
 }
 .App.theme-light .room-selector {
@@ -26,4 +26,15 @@
 
     cursor: pointer;
     outline: none;
+}
+
+.rooms hr {
+    margin: 40px 0;
+
+    display: flex;
+    justify-content: center;
+
+    border: 2px solid transparent;
+    background-color: var(--sidebar-hr-color);
+    border-radius: var(--style-border-radius);
 }
