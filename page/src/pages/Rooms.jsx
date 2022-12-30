@@ -33,7 +33,7 @@ const Rooms = ({ collection, websocket }) => {
                     {Object.keys(config.rooms)
                         .sort()
                         .map((obj_key, i) => {
-                            if (!config.rooms[obj_key]?.corners) return <></>;
+                            if (!config.rooms[obj_key]?.corners) return null;
                             return (
                                 <option key={i} value={obj_key}>
                                     {obj_key}
