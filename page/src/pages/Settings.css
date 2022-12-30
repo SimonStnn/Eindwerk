@@ -103,6 +103,7 @@ input {
 
 .App.theme-dark .object-section .number {
     color: hsl(99, 28%, 73%);
+    width: 60px;
 }
 .App.theme-dark .object-section .string {
     color: hsl(17, 60%, 68%);
