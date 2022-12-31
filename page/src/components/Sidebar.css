@@ -148,6 +148,8 @@
     padding: var(--sidebar-item-padding);
     border-radius: var(--style-border-radius);
 
+    cursor: pointer;
+
     transition: background-color
         var(--sidebar-item-background-transition-length);
 }
