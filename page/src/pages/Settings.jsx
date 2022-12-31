@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React from 'react';
+import { useState, useRef } from 'react';
 import config from '../config.json';
 
 import icon_arrow_down from '../images/icons/other/arrow_down.svg';
@@ -10,6 +11,8 @@ const webserver_ip = 'http://10.250.3.99:7891/';
 const ignored_settings = [];
 
 const Settings = ({ theme, setTheme }) => {
+    const iframeRef = useRef(null);
+
     const toggleTheme = () => {
         switch (theme) {
             case config.themes.light:
@@ -127,29 +130,24 @@ const Settings = ({ theme, setTheme }) => {
             <hr />
             <h2>Raw data</h2>
             <div>
-                <div
-                    style={{
-                        display: 'flex',
-                    }}
-                >
+                <div>
                     <button
                         className="btn"
                         onClick={() => {
-                            var iframe =
-                                document.getElementById('server_iframe');
-                            iframe.src = iframe.src;
+                            iframeRef.current.contentWindow.location.reload();
                         }}
                     >
                         Refresh
                     </button>
-                    <a href={webserver_ip} target={'_blank'}>
+                    <a href={webserver_ip} target={'_blank'} rel="noreferrer">
                         <button className="btn">Open in new page</button>
                     </a>
                 </div>
                 <iframe
+                    title="webserver_collection"
                     id="server_iframe"
                     src={webserver_ip}
-                    frameborder="0"
+                    ref={iframeRef}
                 ></iframe>
             </div>
         </div>
