@@ -2,6 +2,11 @@
     --room-selector-padding: var(--style-input-padding);
 }
 
+.rooms {
+    display: flex;
+    flex-direction: column;
+}
+
 .App.theme-dark .room-selector {
     background-color: var(--theme-dark-gray-color-4);
     color: var(--theme-dark-font-color);

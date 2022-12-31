@@ -1,4 +1,6 @@
 .canvas {
+    align-self: center;
+
     border-radius: 5px;
     border: var(--style-border);
     box-shadow: var(--style-box-shadow);
