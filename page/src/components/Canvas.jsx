@@ -7,7 +7,6 @@ import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 const padding = 30;
 const scale = 0.5;
 
-
 // const ROOM_WALL_COLOR = 'hsl(30, 30%, 50%)';
 const ROOM_WALL_COLOR = 'var(--style-brown)';
 const ROOM_WALL_WIDTH = '4px';
@@ -35,23 +34,23 @@ let moveDot = moveDotDefault;
 //     },
 // ];
 
-const emptyDotsInfo = {
-    focusedDot: {
-        x: 0,
-        y: 0,
-    },
-    visibible: false,
-    x: 0,
-    y: 0,
-    dot: {
-        x: 0,
-        y: 0,
-        name: '',
-        addr: '',
-    },
-    type: 'None',
-    selectedDot: null,
-};
+// const emptyDotsInfo = {
+//     focusedDot: {
+//         x: 0,
+//         y: 0,
+//     },
+//     visibible: false,
+//     x: 0,
+//     y: 0,
+//     dot: {
+//         x: 0,
+//         y: 0,
+//         name: '',
+//         addr: '',
+//     },
+//     type: 'None',
+//     selectedDot: null,
+// };
 
 const Canvas = ({ collection, websocket, room }) => {
     const Dot = useMemo(() => {
@@ -78,23 +77,23 @@ const Canvas = ({ collection, websocket, room }) => {
                             const scrollTop = canvas.scrollTop;
                             const scrollLeft = canvas.scrollLeft;
 
-                            setDotInfo({
-                                focusedDot: {
-                                    x: eve_clientX + scrollLeft,
-                                    y: eve_clientY + scrollTop,
-                                },
-                                visibible: true,
-                                x: eve_clientX,
-                                y: eve_clientY,
-                                dot: {
-                                    name: this.name,
-                                    addr: this.addr,
-                                    x: this.x,
-                                    y: this.y,
-                                },
-                                type: this.type,
-                                selectedDot: this,
-                            });
+                            // setDotInfo({
+                            //     focusedDot: {
+                            //         x: eve_clientX + scrollLeft,
+                            //         y: eve_clientY + scrollTop,
+                            //     },
+                            //     visibible: true,
+                            //     x: eve_clientX,
+                            //     y: eve_clientY,
+                            //     dot: {
+                            //         name: this.name,
+                            //         addr: this.addr,
+                            //         x: this.x,
+                            //         y: this.y,
+                            //     },
+                            //     type: this.type,
+                            //     selectedDot: this,
+                            // });
                         }}
                     >
                         <circle
@@ -154,23 +153,24 @@ const Canvas = ({ collection, websocket, room }) => {
 
     const svgRef = useRef(null);
     const canvasRef = useRef(null);
-    const dotInfoRef = useRef(null);
+    // const dotInfoRef = useRef(null);
     const [dots, setDots] = useState([]);
     // const [sateliteDots, setSateliteDots] = useState([]);
-    const [dotInfo, setDotInfo] = useState(emptyDotsInfo);
+    // const [dotInfo, setDotInfo] = useState(emptyDotsInfo);
 
     useEffect(() => {
         setDots(() => {
             const sats = [];
-            for (const col of collection) {
+            for (const col of Object.keys(collection)) {
                 const s = new Satelite(
-                    col.satelite.x,
-                    col.satelite.y,
-                    col.satelite.name,
-                    col.satelite.mac
+                    collection[col].sat?.x,
+                    collection[col].sat?.y,
+                    collection[col].sat.name,
+                    collection[col].sat.mac
                 );
-                for (const dev of col.devices) {
-                    s.addDevice(new Device(dev.name, dev.addr, dev.rssi));
+                for (const dev of collection[col].devs) {
+                    // console.log(dev);
+                    // s.addDevice(new Device(dev.name, dev.addr, dev.rssi));
                 }
                 sats.push(s);
             }
@@ -192,7 +192,7 @@ const Canvas = ({ collection, websocket, room }) => {
 
         return (
             <div
-                ref={dotInfoRef}
+                // ref={dotInfoRef}
                 className="dotInfo"
                 style={{
                     left: x,
@@ -283,18 +283,18 @@ const Canvas = ({ collection, websocket, room }) => {
             moveDot = moveDotDefault;
         }
 
-        setDotInfo(emptyDotsInfo);
+        // setDotInfo(emptyDotsInfo);
     };
 
     const HandleScroll = (event) => {
         const scrollTop = event.currentTarget.scrollTop;
         const scrollLeft = event.currentTarget.scrollLeft;
 
-        setDotInfo((prev) => {
-            prev.x = prev.focusedDot.x - scrollLeft;
-            prev.y = prev.focusedDot.y - scrollTop;
-            return prev;
-        });
+        // setDotInfo((prev) => {
+        //     prev.x = prev.focusedDot.x - scrollLeft;
+        //     prev.y = prev.focusedDot.y - scrollTop;
+        //     return prev;
+        // });
     };
 
     const MoveDot = (event, dot) => {
@@ -331,7 +331,8 @@ const Canvas = ({ collection, websocket, room }) => {
                         width={(maxX + padding + padding) / 2 + padding}
                     >
                         {drawRoom(room.corners)}
-                        {/* {dots.map((dot, i) => {
+                        {/* 
+                        {dots.map((dot, i) => {
                         for (const dev of dot.devices) {
                             if (dev.mac !== '00:04:4b:84:44:74') break;
 
@@ -351,14 +352,15 @@ const Canvas = ({ collection, websocket, room }) => {
                                         );
                         }
                         return <></>;
-                    })} */}
+                        })} 
+                        */}
                         {dots.map((dot, i) => {
                             return dot.getDotSVG(i);
                         })}
                     </svg>
                 )}
             </div>
-            <DotInfo {...dotInfo} />
+            {/* <DotInfo {...dotInfo} /> */}
             <hr />
         </>
     );

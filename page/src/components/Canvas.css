@@ -28,9 +28,10 @@ div.dotInfo {
     justify-content: center;
     row-gap: 3px;
 
-    background-color: white;
+    /* background-color: white; */
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: 1px solid var(--style-brown-4);
     padding: 6px;
     white-space: nowrap;
 
@@ -50,16 +51,23 @@ div.dotInfo div.info {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+    column-gap: 6px;
 
     border-radius: 5px;
-    padding: 5px 0;
+    padding: 10px;
 
     width: 100%;
 
     user-select: none;
 }
+.App.theme-dark .dotInfo .dotInfo-button img{
+    filter: invert(1);
+}
 
-.dotInfo .dotInfo-button:hover {
+.App.theme-light .dotInfo .dotInfo-button:hover {
     background-color: rgb(220, 220, 220);
+}
+.App.theme-dark .dotInfo .dotInfo-button:hover {
+    background-color: var(--style-brown-6);
 }
