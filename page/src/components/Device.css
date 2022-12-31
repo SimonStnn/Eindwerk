@@ -55,6 +55,7 @@
     flex-direction: row;
     text-align: center;
     justify-content: left;
+    padding: 1px 6px;
 }
 .device div.classes div {
     margin: 0 6px 0 3px;
