@@ -37,10 +37,10 @@
     margin-left: 24px;
 }
 
-.App.theme-light .settings .toggle-theme {
+.App.theme-light .settings .btn {
     background-color: var(--theme-light-white-color-e);
 }
-.App.theme-dark .settings .toggle-theme {
+.App.theme-dark .settings .btn {
     color: var(--theme-dark-font-color);
     background-color: var(--theme-dark-gray-color-4);
 }
@@ -219,4 +219,10 @@ input:checked + .slider:before {
 
 .settings .toggle-button.flipped {
     transform: rotate(180deg);
+}
+.settings iframe {
+    width :100%;
+    height: 500px;
+    padding: 0 0 50px 0;
+    user-select: none;
 }
