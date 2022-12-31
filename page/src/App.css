@@ -12,6 +12,8 @@
     display: flex;
     margin: 0;
     padding: 0;
+
+    transition: background-color .2s;
 }
 
 .App.theme-dark {
