@@ -46,7 +46,7 @@
     user-select: none;
 
     transition: width var(--sidebar-transition-length)
-        var(--sidebar-transition-timing-function);
+        var(--sidebar-transition-timing-function), background-color .2s;
 }
 
 .sidebar .logo {
