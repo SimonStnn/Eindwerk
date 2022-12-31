@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import config from './config.json';
 import Sidebar from './components/Sidebar';
@@ -10,47 +10,46 @@ import Components from './pages/Components';
 import Settings from './pages/Settings';
 
 const THEME_DEFAULT = config.themes.dark;
+const WEBSOCKET_URL = `${
+    config.websocket.url
+}:${config.websocket.port.toString()}`;
 
 function App() {
     const [theme, setTheme] = useState(THEME_DEFAULT);
 
-    const [collection, setCollection] = useState([]);
-    const websocket = new WebSocket(config.websocket.url);
-    const [satelites, setSatelites] = useState([]);
-    const [devices, setDevices] = useState([]);
+    const [collection, setCollection] = useState({});
 
-    websocket.onopen = (e) => {
-        console.log("Connected to websocket: ", config.websocket.url);
-        websocket.send('ROLE=client');
-    };
+    useEffect(() => {
+        const websocket = new WebSocket(WEBSOCKET_URL);
+        websocket.onopen = (e) => {
+            console.log('Connected to websocket: ', WEBSOCKET_URL);
+            websocket.send('REQ=collection');
+        };
 
-    websocket.onmessage = ({ data }) => {
-        if (data.toLowerCase() === 'received') return;
-        data = JSON.parse(data);
-        console.log(data);
+        websocket.onmessage = ({ data }) => {
+            if (data.toLowerCase() === 'received') return;
 
-        setCollection(() => {
-            const col = [...collection];
-            for (let i in col) {
-                if (col[i].satelite.mac === data.satelite.mac) {
-                    col.splice(i, 1);
-                    break;
-                }
+            if (data.startsWith('{') && data.endsWith('}')) {
+                data = JSON.parse(data);
+                // console.log(data);
+
+                setCollection(data);
             }
-            col.push(data);
-            return col;
-        });
-
-        const sats = [];
-        const devs = [];
-        for (let col of collection) {
-            sats.push(col.satelite);
-            devs.push(...col.devices);
-        }
-
-        setSatelites(data.satelite ? sats : satelites);
-        setDevices(data.devices ? devs : devices);
-    };
+        };
+        // Clean up the WebSocket connection when the component unmounts
+        return () => {
+            console.log('Disconnected from websocket');
+            /* 
+            When the page loads the app component unmounts 
+            and remounts causing the websocket to close 
+            before a connection can be established. I added 
+            this temporary setTimeout to prevent this warning.
+            */
+            setTimeout(() => {
+                websocket.close();
+            }, 80);
+        };
+    }, []);
 
     return (
         <div className={'App theme-' + theme}>
@@ -64,18 +63,14 @@ function App() {
                             element={
                                 <Rooms
                                     collection={collection}
-                                    websocket={websocket}
+                                    // websocket={websocket}
                                 />
+                                // null
                             }
                         />
                         <Route
                             path="/discover"
-                            element={
-                                <Discover
-                                    devices={devices}
-                                    satelites={satelites}
-                                />
-                            }
+                            element={<Discover collection={collection} />}
                         />
                         <Route path="/components" element={<Components />} />
                         <Route
@@ -87,8 +82,6 @@ function App() {
                     </Routes>
                 </div>
             </div>
-            {/* </div> */}
-            {/* </ThemeContext.Provider> */}
         </div>
     );
 }
