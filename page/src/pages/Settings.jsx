@@ -5,6 +5,7 @@ import icon_arrow_down from '../images/icons/other/arrow_down.svg';
 
 // import icon_plus from '../images/icons/other/plus.svg';
 
+const webserver_ip = 'http://10.250.3.99:7891/';
 // const ignored_settings = ['showNames'];
 const ignored_settings = [];
 
@@ -53,7 +54,7 @@ const Settings = ({ theme, setTheme }) => {
                             <button
                                 className={`toggle-button ${
                                     collapse ? 'flipped' : ''
-                                    }`}
+                                }`}
                                 value={true}
                                 onClick={(e) => setCollapse(!collapse)}
                             >
@@ -123,6 +124,34 @@ const Settings = ({ theme, setTheme }) => {
             <p>Changes will not be applied.</p>
             <h2>Config file</h2>
             <div className="config">{FormatObject(config)}</div>
+            <hr />
+            <h2>Raw data</h2>
+            <div>
+                <div
+                    style={{
+                        display: 'flex',
+                    }}
+                >
+                    <button
+                        className="btn"
+                        onClick={() => {
+                            var iframe =
+                                document.getElementById('server_iframe');
+                            iframe.src = iframe.src;
+                        }}
+                    >
+                        Refresh
+                    </button>
+                    <a href={webserver_ip} target={'_blank'}>
+                        <button className="btn">Open in new page</button>
+                    </a>
+                </div>
+                <iframe
+                    id="server_iframe"
+                    src={webserver_ip}
+                    frameborder="0"
+                ></iframe>
+            </div>
         </div>
     );
 };
