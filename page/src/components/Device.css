@@ -1,6 +1,7 @@
 :root {
     --device-margin: 10px 5px;
     --device-width: 300px;
+    --device-height:90px;
     --device-address-max-width: 50px;
     --device-box-shadow: rgba(0, 0, 0, 0.4) 0px 3px 8px;
     --device-border-radius: var(--style-border-radius);
