@@ -67,6 +67,8 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
                             <div>{dot.addr}</div>
                         </div>
                         <div>Type: {dot.type}</div>
+                        <div>X: {dot.x}</div>
+                        <div>Y: {dot.y}</div>
                         <hr />
                         <div className="title">
                             <div>Actions</div>
