@@ -1,23 +1,27 @@
 :root {
     --dot-info-container-width: 70%;
     --dot-info-container-height: var(--dot-info-container-width);
-    --dot-info-disapear-scale:.3;
-    --dot-info-appear-transition-length: .2s;
-    --dot-info-content-padding : 50px;
+    --dot-info-background-color-dark: var(--theme-dark-gray-color-4);
+    --dot-info-background-color-light: var(--theme-light-white-color-e);
+    --dot-info-disapear-scale: 0.3;
+    --dot-info-appear-transition-length: 0.2s;
+    --dot-info-content-padding: 50px;
 
     --dot-info-background-overlay-color: rgba(0, 0, 0, 0.4);
 
     --dot-info-close-icon-margin: 8px;
     --dot-info-close-icon-padding: var(--sidebar-item-padding);
     --dot-info-close-icon-hover-scale: var(--sidebar-item-icon-hover-scale);
-    --dot-info-close-icon-hover-transition-length:var(--sidebar-item-background-transition-length);
+    --dot-info-close-icon-hover-transition-length: var(
+        --sidebar-item-background-transition-length
+    );
 }
 
 .App.theme-dark .dot-info-background .dot-info-container {
-    background-color: var(--theme-dark-gray-color-4);
+    background-color: var(--dot-info-background-color-dark);
 }
 .App.theme-light .dot-info-background .dot-info-container {
-    background-color: var(--theme-light-white-color-e);
+    background-color: var(--dot-info-background-color-light);
 }
 
 .dot-info-background .dot-info-container {
@@ -68,7 +72,6 @@
     height: calc(100% - var(--dot-info-content-padding));
     width: calc(100% - var(--dot-info-content-padding));
 }
-
 .dot-info-content-wrapper div.close-icon {
     display: flex;
     justify-content: center;
@@ -99,15 +102,6 @@
     transform: scale(var(--dot-info-close-icon-hover-scale));
 }
 
-.dot-info-content-wrapper .content {
-    flex-grow: 1;
-    max-width: 100%;
-    overflow: hidden;
-}
-.dot-info-content-wrapper .content hr {
-    margin: 15px 0;
-}
-
 .dot-info-content-wrapper .title {
     display: flex;
     flex-direction: column;
@@ -118,32 +112,53 @@
     font-size: large;
     margin-bottom: 15px;
 }
+.dot-info-content-wrapper .content {
+    flex-grow: 1;
+    max-width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.App.theme-dark .dot-info-content-wrapper .content::-webkit-scrollbar-thumb {
+    border: 3px solid var(--dot-info-background-color-dark);
+}
+
+.App.theme-light .dot-info-content-wrapper .content::-webkit-scrollbar-thumb {
+    border: 3px solid var(--dot-info-background-color-light);
+}
+
+.dot-info-content-wrapper .content hr {
+    margin: 15px 0;
+}
 
 .dot-info-content-wrapper .found-devices-wrapper {
     overflow-y: auto;
     max-height: 200px;
+}
+.App.theme-dark .dot-info-content-wrapper .content .box {
+    background-color: var(--theme-dark-gray-color-3);
+}
+.App.theme-light .dot-info-content-wrapper .content .box {
+    background-color: var(--theme-light-white-color-d);
+}
+
+.dot-info-content-wrapper .content .box {
+    min-height: 40px;
+
+    padding: 15px;
 
     border: 1px solid var(--style-brown-6);
     border-radius: var(--style-border-radius);
     box-shadow: var(--style-box-shadow);
 }
-.dot-info-content-wrapper .device-container.found {
-    margin: 30px 0;
-}
-.App.theme-dark .dot-info-content-wrapper .found-devices-wrapper {
-    background-color: var(--theme-dark-gray-color-3);
-}
-.App.theme-light .dot-info-content-wrapper .found-devices-wrapper {
-    background-color: var(--theme-light-white-color-d);
-}
 
-.App.theme-dark .dot-info-content-wrapper .content .dot-info-btn {
-    background-color: var(--theme-dark-gray-color-5);
+.dot-info-content-wrapper .content .action-btns {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
 }
-.App.theme-light .dot-info-content-wrapper .content .dot-info-btn {
-    background-color: var(--theme-light-white-color-d);
-}
-
 .dot-info-content-wrapper .content .dot-info-btn {
     display: flex;
     flex-direction: row;
@@ -157,4 +172,10 @@
     width: fit-content;
 
     cursor: pointer;
+}
+.App.theme-dark .dot-info-content-wrapper .content .dot-info-btn {
+    background-color: var(--theme-dark-gray-color-5);
+}
+.App.theme-light .dot-info-content-wrapper .content .dot-info-btn {
+    background-color: var(--theme-light-white-color-d);
 }

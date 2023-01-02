@@ -35,6 +35,8 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
         console.log('Click on the position where the dot is located.');
     };
 
+    const handleChangeDotRoom = (e) => {};
+
     const handleCloseDotInfo = (e) => {
         setShowDotInfo(false);
     };
@@ -42,7 +44,16 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
     const Button = ({ icon, text, cb }) => {
         return (
             <div className="dot-info-btn btn" onClick={cb}>
-                <img src={icon} alt={`icon_${text}`} />
+                <img className="icon" src={icon} alt={`icon_${text}`} />
+                <div>{text}</div>
+            </div>
+        );
+    };
+
+    const DropDown = ({ icon, text, cb }) => {
+        return (
+            <div className="dot-info-btn btn" onClick={cb}>
+                <img className="icon" src={icon} alt={`icon_${text}`} />
                 <div>{text}</div>
             </div>
         );
@@ -58,17 +69,28 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
                             <div>{dot.addr}</div>
                         </div>
                         <div>Type: {dot.type}</div>
-                        <Button
-                            icon={icon_cross}
-                            text={'Update Satellite Position'}
-                            cb={handleUpdateDotPosition}
-                        />
+                        <hr />
+                        <div className="title">
+                            <div>Actions</div>
+                        </div>
+                        <div className="action-btns box">
+                            <Button
+                                icon={icon_cross}
+                                text={'Update Satellite Position'}
+                                cb={handleUpdateDotPosition}
+                            />
+                            <DropDown
+                                icon={icon_cross}
+                                text={'Change room'}
+                                cb={handleChangeDotRoom}
+                            />
+                        </div>
                         <hr />
                         <div className="found-devices">
                             <div className="title">
                                 <div>Found Devices</div>
                             </div>
-                            <div className="found-devices-wrapper">
+                            <div className="found-devices-wrapper box">
                                 <div className="device-container found">
                                     {dot.devices.map((dev, i) => {
                                         return (
