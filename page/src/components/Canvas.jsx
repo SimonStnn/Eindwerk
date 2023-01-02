@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 
+import DotInfo from './DotInfo';
+
 const padding = 30;
 const scale = 0.5;
 
@@ -11,9 +13,24 @@ const ROOM_FILL = '#444';
 const dot_radius = 8;
 
 const Canvas = ({ collection, websocket, room }) => {
+    const [showDotInfo, setShowDotInfo] = useState(false);
+    const [dotInfoDot, setDotInfoDot] = useState(null);
+    const [waitingForRoomClick, setWaitingForRoomClick] = useState(false);
+    const [updatePosition, setUpdatePosition] = useState({
+        dot: null,
+        bool: false,
+    });
+    const [dots, setDots] = useState([]);
+
     const Dot = useMemo(() => {
+        const handleDotClick = (dot, event) => {
+            setShowDotInfo(true);
+            setDotInfoDot(dot);
+        };
+
         return class Dot {
-            constructor(x, y) {
+            constructor(room, x, y) {
+                this.room = room;
                 this.x = x;
                 this.y = y;
                 this.moveble = false;
@@ -27,15 +44,9 @@ const Canvas = ({ collection, websocket, room }) => {
                     <g
                         key={i}
                         onClick={(event) => {
-                            handleDotClick(this, event)
-                            // const eve_clientX = event.clientX;
-                            // const eve_clientY = event.clientY;
-                            // const canvas =
-                            //     event.target.parentElement.parentElement
-                            //         .parentElement;
-                            // const scrollTop = canvas.scrollTop;
-                            // const scrollLeft = canvas.scrollLeft;
+                            handleDotClick(this, event);
                         }}
+                        className={'dot'}
                     >
                         <circle
                             cx={x}
@@ -54,8 +65,9 @@ const Canvas = ({ collection, websocket, room }) => {
 
     const Satelite = useMemo(() => {
         return class Satelite extends Dot {
-            constructor(x, y, name, addr) {
-                super(x, y, name, addr);
+            constructor(room, x, y, name, addr) {
+                super(x, y, name, addr, room);
+                this.room = room;
                 this.x = x;
                 this.y = y;
                 this.name = name;
@@ -67,49 +79,55 @@ const Canvas = ({ collection, websocket, room }) => {
             addDevice(dev) {
                 this.devices.push(dev);
             }
-            setPosition(x, y) {
-                this.x = x;
-                this.y = y;
+            setPosition(room, x, y) {
+                this.room = room;
+                this.x = Math.floor(x);
+                this.y = Math.floor(y);
+
+                websocket.send(
+                    `UPDATE_POS=${this.addr}&${this.room}&${this.x}&${this.y}`
+                );
             }
         };
-    }, [Dot]);
+    }, [Dot, websocket]);
 
     const Device = useMemo(() => {
         return class Device extends Dot {
-            constructor(name, mac, rssi) {
-                super(name, mac, rssi);
+            constructor(name, addr, clas, rssi, room) {
+                super(name, addr, rssi);
                 this.x = null;
                 this.y = null;
                 this.name = name;
-                this.mac = mac;
+                this.addr = addr;
+                this.clas = clas;
                 this.rssi = rssi;
+                this.room = room;
                 this.moveble = false;
             }
         };
     }, [Dot]);
-
-    const handleDotClick = (dot, event) => {
-        console.log('dot clicked', dot);
-    }
-
-    // const updatePosition = (addr, x, y) => {
-    //     websocket.send(`UPDATE_POSITION=${addr}&${x}&${y}`);
-    // };
-
-    const [dots, setDots] = useState([]);
 
     useEffect(() => {
         setDots(() => {
             const sats = [];
             for (const col of Object.keys(collection)) {
                 const s = new Satelite(
+                    collection[col].sat?.room,
                     collection[col].sat?.x,
                     collection[col].sat?.y,
                     collection[col].sat.name,
-                    collection[col].sat.mac
+                    collection[col].sat.addr
                 );
                 for (const dev of collection[col].devs) {
-                    s.addDevice(new Device(dev.name, dev.addr, dev.rssi));
+                    s.addDevice(
+                        new Device(
+                            dev.name,
+                            dev.addr,
+                            dev.clas,
+                            dev.rssi,
+                            collection[col].sat?.room
+                        )
+                    );
                 }
                 sats.push(s);
             }
@@ -118,6 +136,19 @@ const Canvas = ({ collection, websocket, room }) => {
     }, [collection, Satelite, Device]);
 
     const drawRoom = (points) => {
+        const handleRoomClick = (event) => {
+            if (!waitingForRoomClick) return;
+            setWaitingForRoomClick(false);
+
+            const svgRect = event.currentTarget.getBoundingClientRect();
+            const x = event.clientX - svgRect.left;
+            const y = event.clientY - svgRect.top;
+            console.log(
+                `Clicked at position: (${Math.floor(x)}, ${Math.floor(y)})`
+            );
+
+            updatePosition.dot.setPosition(room.name, x, y);
+        };
         return (
             <polygon
                 points={points.map((point) => {
@@ -128,6 +159,7 @@ const Canvas = ({ collection, websocket, room }) => {
                 stroke={ROOM_WALL_COLOR}
                 strokeWidth={ROOM_WALL_WIDTH}
                 fill={ROOM_FILL}
+                onClick={handleRoomClick}
             />
         );
     };
@@ -141,11 +173,7 @@ const Canvas = ({ collection, websocket, room }) => {
 
     return (
         <>
-            <div
-                className="canvas"
-                // onScroll={HandleScroll}
-                // onClick={HandleClick}
-            >
+            <div className="canvas">
                 {isRoomAvailable(room) ? (
                     <div className="no-room">This room is not available.</div>
                 ) : (
@@ -154,11 +182,22 @@ const Canvas = ({ collection, websocket, room }) => {
                         width={(maxX + padding + padding) * scale + padding}
                     >
                         {drawRoom(room.corners)}
-                        {dots.map((dot, i) => {
+                            {dots.map((dot, i) => {
+                            if (dot.room !== room.name && dot.room !== undefined) return null;
                             return dot.getDotSVG(i);
                         })}
                     </svg>
                 )}
+                <DotInfo
+                    websocket={websocket}
+                    showDot={[showDotInfo, setShowDotInfo]}
+                    waitRoomClick={[
+                        waitingForRoomClick,
+                        setWaitingForRoomClick,
+                    ]}
+                    updatePos={[updatePosition, setUpdatePosition]}
+                    dot={dotInfoDot}
+                />
             </div>
             <hr />
         </>

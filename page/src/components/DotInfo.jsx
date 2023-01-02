@@ -1,130 +1,101 @@
 import React from 'react';
+// import { useState, useEffect } from 'react';
 
 // import icon_move from '../images/icons/canvas/move.svg';
 // import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
+import icon_cross from '../images/icons/canvas/cross.svg';
+import Device from './Device';
 
-const DotInfo = ({ x, y, visibible, type, dot, selectedDot }) => {
-    // const emptyDotsInfo = {
-    //     focusedDot: {
-    //         x: 0,
-    //         y: 0,
-    //     },
-    //     visibible: false,
-    //     x: 0,
-    //     y: 0,
-    //     dot: {
-    //         x: 0,
-    //         y: 0,
-    //         name: '',
-    //         addr: '',
-    //     },
-    //     type: 'None',
-    //     selectedDot: null,
-    // };
-    // const HandleClick = (event) => {
-    //     if (event.target.parentElement.localName === 'g') return;
-    //     const canvas = event.target.parentElement.parentElement;
-    //     const container =
-    //         event.target.parentElement.parentElement.parentElement
-    //             .parentElement;
-    //     const svg = svgRef.current;
-    //     const eve_clientX = event.clientX;
-    //     const eve_clientY = event.clientY;
-    //     const eve_offsetLeft = svg.parentElement.offsetLeft;
-    //     const eve_offsetTop = svg.parentElement.offsetTop;
-    //     const svg_width = svg.clientWidth;
-    //     const svg_height = svg.clientHeight;
-    //     const par_width = event.target.parentElement.clientWidth;
-    //     const par_height = event.target.parentElement.clientHeight;
+const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
+    // Component doesn't render when the page loads, causing the appear transition not to work the first time
+    // const [isVisible, setIsVisible] = useState(false);
 
-    //     if (moveDot[0] !== null) {
-    //         const [, dot] = moveDot;
+    // useEffect(() => {
+    //     setIsVisible(true);
+    // }, []);
 
-    //         dot.setPosition(
-    //             Math.floor(
-    //                 ((eve_clientX - eve_offsetLeft) * svg_width) / par_width +
-    //                     canvas.scrollLeft +
-    //                     container.scrollLeft -
-    //                     dot_radius * 1.6
-    //             ),
-    //             Math.floor(
-    //                 ((eve_clientY - eve_offsetTop) * svg_height) / par_height +
-    //                     canvas.scrollTop +
-    //                     container.scrollTop -
-    //                     dot_radius * 1.6
-    //             )
-    //         );
-    //         updatePosition(dot.addr, dot.x, dot.y);
-    //         moveDot = moveDotDefault;
-    //     }
+    // if (!isVisible) {
+    //     return null;
+    // }
 
-    //     // setDotInfo(emptyDotsInfo);
-    // };
+    if (dot === null) return null;
 
-    // const HandleScroll = (event) => {
-    //     const scrollTop = event.currentTarget.scrollTop;
-    //     const scrollLeft = event.currentTarget.scrollLeft;
+    const [showDotInfo, setShowDotInfo] = showDot;
+    const [, setWaitingForRoomClick] = waitRoomClick;
+    const [, setUpdatePosition] = updatePos;
 
-    //     // setDotInfo((prev) => {
-    //     //     prev.x = prev.focusedDot.x - scrollLeft;
-    //     //     prev.y = prev.focusedDot.y - scrollTop;
-    //     //     return prev;
-    //     // });
-    // };
+    const handleUpdateDotPosition = (e) => {
+        // Show a notification at the top of the screen to let users know they have to click on the position in the room where the dot is located.
+        setWaitingForRoomClick(true);
+        setUpdatePosition({
+            dot,
+            bool: true,
+        });
+        handleCloseDotInfo(e);
+        console.log('Click on the position where the dot is located.');
+    };
 
-    // const Button = ({ img, text, onClick }) => {
-    //     return (
-    //         <>
-    //             <div className="dotInfo-button" onClick={onClick}>
-    //                 <img src={img} alt={`${text} Icon`} />
-    //                 <div>{text}</div>
-    //             </div>
-    //         </>
-    //     );
-    // };
+    const handleCloseDotInfo = (e) => {
+        setShowDotInfo(false);
+    };
 
-    // return (
-    //     <div
-    //         // ref={dotInfoRef}
-    //         className="dotInfo"
-    //         style={{
-    //             left: x,
-    //             top: y,
-    //             visibility: visibible ? 'visible' : 'hidden',
-    //         }}
-    //     >
-    //         <div className="title">{type}</div>
-    //         <div className="info">
-    //             <div>{dot.name}</div>
-    //             <div>{dot.addr}</div>
-    //         </div>
-    //         <div>
-    //             Position: {dot.x ? Math.floor(dot.x) : '?'},{' '}
-    //             {dot.y ? Math.floor(dot.y) : '?'}
-    //         </div>
-    //         {selectedDot?.moveble ? (
-    //             <>
-    //                 <Button
-    //                     img={icon_move}
-    //                     text={'Move'}
-    //                     onClick={(event) => MoveDot(event, selectedDot)}
-    //                 />
-    //                 <Button
-    //                     img={icon_movetoRoom}
-    //                     text={'To new room'}
-    //                     onClick={() => {}}
-    //                 />
-    //             </>
-    //         ) : (
-    //             <></>
-    //         )}
-    //     </div>
-    //);
+    const Button = ({ icon, text, cb }) => {
+        return (
+            <div className="dot-info-btn btn" onClick={cb}>
+                <img src={icon} alt={`icon_${text}`} />
+                <div>{text}</div>
+            </div>
+        );
+    };
 
-
-    return <div>
-        Hello world
-    </div>
+    return (
+        <div className={`dot-info-background ${showDotInfo ? 'visible' : ''}`}>
+            <div className="dot-info-container">
+                <div className="dot-info-content-wrapper">
+                    <div className="content">
+                        <div className="title">
+                            <div>{dot.name}</div>
+                            <div>{dot.addr}</div>
+                        </div>
+                        <div>Type: {dot.type}</div>
+                        <Button
+                            icon={icon_cross}
+                            text={'Update Satellite Position'}
+                            cb={handleUpdateDotPosition}
+                        />
+                        <hr />
+                        <div className="found-devices">
+                            <div className="title">
+                                <div>Found Devices</div>
+                            </div>
+                            <div className="found-devices-wrapper">
+                                <div className="device-container found">
+                                    {dot.devices.map((dev, i) => {
+                                        return (
+                                            <Device
+                                                name={dev.name}
+                                                addr={dev.addr}
+                                                clas={dev.clas}
+                                                rssi={dev.rssi}
+                                                key={i}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="close-icon" onClick={handleCloseDotInfo}>
+                        <img
+                            className="icon"
+                            src={icon_cross}
+                            alt="Close-dotinfo"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
-export default DotInfo;  
+export default DotInfo;

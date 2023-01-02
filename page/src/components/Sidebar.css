@@ -7,6 +7,7 @@
     --sidebar-hr-color: var(--style-brown-6);
     --sidebar-item-margin: 3px 8px;
     --sidebar-item-padding: 12px;
+    --sidebar-item-icon-hover-scale:1.15;
     --sidebar-item-background-transition-length: 0.2s;
     --sidebar-font-size: 18px;
     --sidebar-logo-col-gap: 20px;
@@ -128,10 +129,10 @@
 .sidebar .items .sidebar-item.active img,
 .sidebar .width-toggle:hover img,
 .sidebar .items .sidebar-item:hover img {
-    transform: scale(1.15);
+    transform: scale(var(--sidebar-item-icon-hover-scale));
 }
 .sidebar.open .width-toggle:hover img {
-    transform: scaleX(-1) scale(1.15);
+    transform: scaleX(-1) scale(var(--sidebar-item-icon-hover-scale));
 }
 
 .sidebar a {
