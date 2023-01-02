@@ -11,6 +11,7 @@
     "rooms": {
         "sort_alphabetical": true,
         "test_room": {
+            "name":"test_room",
             "corners": [
                 {
                     "x": 0,
@@ -35,9 +36,11 @@
             ]
         },
         "Empty room": {
+            "name": "Empty room",
             "corners": []
         },
         "Living": {
+            "name": "Living",
             "corners": [
                 {
                     "x": 0,
@@ -74,6 +77,7 @@
             ]
         },
         "Froidchapelle": {
+            "name": "Froidchapelle",
             "corners": [
                 {
                     "x": 0,
@@ -110,6 +114,7 @@
             ]
         },
         "Klaslokaal": {
+            "name":"Klaslokaal",
             "corners": []
         }
     }
