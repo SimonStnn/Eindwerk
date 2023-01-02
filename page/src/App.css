@@ -13,9 +13,12 @@
     margin: 0;
     padding: 0;
 
-    transition: background-color .2s;
+    transition: background-color 0.2s;
 }
 
+.App.theme-dark img.icon {
+    filter: invert(1);
+}
 .App.theme-dark {
     background-color: var(--theme-dark-gray-color-3);
     color: var(--theme-dark-font-color);

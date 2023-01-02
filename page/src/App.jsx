@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import config from './config.json';
 import Sidebar from './components/Sidebar';
@@ -16,11 +16,12 @@ const WEBSOCKET_URL = `${
 
 function App() {
     const [theme, setTheme] = useState(THEME_DEFAULT);
-
+    const websocketRef = useRef(null);
     const [collection, setCollection] = useState({});
 
     useEffect(() => {
         const websocket = new WebSocket(WEBSOCKET_URL);
+        websocketRef.current = websocket;
         websocket.onopen = (e) => {
             console.log('Connected to websocket: ', WEBSOCKET_URL);
             websocket.send('REQ=collection');
@@ -45,12 +46,13 @@ function App() {
             before a connection can be established. I added 
             this temporary setTimeout to prevent this warning.
             */
-            setTimeout(() => {
+            // setTimeout(() => {
                 websocket.close();
-            }, 80);
+            // }, 80);
         };
     }, []);
 
+    const websocket = websocketRef.current;
     return (
         <div className={'App theme-' + theme}>
             <Sidebar />
@@ -63,9 +65,8 @@ function App() {
                             element={
                                 <Rooms
                                     collection={collection}
-                                    // websocket={websocket}
+                                    websocket={websocket}
                                 />
-                                // null
                             }
                         />
                         <Route
