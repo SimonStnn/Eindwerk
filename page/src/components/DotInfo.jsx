@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 // import icon_move from '../images/icons/canvas/move.svg';
 // import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
@@ -7,22 +7,20 @@ import icon_cross from '../images/icons/canvas/cross.svg';
 import Device from './Device';
 
 const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
-    // Component doesn't render when the page loads, causing the appear transition not to work the first time
-    // const [isVisible, setIsVisible] = useState(false);
-
-    // useEffect(() => {
-    //     setIsVisible(true);
-    // }, []);
-
-    // if (!isVisible) {
-    //     return null;
-    // }
-
-    if (dot === null) return null;
-
     const [showDotInfo, setShowDotInfo] = showDot;
     const [, setWaitingForRoomClick] = waitRoomClick;
     const [, setUpdatePosition] = updatePos;
+
+    if (dot === null)
+        return (
+            <div
+                className={`dot-info-background ${
+                    showDotInfo ? 'visible' : ''
+                }`}
+            >
+                <div className="dot-info-container"></div>
+            </div>
+        );
 
     const handleUpdateDotPosition = (e) => {
         // Show a notification at the top of the screen to let users know they have to click on the position in the room where the dot is located.
