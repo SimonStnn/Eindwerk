@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 
 // import icon_move from '../images/icons/canvas/move.svg';
 // import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
@@ -41,19 +40,25 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
 
     const Button = ({ icon, text, cb }) => {
         return (
-            <div className="dot-info-btn btn" onClick={cb}>
+            <button className="dot-info-btn btn" onClick={cb}>
                 <img className="icon" src={icon} alt={`icon_${text}`} />
                 <div>{text}</div>
-            </div>
+            </button>
         );
     };
 
-    const DropDown = ({ icon, text, cb }) => {
+    const DropDown = ({ icon, text, id, name, options, cb }) => {
         return (
-            <div className="dot-info-btn btn" onClick={cb}>
-                <img className="icon" src={icon} alt={`icon_${text}`} />
-                <div>{text}</div>
-            </div>
+            <select className="dot-info-btn btn" onClick={cb}>
+                <option value={text}>{text}</option>
+                {options.map((opt, i) => {
+                    return (
+                        <option value={opt} key={i}>
+                            {opt}
+                        </option>
+                    );
+                })}
+            </select>
         );
     };
 
@@ -82,6 +87,9 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
                             <DropDown
                                 icon={icon_cross}
                                 text={'Change room'}
+                                id={'change-room'}
+                                name={'change_room'}
+                                options={['hey', 'hoi', 'hallo']}
                                 cb={handleChangeDotRoom}
                             />
                         </div>
