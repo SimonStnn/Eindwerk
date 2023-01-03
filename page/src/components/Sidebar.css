@@ -63,18 +63,22 @@
     
     font-weight: bold;
     font-size: larger;
-
-    transition: justify-content 0.2s;
 }
+
+
 
 .sidebar .logo img {
     transform: scale(1.2);
-
+    
     transition: transform var(--sidebar-transition-length)
     var(--sidebar-transition-timing-function);
 }
+.sidebar .logo:hover img,
 .sidebar.open .logo img {
     transform: rotate(120deg) scale(1.2);
+}
+.sidebar.open .logo:hover img{
+    transform: rotate(240deg) scale(1.2);
 }
 
 
