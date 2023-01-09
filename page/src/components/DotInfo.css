@@ -85,6 +85,7 @@
 
     padding: var(--dot-info-close-icon-padding);
     border-radius: var(--style-border-radius);
+    background-color: inherit;
 
     transition: background-color
         var(--dot-info-close-icon-hover-transition-length);

@@ -5,10 +5,13 @@ import React from 'react';
 import icon_cross from '../images/icons/canvas/cross.svg';
 import Device from './Device';
 
-const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
+const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
+    const [dot, setDotInfoDot] = dotInfo
     const [showDotInfo, setShowDotInfo] = showDot;
     const [, setWaitingForRoomClick] = waitRoomClick;
     const [, setUpdatePosition] = updatePos;
+
+    const dot_type = dot?.constructor.name;
 
     if (dot === null)
         return (
@@ -20,6 +23,11 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
                 <div className="dot-info-container"></div>
             </div>
         );
+
+    const handleCloseDotInfo = (e) => {
+        setShowDotInfo(false);
+        setDotInfoDot(null)
+    };
 
     const handleUpdateDotPosition = (e) => {
         // Show a notification at the top of the screen to let users know they have to click on the position in the room where the dot is located.
@@ -33,10 +41,6 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
     };
 
     const handleChangeDotRoom = (e) => {};
-
-    const handleCloseDotInfo = (e) => {
-        setShowDotInfo(false);
-    };
 
     const Button = ({ icon, text, cb }) => {
         return (
@@ -71,49 +75,60 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dot }) => {
                             <div>{dot.name}</div>
                             <div>{dot.addr}</div>
                         </div>
-                        <div>Type: {dot.type}</div>
+                        <div>Type: {dot_type}</div>
                         <div>X: {dot.x}</div>
                         <div>Y: {dot.y}</div>
+                        <div>Radius: {dot.radius}</div>
                         <hr />
                         <div className="title">
                             <div>Actions</div>
                         </div>
                         <div className="action-btns box">
-                            <Button
-                                icon={icon_cross}
-                                text={'Update Satellite Position'}
-                                cb={handleUpdateDotPosition}
-                            />
-                            <DropDown
-                                icon={icon_cross}
-                                text={'Change room'}
-                                id={'change-room'}
-                                name={'change_room'}
-                                options={['hey', 'hoi', 'hallo']}
-                                cb={handleChangeDotRoom}
-                            />
+                            {dot.moveble ? (
+                                <>
+                                    <Button
+                                        icon={icon_cross}
+                                        text={'Update Satellite Position'}
+                                        cb={handleUpdateDotPosition}
+                                    />
+                                    <DropDown
+                                        icon={icon_cross}
+                                        text={'Change room'}
+                                        id={'change-room'}
+                                        name={'change_room'}
+                                        options={['hey', 'hoi', 'hallo']}
+                                        cb={handleChangeDotRoom}
+                                    />
+                                </>
+                            ) : null}
                         </div>
-                        <hr />
-                        <div className="found-devices">
-                            <div className="title">
-                                <div>Found Devices</div>
-                            </div>
-                            <div className="found-devices-wrapper box">
-                                <div className="device-container found">
-                                    {dot.devices.map((dev, i) => {
-                                        return (
-                                            <Device
-                                                name={dev.name}
-                                                addr={dev.addr}
-                                                clas={dev.clas}
-                                                rssi={dev.rssi}
-                                                key={i}
-                                            />
-                                        );
-                                    })}
+                        {dot_type === 'Satellite' ? (
+                            <>
+                                <hr />
+                                <div className="found-devices">
+                                    <div className="title">
+                                        <div>Found Devices</div>
+                                    </div>
+                                    <div className="found-devices-wrapper box">
+                                        <div className="device-container found">
+                                            {dot.devices.map((dev, i) => {
+                                                return (
+                                                    <Device
+                                                        name={dev.name}
+                                                        addr={dev.addr}
+                                                        clas={dev.clas}
+                                                        rssi={dev.rssi}
+                                                        key={i}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className="close-icon" onClick={handleCloseDotInfo}>
                         <img
