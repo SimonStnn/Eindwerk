@@ -79,3 +79,7 @@ h1 {
 .App.theme-light ::-webkit-scrollbar-thumb:hover {
     background: var(--theme-light-white-color-c);
 }
+
+select {
+    outline: none;
+}
