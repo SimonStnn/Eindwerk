@@ -1,0 +1,4 @@
+python -m pip install scipy
+sudo apt-get install liblapack3
+sudo apt-get install libatlas-base-dev
+
