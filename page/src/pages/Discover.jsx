@@ -3,8 +3,15 @@ import Satelite from '../components/Satelite';
 import Device from '../components/Device';
 
 const Discover = ({ collection }) => {
-    const sats = Object.values(collection).map((item) => item.sat);
-    const devs = Object.values(collection).map((item) => item.devs).flat();
+    const sats = Object.values(collection?.sats ? collection.sats : {}).map(
+        (item) => item.sat
+    );
+    const sats_devs = Object.values(collection?.sats ? collection.sats : {})
+        .map((item) => item.devs)
+        .flat();
+    const devs = Object.values(collection?.devs ? collection.devs : {}).map(
+        (item) => item
+    );
 
     return (
         <div className="discover">
@@ -36,18 +43,35 @@ const Discover = ({ collection }) => {
                 )}
             </div>
             <hr />
-            <h2>Found devices</h2>
+            <h2>Located Devices</h2>
             <div className="device-container">
                 {!(devs.length === 0 || devs[0].length === 0) ? (
-                    devs.map((dev ,i) =>
-                                <Device
-                                    name={dev.name}
-                                    addr={dev.addr}
-                                    clas={dev.clas}
-                                    rssi={dev.rssi}
-                                    key={i}
-                                />
-                    )
+                    devs.map((dev, i) => (
+                        <Device
+                            name={dev.name}
+                            addr={dev.addr}
+                            clas={dev.clas}
+                            rssi={dev.rssi}
+                            key={i}
+                        />
+                    ))
+                ) : (
+                    <>No Devices Located</>
+                )}
+            </div>
+            <hr />
+            <h2>Found Devices</h2>
+            <div className="device-container">
+                {!(sats_devs.length === 0 || sats_devs[0].length === 0) ? (
+                    sats_devs.map((dev, i) => (
+                        <Device
+                            name={dev.name}
+                            addr={dev.addr}
+                            clas={dev.clas}
+                            rssi={dev.rssi}
+                            key={i}
+                        />
+                    ))
                 ) : (
                     <>No Devices Found</>
                 )}
