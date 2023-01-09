@@ -32,7 +32,7 @@ function App() {
 
             if (data.startsWith('{') && data.endsWith('}')) {
                 data = JSON.parse(data);
-                // console.log(data);
+                console.log("Incoming data:",data);
 
                 setCollection(data);
             }
