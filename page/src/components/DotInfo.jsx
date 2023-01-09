@@ -1,7 +1,7 @@
 import React from 'react';
 
-// import icon_move from '../images/icons/canvas/move.svg';
-// import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
+import icon_move from '../images/icons/canvas/move.svg';
+import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 import icon_cross from '../images/icons/canvas/cross.svg';
 import Device from './Device';
 
@@ -50,7 +50,7 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
             </button>
         );
     };
-
+    
     const DropDown = ({ icon, text, id, name, options, cb }) => {
         return (
             <select className="dot-info-btn btn" onClick={cb}>
@@ -87,12 +87,12 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
                             {dot.moveble ? (
                                 <>
                                     <Button
-                                        icon={icon_cross}
+                                        icon={icon_move}
                                         text={'Update Satellite Position'}
                                         cb={handleUpdateDotPosition}
                                     />
                                     <DropDown
-                                        icon={icon_cross}
+                                        icon={icon_movetoRoom}
                                         text={'Change room'}
                                         id={'change-room'}
                                         name={'change_room'}

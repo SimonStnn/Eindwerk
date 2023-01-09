@@ -163,19 +163,25 @@
 .dot-info-content-wrapper .content .dot-info-btn {
     display: flex;
     flex-direction: row;
-    column-gap: 15px;
+    justify-content: center;
+    align-items: center;
+    column-gap: 8px;
 
     border: 1px solid var(--style-brown-6);
     border-radius: var(--style-border-radius);
 
     padding: 5px 10px;
+    font-weight: 400;
+    font-size: 14px;
 
     width: fit-content;
+    height: 36px;
 
     cursor: pointer;
 }
 .App.theme-dark .dot-info-content-wrapper .content .dot-info-btn {
     background-color: var(--theme-dark-gray-color-5);
+    color: var(--theme-dark-font-color);
 }
 .App.theme-light .dot-info-content-wrapper .content .dot-info-btn {
     background-color: var(--theme-light-white-color-d);
