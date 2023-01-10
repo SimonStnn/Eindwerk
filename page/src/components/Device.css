@@ -54,12 +54,14 @@
 
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     text-align: center;
+    column-gap: 5px;
     justify-content: left;
     padding: 1px 6px;
 }
 .device div.classes div {
-    margin: 0 6px 0 3px;
+    /* margin: 0 6px 0 3px; */
     font-size: var(--device-classes-font-size);
     opacity: var(--device-classes-opacity);
 }
