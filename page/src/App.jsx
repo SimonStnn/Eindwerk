@@ -58,9 +58,7 @@ function App() {
         const key = Date.now();
         notification.visible = true;
         notification.key = key;
-        console.log('added:', notification);
         setNotifications((prev) => {
-            console.log('prev:', prev);
             return [...prev, notification];
         });
         setTimeout(() => {
@@ -103,6 +101,7 @@ function App() {
                                 <Rooms
                                     collection={collection}
                                     websocket={websocket}
+                                    addNotification={addNotification}
                                 />
                             }
                         />

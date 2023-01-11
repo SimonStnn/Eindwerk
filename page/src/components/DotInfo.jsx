@@ -5,8 +5,17 @@ import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 import icon_cross from '../images/icons/canvas/cross.svg';
 import Device from './Device';
 
-const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
-    const [dot, setDotInfoDot] = dotInfo
+import config from '../config.json';
+
+const DotInfo = ({
+    websocket,
+    showDot,
+    dotInfo,
+    waitRoomClick,
+    updatePos,
+    addNotification,
+}) => {
+    const [dot, setDotInfoDot] = dotInfo;
     const [showDotInfo, setShowDotInfo] = showDot;
     const [, setWaitingForRoomClick] = waitRoomClick;
     const [, setUpdatePosition] = updatePos;
@@ -26,21 +35,33 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
 
     const handleCloseDotInfo = (e) => {
         setShowDotInfo(false);
-        setDotInfoDot(null)
+        setDotInfoDot(null);
     };
 
-    const handleUpdateDotPosition = (e) => {
+    const handleUpdateDotPosition = (event) => {
         // Show a notification at the top of the screen to let users know they have to click on the position in the room where the dot is located.
         setWaitingForRoomClick(true);
         setUpdatePosition({
             dot,
             bool: true,
         });
-        handleCloseDotInfo(e);
-        console.log('Click on the position where the dot is located.');
+        handleCloseDotInfo(event);
+        addNotification({
+            content:
+                'Click on the position in the room where the dot is located.',
+        });
     };
 
-    const handleChangeDotRoom = (e) => {};
+    const handleChangeDotRoom = (event) => {
+        const selectedOption = event.target.value;
+        dot.changeRoom(selectedOption);
+        addNotification({
+            content: `Moved ${
+                dot.name ? dot.name : dot.addr
+            } to ${selectedOption}`,
+        });
+        handleCloseDotInfo(event);
+    };
 
     const Button = ({ icon, text, cb }) => {
         return (
@@ -50,18 +71,15 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
             </button>
         );
     };
-    
+
     const DropDown = ({ icon, text, id, name, options, cb }) => {
         return (
-            <select className="dot-info-btn btn" onClick={cb}>
-                <option value={text}>{text}</option>
-                {options.map((opt, i) => {
-                    return (
-                        <option value={opt} key={i}>
-                            {opt}
-                        </option>
-                    );
-                })}
+            <select className="dot-info-btn btn" onChange={cb}>
+                {options.map((val, i) => (
+                    <option key={i} value={val}>
+                        Change room: {val}
+                    </option>
+                ))}
             </select>
         );
     };
@@ -96,7 +114,17 @@ const DotInfo = ({ websocket, showDot, waitRoomClick, updatePos, dotInfo }) => {
                                         text={'Change room'}
                                         id={'change-room'}
                                         name={'change_room'}
-                                        options={['hey', 'hoi', 'hallo']}
+                                        options={[
+                                            dot.room,
+                                            ...Object.keys(config.rooms)
+                                                .sort()
+                                                .filter(
+                                                    (room) =>
+                                                        dot.room !== room &&
+                                                        config.rooms[room]
+                                                            ?.corners?.length
+                                                ),
+                                        ]}
                                         cb={handleChangeDotRoom}
                                     />
                                 </>

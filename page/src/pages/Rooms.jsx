@@ -8,7 +8,7 @@ const default_room_key = Object.keys(config.rooms).find(
     (room) => config.rooms[room] === default_room
 );
 
-const Rooms = ({ collection, websocket }) => {
+const Rooms = ({ collection, websocket, addNotification }) => {
     const [selectedRoom, setSelectedRoom] = useState(default_room);
     const [roomKey, setRoomKey] = useState(default_room_key);
 
@@ -46,6 +46,7 @@ const Rooms = ({ collection, websocket }) => {
                 collection={collection}
                 websocket={websocket}
                 room={selectedRoom}
+                addNotification={addNotification}
             />
         </div>
     );

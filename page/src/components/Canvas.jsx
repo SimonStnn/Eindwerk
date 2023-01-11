@@ -12,7 +12,7 @@ const ROOM_FILL = '#444';
 
 const dot_radius = 8;
 
-const Canvas = ({ collection, websocket, room }) => {
+const Canvas = ({ collection, websocket, room, addNotification }) => {
     const [showDotInfo, setShowDotInfo] = useState(false);
     const [dotInfoDot, setDotInfoDot] = useState(null);
     const [waitingForRoomClick, setWaitingForRoomClick] = useState(false);
@@ -103,6 +103,13 @@ const Canvas = ({ collection, websocket, room }) => {
                 websocket.send(
                     `UPDATE_POS=${this.addr}&${this.room}&${this.x}&${this.y}`
                 );
+            }
+            changeRoom(room) {
+                this.room = room;
+                this.x = null;
+                this.y = null;
+
+                websocket.send(`CHANGE_ROOM=${this.addr}&${this.room}`);
             }
         };
     }, [Dot, websocket]);
@@ -199,9 +206,13 @@ const Canvas = ({ collection, websocket, room }) => {
             const svgRect = event.currentTarget.getBoundingClientRect();
             const x = event.clientX - svgRect.left;
             const y = event.clientY - svgRect.top;
-            console.log(
-                `Clicked at position: (${Math.floor(x)}, ${Math.floor(y)})`
-            );
+            addNotification({
+                content: `Changed from ${
+                    updatePosition.dot.name
+                        ? updatePosition.dot.name
+                        : updatePosition.dot.addr
+                } to: X: ${Math.floor(x)}, Y: ${Math.floor(y)}`,
+            });
 
             updatePosition.dot.setPosition(room.name, x, y);
         };
@@ -238,7 +249,9 @@ const Canvas = ({ collection, websocket, room }) => {
                         width={(maxX + padding + padding) * scale + padding}
                     >
                         {drawRoom(room.corners)}
-                        {dots
+                            {dots
+                                // sort from biggest to smallest
+                                // this way the biggest are below the smaller dots
                             .sort((a, b) => b.radius - a.radius)
                             .map((dot, i) => {
                                 if (
@@ -253,12 +266,13 @@ const Canvas = ({ collection, websocket, room }) => {
                 <DotInfo
                     websocket={websocket}
                     showDot={[showDotInfo, setShowDotInfo]}
+                    dotInfo={[dotInfoDot, setDotInfoDot]}
                     waitRoomClick={[
                         waitingForRoomClick,
                         setWaitingForRoomClick,
                     ]}
                     updatePos={[updatePosition, setUpdatePosition]}
-                    dotInfo={[dotInfoDot, setDotInfoDot]}
+                    addNotification={addNotification}
                 />
             </div>
             <hr />
