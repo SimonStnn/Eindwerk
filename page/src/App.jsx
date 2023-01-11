@@ -35,6 +35,9 @@ function App() {
             if (data.startsWith('{') && data.endsWith('}')) {
                 data = JSON.parse(data);
                 console.log('Incoming data:', data);
+                addNotification({
+                    content: 'Received data'
+                })
 
                 setCollection(data);
             }
@@ -42,6 +45,9 @@ function App() {
         // Clean up the WebSocket connection when the component unmounts
         return () => {
             console.log('Disconnected from websocket');
+            addNotification({
+                content: 'Disconnected from websocket',
+            });
             /* 
             When the page loads the app component unmounts 
             and remounts causing the websocket to close 
