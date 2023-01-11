@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
 
-    background-image: linear-gradient(0deg, transparent, rgba(0, 0, 0, .2) 90%);
+    /* background-image: linear-gradient(0deg, transparent, rgba(0, 0, 0, .2) 90%); */
 
     position: absolute;
     left: var(--sidebar-width);
