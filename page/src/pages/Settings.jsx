@@ -10,7 +10,7 @@ const webserver_ip = 'http://10.250.3.99:7891/';
 // const ignored_settings = ['showNames'];
 const ignored_settings = [];
 
-const Settings = ({ theme, setTheme }) => {
+const Settings = ({ theme, setTheme, addNotification }) => {
     const iframeRef = useRef(null);
 
     const toggleTheme = () => {
@@ -22,6 +22,12 @@ const Settings = ({ theme, setTheme }) => {
             default:
                 return setTheme(config.themes.light);
         }
+    };
+
+    const showTestNotification = () => {
+        addNotification({
+            content: 'Test notification',
+        });
     };
 
     function capitalize(str) {
@@ -123,10 +129,11 @@ const Settings = ({ theme, setTheme }) => {
                     {theme}
                 </button>
             </div>
-            <hr />
-            <p>Changes will not be applied.</p>
-            <h2>Config file</h2>
-            <div className="config">{FormatObject(config)}</div>
+            <div>
+                <button className="btn" onClick={showTestNotification}>
+                    show test Notification
+                </button>
+            </div>
             <hr />
             <h2>Raw data</h2>
             <div>
@@ -150,6 +157,10 @@ const Settings = ({ theme, setTheme }) => {
                     ref={iframeRef}
                 ></iframe>
             </div>
+            <hr />
+            <p>Changes will not be applied.</p>
+            <h2>Config file</h2>
+            <div className="config">{FormatObject(config)}</div>
         </div>
     );
 };

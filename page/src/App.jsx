@@ -8,6 +8,7 @@ import Rooms from './pages/Rooms';
 import Discover from './pages/Discover';
 import Components from './pages/Components';
 import Settings from './pages/Settings';
+import Notification from './components/Notification';
 
 const THEME_DEFAULT = config.themes.dark;
 const WEBSOCKET_URL = `${
@@ -18,6 +19,7 @@ function App() {
     const [theme, setTheme] = useState(THEME_DEFAULT);
     const websocketRef = useRef(null);
     const [collection, setCollection] = useState({});
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
         const websocket = new WebSocket(WEBSOCKET_URL);
@@ -32,7 +34,7 @@ function App() {
 
             if (data.startsWith('{') && data.endsWith('}')) {
                 data = JSON.parse(data);
-                console.log("Incoming data:",data);
+                console.log('Incoming data:', data);
 
                 setCollection(data);
             }
@@ -47,16 +49,51 @@ function App() {
             this temporary setTimeout to prevent this warning.
             */
             // setTimeout(() => {
-                websocket.close();
+            websocket.close();
             // }, 80);
         };
     }, []);
+
+    const addNotification = (notification) => {
+        const key = Date.now();
+        notification.visible = true;
+        notification.key = key;
+        console.log('added:', notification);
+        setNotifications((prev) => {
+            console.log('prev:', prev);
+            return [...prev, notification];
+        });
+        setTimeout(() => {
+            notification.visible = false;
+            setNotifications((prev) =>
+                prev.map((obj) =>
+                    obj.key === key ? { ...obj, visible: false } : obj
+                )
+            );
+            setTimeout(() => {
+                setNotifications((prev) =>
+                    prev.filter((item) => item.key !== key)
+                );
+            }, 1000);
+        }, 3000);
+    };
 
     const websocket = websocketRef.current;
     return (
         <div className={'App theme-' + theme}>
             <Sidebar />
             <div className="container">
+                <div
+                    className={`notification-shadow ${
+                        notifications.length !== 0 ? '' : 'hidden'
+                    }`}
+                >
+                    <div className="notification-container">
+                        {notifications.map((notification, i) => (
+                            <Notification notification={notification} key={i} />
+                        ))}
+                    </div>
+                </div>
                 <div className="container-content">
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -77,7 +114,11 @@ function App() {
                         <Route
                             path="/settings"
                             element={
-                                <Settings theme={theme} setTheme={setTheme} />
+                                <Settings
+                                    theme={theme}
+                                    setTheme={setTheme}
+                                    addNotification={addNotification}
+                                />
                             }
                         />
                     </Routes>

@@ -11,7 +11,8 @@ import './components/Sidebar.css';
 import './components/Satelite.css';
 import './components/Device.css';
 import './components/Canvas.css';
-import './components/DotInfo.css'
+import './components/DotInfo.css';
+import './components/Notification.css'
 
 import App from './App';
 

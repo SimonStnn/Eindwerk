@@ -1,0 +1,66 @@
+.notification-shadow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-image: linear-gradient(0deg, transparent, rgba(0, 0, 0, .2) 90%);
+
+    position: absolute;
+    left: var(--sidebar-width);
+    top: 0;
+    right: 0;
+    height: 150px;
+    z-index: 1;
+    pointer-events: none;
+
+    /* visibility: hidden; */
+
+    transition: transform .2s, visibility .2s;
+}
+
+.notification-shadow.hidden {
+    transform: translateY(-250px);
+    /* visibility: hidden; */
+}
+
+.App.theme-dark .notification {
+    background-color: var(--theme-dark-gray-color-3);
+}
+.App.theme-light .notification {
+    background-color: var(--theme-light-white-color-d);
+}
+
+.notification-container {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: left;
+    align-items: left; */
+    row-gap: 15px;
+
+    max-height: 62px;
+}
+
+.notification {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    min-width: 350px;
+    min-height: 60px;
+
+    border: 1px solid var(--style-brown-6);
+    border-radius: var(--style-border-radius);
+    box-shadow: var(--style-box-shadow);
+
+    z-index: 2;
+
+    visibility: visible;
+    transition: transform .2s, visibility .2s, height .2s;
+}
+
+.notification.hidden {
+    transform: translateY(-250px) scale(0);
+    visibility: hidden;
+    height: 0;
+}
