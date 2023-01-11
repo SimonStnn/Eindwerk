@@ -53,7 +53,7 @@ const Sidebar = () => {
         <div className={sidebarOpen ? 'sidebar open' : 'sidebar'}>
             <div className="logo">
                 <img src={icon_logo} alt="Logo" />
-                <div>Eindproef</div>
+                <div className='logo-text'>Eindproef</div>
             </div>
             <hr />
             <div className="items main">

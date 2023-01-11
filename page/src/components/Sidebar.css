@@ -81,6 +81,14 @@
     transform: rotate(240deg) scale(1.2);
 }
 
+.sidebar .logo .logo-text{
+    visibility: hidden;
+    transition: visibility var(--sidebar-transition-length);
+}
+.sidebar.open .logo .logo-text{
+    visibility: visible;
+}
+
 
 .sidebar hr {
     display: flex;
@@ -115,6 +123,8 @@
     margin: var(--sidebar-item-margin);
     padding: var(--sidebar-item-padding);
     border-radius: var(--style-border-radius);
+
+    overflow: hidden;
 
     transition: background-color
         var(--sidebar-item-background-transition-length);
