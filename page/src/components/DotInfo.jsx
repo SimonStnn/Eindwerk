@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMemo } from 'react';
 
 import icon_move from '../images/icons/canvas/move.svg';
 import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
@@ -75,7 +74,6 @@ const DotInfo = React.memo(
         };
 
         const DropDown = ({ icon, text, id, name, options, cb }) => {
-            console.log(options);
             return (
                 <select className="dot-info-btn btn" onChange={cb}>
                     {options
