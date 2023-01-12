@@ -69,17 +69,17 @@ function App() {
         });
         setTimeout(() => {
             notification.visible = false;
-            setNotifications((prev) =>
-                prev.map((obj) =>
-                    obj.key === key ? { ...obj, visible: false } : obj
-                )
-            );
-            setTimeout(() => {
+            // setNotifications((prev) =>
+            //     prev.map((obj) =>
+            //         obj.key === key ? { ...obj, visible: false } : obj
+            //     )
+            // );
+            // setTimeout(() => {
                 setNotifications((prev) =>
                     prev.filter((item) => item.key !== key)
                 );
-            }, 1000);
-        }, 3000);
+            // }, 1000);
+        }, 5000);
     };
 
     const websocket = websocketRef.current;
