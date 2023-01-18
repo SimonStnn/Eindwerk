@@ -141,7 +141,8 @@ const Settings = ({ theme, setTheme, addNotification }) => {
                     <button
                         className="btn"
                         onClick={() => {
-                            iframeRef.current.contentWindow.location.reload();
+                            // iframeRef.current.contentWindow.location.reload();
+                            iframeRef.current.src += '';
                         }}
                     >
                         Refresh
