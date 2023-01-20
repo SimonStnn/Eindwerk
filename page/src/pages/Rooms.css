@@ -7,16 +7,16 @@
     flex-direction: column;
 }
 
-.App.theme-dark .room-selector {
+.App.theme-dark select {
     background-color: var(--theme-dark-gray-color-4);
     color: var(--theme-dark-font-color);
 }
-.App.theme-light .room-selector {
+.App.theme-light select {
     background-color: inherit;
     color: black;
 }
 
-.room-selector {
+select {
     position: relative;
     align-items: center;
 
