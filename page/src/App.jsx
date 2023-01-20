@@ -36,8 +36,8 @@ function App() {
                 data = JSON.parse(data);
                 console.log('Incoming data:', data);
                 addNotification({
-                    content: 'Received data'
-                })
+                    content: 'Received data',
+                });
 
                 setCollection(data);
             }
@@ -75,9 +75,7 @@ function App() {
             //     )
             // );
             // setTimeout(() => {
-                setNotifications((prev) =>
-                    prev.filter((item) => item.key !== key)
-                );
+            setNotifications((prev) => prev.filter((item) => item.key !== key));
             // }, 1000);
         }, 5000);
     };
@@ -86,18 +84,18 @@ function App() {
     return (
         <div className={'App theme-' + theme}>
             <Sidebar />
-            <div className="container">
-                <div
-                    className={`notification-shadow ${
-                        notifications.length !== 0 ? '' : 'hidden'
-                    }`}
-                >
-                    <div className="notification-container">
-                        {notifications.map((notification, i) => (
-                            <Notification notification={notification} key={i} />
-                        ))}
-                    </div>
+            <div
+                className={`notification-shadow ${
+                    notifications.length !== 0 ? '' : 'hidden'
+                }`}
+            >
+                <div className="notification-container">
+                    {notifications.map((notification, i) => (
+                        <Notification notification={notification} key={i} />
+                    ))}
                 </div>
+            </div>
+            <div className="container">
                 <div className="container-content">
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -120,9 +118,11 @@ function App() {
                             path="/settings"
                             element={
                                 <Settings
+                                    collection={collection}
                                     theme={theme}
                                     setTheme={setTheme}
                                     addNotification={addNotification}
+                                    websocket={websocket}
                                 />
                             }
                         />
