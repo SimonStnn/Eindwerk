@@ -1,0 +1,43 @@
+.callibration {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 15px;
+}
+.callibration-values {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.callibration-value input,
+.callibration-value .btn {
+    height: 26px;
+    width: 250px;
+    padding: 0 8px;
+}
+
+.callibration-value {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    gap: 12px;
+}
+.rssi-values {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.callibration .callibration-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.callibration .callibration-buttons div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useRef } from 'react';
+import Callibrate from '../components/Callibrate';
 import config from '../config.json';
 
 import icon_arrow_down from '../images/icons/other/arrow_down.svg';
@@ -10,8 +11,16 @@ const webserver_ip = 'http://10.250.3.99:7891/';
 // const ignored_settings = ['showNames'];
 const ignored_settings = [];
 
-const Settings = ({ theme, setTheme, addNotification }) => {
+const Settings = ({
+    collection,
+    theme,
+    setTheme,
+    addNotification,
+    websocket,
+}) => {
     const iframeRef = useRef(null);
+    const [callibrating, setCallibrating] = useState(false);
+    const [callibrate, setCallibrate] = useState({ dev:"dmlfsqkjm", default: true });
 
     const toggleTheme = () => {
         switch (theme) {
@@ -48,7 +57,6 @@ const Settings = ({ theme, setTheme, addNotification }) => {
                 return <>{keyObj.toString()}</>;
         }
     }
-
     const FormatObject = (obj) => {
         const [collapse, setCollapse] = useState(true);
 
@@ -84,7 +92,6 @@ const Settings = ({ theme, setTheme, addNotification }) => {
             );
         });
     };
-
     const FormatString = (str) => {
         return (
             <input
@@ -120,6 +127,19 @@ const Settings = ({ theme, setTheme, addNotification }) => {
         );
     };
 
+    const handleStartCallibration = (e) => {
+        console.log(callibrate);
+        if (!callibrate.sat || !callibrate.dev) return;
+        setCallibrating(true);
+        addNotification({
+            content: (
+                <>
+                    Callibration started. <u>Do not close</u> this page.
+                </>
+            ),
+        });
+    };
+
     return (
         <div className="settings">
             <h1>Settings</h1>
@@ -134,6 +154,101 @@ const Settings = ({ theme, setTheme, addNotification }) => {
                     show test Notification
                 </button>
             </div>
+            <hr />
+            <h2>Callibrate</h2>
+            {!callibrating ? (
+                <>
+                    <select
+                        name="satellite address"
+                        id="sattelite_address"
+                        onChange={(e) => {
+                            setCallibrate({
+                                ...callibrate,
+                                sat: e.target.value,
+                            });
+                        }}
+                    >
+                        {collection.sats ? (
+                            <>
+                                {Object.values(collection.sats)?.map(
+                                    (val, i) => {
+                                        const sat = val.sat;
+                                        if (
+                                            i === 0 &&
+                                            (callibrate.sat !== sat.addr ||
+                                                callibrate.sat === null)
+                                        ) {
+                                            setCallibrate({
+                                                ...callibrate,
+                                                sat: sat.addr,
+                                            });
+                                        }
+                                        return (
+                                            <option key={i} value={sat.addr}>
+                                                {sat.name}
+                                            </option>
+                                        );
+                                    }
+                                )}
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </select>
+                    <select
+                        name="device address"
+                        id="device_address"
+                        onChange={(e) => {
+                            setCallibrate({
+                                ...callibrate,
+                                dev: e.target.value,
+                            });
+                        }}
+                    >
+                        {
+                            // list the found devices by the satellite
+                            collection?.sats &&
+                            collection?.sats[callibrate.sat] &&
+                            callibrate.sat ? (
+                                collection?.sats[callibrate.sat].devs.map(
+                                    (dev, i) => {
+                                        if (
+                                            i === 0 &&
+                                            (callibrate.dev !== dev.addr ||
+                                                callibrate.dev === null)
+                                        ) {
+                                            setCallibrate({
+                                                ...callibrate,
+                                                dev: dev.addr,
+                                            });
+                                        }
+                                        return (
+                                            <option key={i} value={dev.addr}>
+                                                {dev.name ? dev.name : dev.addr}
+                                            </option>
+                                        );
+                                    }
+                                )
+                            ) : (
+                                <></>
+                            )
+                        }
+                    </select>
+                    <button className="btn" onClick={handleStartCallibration}>
+                        Start callibration
+                    </button>
+                </>
+            ) : (
+                <Callibrate
+                    collection={collection}
+                    addNotification={addNotification}
+                    callib={[
+                        [callibrate, setCallibrate],
+                        [callibrating, setCallibrating],
+                    ]}
+                    websocket={websocket}
+                />
+            )}
             <hr />
             <h2>Raw data</h2>
             <div>

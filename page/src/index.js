@@ -13,6 +13,7 @@ import './components/Device.css';
 import './components/Canvas.css';
 import './components/DotInfo.css';
 import './components/Notification.css'
+import './components/Callibrate.css'
 
 import App from './App';
 
