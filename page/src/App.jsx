@@ -35,9 +35,9 @@ function App() {
             if (data.startsWith('{') && data.endsWith('}')) {
                 data = JSON.parse(data);
                 console.log('Incoming data:', data);
-                addNotification({
-                    content: 'Received data',
-                });
+                // addNotification({
+                //     content: 'Received data',
+                // });
 
                 setCollection(data);
             }
