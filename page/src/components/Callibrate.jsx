@@ -146,7 +146,7 @@ const Callibrate = React.memo(
             return (
                 <div className="callibration-value">
                     <input
-                        className="number"
+                        className="distance-field"
                         type="text"
                         placeholder="Distance from ESP"
                         defaultValue={distance ? distance : ''}
@@ -197,7 +197,7 @@ const Callibrate = React.memo(
                     )
                 );
             }
-        }, [collection, autoCollect, callibrate.dev, getDeviceRssi]);
+        }, [collection, autoCollect, callibrate.sat, callibrate.dev, getDeviceRssi]);
 
         return (
             <>

@@ -20,7 +20,10 @@ const Settings = ({
 }) => {
     const iframeRef = useRef(null);
     const [callibrating, setCallibrating] = useState(false);
-    const [callibrate, setCallibrate] = useState({ dev:"dmlfsqkjm", default: true });
+    const [callibrate, setCallibrate] = useState({
+        dev: 'dmlfsqkjm',
+        default: true,
+    });
 
     const toggleTheme = () => {
         switch (theme) {
@@ -159,17 +162,19 @@ const Settings = ({
             {!callibrating ? (
                 <>
                     <select
-                        name="satellite address"
-                        id="sattelite_address"
                         onChange={(e) => {
                             setCallibrate({
                                 ...callibrate,
                                 sat: e.target.value,
                             });
+                            console.log(callibrate, e.target.value);
                         }}
                     >
                         {collection.sats ? (
                             <>
+                                <option value={null}>
+                                    Select a satellite to callibrate
+                                </option>
                                 {Object.values(collection.sats)?.map(
                                     (val, i) => {
                                         const sat = val.sat;
@@ -178,10 +183,10 @@ const Settings = ({
                                             (callibrate.sat !== sat.addr ||
                                                 callibrate.sat === null)
                                         ) {
-                                            setCallibrate({
-                                                ...callibrate,
-                                                sat: sat.addr,
-                                            });
+                                            // setCallibrate({
+                                            //     ...callibrate,
+                                            //     sat: sat.addr,
+                                            // });
                                         }
                                         return (
                                             <option key={i} value={sat.addr}>
@@ -196,13 +201,13 @@ const Settings = ({
                         )}
                     </select>
                     <select
-                        name="device address"
-                        id="device_address"
                         onChange={(e) => {
                             setCallibrate({
                                 ...callibrate,
+                                // dev_name:
                                 dev: e.target.value,
                             });
+                            console.log(callibrate);
                         }}
                     >
                         {
@@ -210,25 +215,36 @@ const Settings = ({
                             collection?.sats &&
                             collection?.sats[callibrate.sat] &&
                             callibrate.sat ? (
-                                collection?.sats[callibrate.sat].devs.map(
-                                    (dev, i) => {
-                                        if (
-                                            i === 0 &&
-                                            (callibrate.dev !== dev.addr ||
-                                                callibrate.dev === null)
-                                        ) {
-                                            setCallibrate({
-                                                ...callibrate,
-                                                dev: dev.addr,
-                                            });
+                                <>
+                                    <option value={null}>
+                                        Select a device to use as callibrator
+                                    </option>
+
+                                    {collection?.sats[callibrate.sat].devs.map(
+                                        (dev, i) => {
+                                            if (
+                                                i === 0 &&
+                                                (callibrate.dev !== dev.addr ||
+                                                    callibrate.dev === null)
+                                            ) {
+                                                // setCallibrate({
+                                                //     ...callibrate,
+                                                //     dev: dev.addr,
+                                                // });
+                                            }
+                                            return (
+                                                <option
+                                                    key={i}
+                                                    value={dev.addr}
+                                                >
+                                                    {dev.name
+                                                        ? dev.name
+                                                        : dev.addr}
+                                                </option>
+                                            );
                                         }
-                                        return (
-                                            <option key={i} value={dev.addr}>
-                                                {dev.name ? dev.name : dev.addr}
-                                            </option>
-                                        );
-                                    }
-                                )
+                                    )}
+                                </>
                             ) : (
                                 <></>
                             )
