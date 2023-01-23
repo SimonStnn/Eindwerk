@@ -8,13 +8,14 @@ Main file for eindproef from Simon Stijnen.
 import csv
 import time
 import json
+import math
 import asyncio
 import threading
 import http.server
-import numpy as np
 from multiprocessing import Manager, Lock
+import numpy as np
 import websockets
-from trilaterate import trilaterate
+from trilaterate import trilaterate, calculate_ple, calculate_distance
 
 
 def get_content_for_web_page(collection) -> str:
@@ -103,22 +104,61 @@ def add_satellite_to_collection(collection, satellite_addr: str, data: dict) -> 
                 data["sat"]["x"] = sats[satellite_addr]["sat"]["x"]
                 data["sat"]["y"] = sats[satellite_addr]["sat"]["y"]
 
+    # Handle queue
+    # Add the empty queue object to the incoming data if its not there
+    if "queue" not in data:
+        data["queue"] = {}
+
+    if data["sat"]["addr"] in sats:
+        if "queue" in sats[data["sat"]["addr"]]:
+            for dev in data["devs"]:
+                prevQueue = sats[data["sat"]["addr"]]["queue"]
+                if dev["addr"] not in prevQueue:
+                    prevQueue[dev["addr"]] = []
+
+                # Remove first element from the queue and add the new rssi value to the queue
+                if len(prevQueue[dev["addr"]]) >= 5:
+                    prevQueue[dev["addr"]] = prevQueue[dev["addr"]][1:]
+                prevQueue[dev["addr"]].append({
+                    "rssi": dev["rssi"],
+                    "timestamp": data["timestamp"],
+                })
+
+                data["queue"] = prevQueue
+
+                # change the rssi of the device to the avg from the queue
+                vals = [val["rssi"] for val in prevQueue[dev["addr"]]]
+
+                def map_func(x):
+                    if x["addr"] == dev["addr"]:
+                        x["rssi"] = sum(vals) / len(vals)
+                    return x
+                data["devs"] = list(map(map_func, data["devs"]))
+
+    # print(json.dumps(data, indent=3))
+
     if data["sat"]["addr"] == "58:BF:25:93:7C:88":  # ESP32-Simon-01
         data["sat"]["room"] = "Living"
         data["sat"]["x"] = 746
         data["sat"]["y"] = 21
-    if data["sat"]["addr"] == "58:BF:25:93:7E:78":  # ESP32-Simon-02
+    elif data["sat"]["addr"] == "58:BF:25:93:7E:78":  # ESP32-Simon-02
         data["sat"]["room"] = "Living"
-        data["sat"]["x"] = 487
-        data["sat"]["y"] = 11
-    if data["sat"]["addr"] == "0C:B8:15:F3:68:DC":  # ESP32-Maxim
+        data["sat"]["x"] = 40
+        data["sat"]["y"] = 13
+        # data["sat"]["x"] = 487
+        # data["sat"]["y"] = 11
+    elif data["sat"]["addr"] == "0C:B8:15:F3:68:DC":  # ESP32-Maxim
         data["sat"]["room"] = "Living"
         data["sat"]["x"] = 768
         data["sat"]["y"] = 366
+    elif data["sat"]["addr"] == "58:BF:25:93:7E:84":  # ESP32-Zetel
+        data["sat"]["room"] = "Living"
+        data["sat"]["x"] = 760
+        data["sat"]["y"] = 370
 
     sats[satellite_addr] = data
-    
-    write_to_csv_file("./logs/rssi_test.csv", collection)
+
+    # write_to_csv_file("./logs/afvlakking.csv", satellite_addr, data["devs"])
 
     with lock:  # Use lock to syncronize shared_dict
         collection["sats"] = sats
@@ -131,7 +171,7 @@ def add_device_to_collection(collection, data: dict) -> None:
     # devs[device_addr] = data
 
     with lock:  # Use lock to syncronize shared_dict
-        collection["devs"] = data
+        collection["devs"] = data if data else {}
 
 
 def serialize_collection(col) -> str:
@@ -156,19 +196,88 @@ def decode_position_command(cmd: str) -> dict:
     }
 
 
+def decode_change_room_command(cmd: str) -> dict:
+    """Convert incoming position command string to dict."""
+    cmd = cmd.replace("CHANGE_ROOM=", "")
+    [addr, room] = cmd.split("&")
+    return {
+        "addr": str(addr),
+        "room": str(room),
+    }
+
+
+def decode_callibrate_command(cmd: str) -> dict:
+    """Convert the incoming callibrate command string to dict."""
+    cmd = cmd.replace("CALLIBRATE=", "")
+    [devices, *values] = cmd.split("|")
+    [satellite, device, setDefault] = devices.split("&")
+    rssis = []
+    distances = []
+    for value in values:
+        [dist, rssi] = value.split("&")
+        distances.append(float(dist))
+        rssis.append(float(rssi))
+
+    setDefault = setDefault == "Y" if True else False
+    print(setDefault)
+
+    return {
+        "sat": str(satellite),
+        "dev": str(device),
+        "def": bool(setDefault),
+        "rssis": list(rssis),
+        "distances": list(distances),
+    }
+
+
 def update_satellite_position(collection, addr: str, room: str, x_coord: int, y_coord: int):
     """Update a satellites position in the collection."""
-    sat = collection["sats"][addr]
+    sats = collection["sats"]
+
+    sat = sats[addr]
     sat["sat"]["room"] = room
     sat["sat"]["x"] = x_coord
     sat["sat"]["y"] = y_coord
 
-    sats = collection["sats"]
     sats[addr] = sat
     with lock:  # Use lock to syncronize shared_dict
         collection["sats"] = sats
 
     broadcast_to_all_clients(collection)
+
+
+def change_satellite_room(collection, addr: str, room: str):
+    """Change the room where the device is located."""
+    sats = collection["sats"]
+
+    sat = sats[addr]
+    sat["sat"]["room"] = room
+    sat["sat"]["x"] = None
+    sat["sat"]["y"] = None
+
+    sats[addr] = sat
+    with lock:  # Use lock to syncronize shared_dict
+        collection["sats"] = sats
+
+    broadcast_to_all_clients(collection)
+
+
+def callibrate(collection, sat_addr: str, dev_addr: str, distances: list, signal_strengths: list, default: bool = False):
+    """Calculate the path loss exponent and save it to the collection."""
+    ple = calculate_ple(signal_strengths, distances)
+    print("Callibrated PLE:", ple, "\n", "Calculated using satellite:",
+          sat_addr, "and device:", dev_addr)
+
+    if math.isnan(ple):
+        return
+
+    col_ple = collection["ple"]
+    col_ple[sat_addr] = ple
+    if default:
+        col_ple["default"] = ple
+    # Update the collection
+    with lock:  # Use lock to syncronize shared_dict
+        collection["ple"] = col_ple
 
 
 def make_device_pairs(collection) -> list:
@@ -182,6 +291,8 @@ def make_device_pairs(collection) -> list:
     for sat in sats.values():
         # Iterate over the child devices of this satellite
         for dev in sat['devs']:
+            if dev["addr"] != "f0:65:ae:2f:c5:d5":
+                continue
             # If the address of this device is already in the dictionary, append it to the corresponding list
             if dev['addr'] in common_devs_by_addr:
                 common_devs_by_addr[dev['addr']]['sats'].append(sat["sat"])
@@ -199,35 +310,36 @@ def make_device_pairs(collection) -> list:
 
 def filter_pairs(pairs: list) -> list:
     """Remove the devices that were not discovered by 3 or more satellites and if any of the satellites don't have coords."""
-    # return [entry for entry in pairs if len(entry['sats']) >= 3 and all('x' in sat and 'y' in sat and 'room' in sat for sat in entry['sats'])]
-
     return [entry for entry in pairs if len(entry['sats']) >= 3 and all('x' in sat and 'y' in sat and 'room' in sat for sat in entry['sats']) and len(set(sat['room'] for sat in entry['sats'])) == 1]
 
 
-def extract_coords_and_rssi(paired_sats_devs: list):
+def extract_coords_and_distances(paired_sats_devs: list):
     """Extract coords from filtered paired sats and devs to get `[[x1, y2], [x2, y2], ...], [d1, d2, ...]`."""
     for pair in paired_sats_devs:
         coords = []
-        rssi = []
+        distances = []
         sats = pair['sats']
         for sat in sats:
             coords.append(np.array([int(sat['x']), int(sat['y'])]))
 
         devs = pair['devs']
         for dev in devs:
-            rssi.append(int(dev['rssi']))
+            distance = calculate_distance(int(dev['rssi']), path_loss_exponent=9)
+            print(json.dumps(pair, indent=3))
+            print("calculated distance:", distance)
+            distances.append(distance*100)
 
-        yield pair, coords, rssi
+        yield pair, coords, distances
 
 
 def calculate_devices_positions(collection) -> dict:
     """Calculate the position of all devices."""
     pairs = filter_pairs(make_device_pairs(collection))
-    if (len(pairs) == 0):
+    if len(pairs) == 0:
         return
 
     devs = {}
-    for pair, coords, signal_strengths in extract_coords_and_rssi(pairs):
+    for pair, coords, distances in extract_coords_and_distances(pairs):
         name = ""
         for i in range(len(pair["devs"])):
             name = pair["devs"][i]["name"]
@@ -239,8 +351,8 @@ def calculate_devices_positions(collection) -> dict:
         # found_by = pair["sats"]
         found_by = [sat['addr'] for entry in pairs for sat in entry['sats']]
 
-        x, y, error = trilaterate(coords, signal_strengths)
-        print("--- Result:", x, y, error)
+        x, y, error = trilaterate(coords, distances)
+        # print("--- Result:", x, y, error)
 
         devs[addr] = {
             "name": name,
@@ -255,20 +367,22 @@ def calculate_devices_positions(collection) -> dict:
     return devs
 
 
-def write_to_csv_file(path, col):
+def write_to_csv_file(path, addr, devs):
+    """Write incoming satellite data to csv file."""
+    timestr = time.time()
+
+    rows = []
+    for dev in devs:
+        rows.append([timestr, addr, dev["name"], dev["addr"], dev["rssi"]])
     with open(path, 'a', newline='') as csv_file:
         # Create a writer object
         writer = csv.writer(csv_file)
+        writer.writerows(rows)
 
-        col = dict(col)
-
-        for sat in col["sats"]:
-            for dev in col["sats"][sat]["devs"]:
-                if dev["addr"] == "f0:65:ae:2f:c5:d5":
-                    print([sat, dev["name"], dev["addr"], dev["rssi"]])
-                    writer.writerow(
-                        [sat, dev["name"], dev["addr"], dev["rssi"]])
-                    continue
+        # for sat in col["sats"]:
+        #     for dev in col["sats"][sat]["devs"]:
+        #         writer.writerow(
+        #             [sat, dev["name"], dev["addr"], dev["rssi"]])
 
 
 def run_websocket_server(collection):
@@ -287,9 +401,16 @@ def run_websocket_server(collection):
                     update_satellite_position(
                         collection, decoded["addr"], decoded["room"], decoded["x"], decoded["y"]
                     )
-                    await websocket.send("Received")
-                else:
-                    await websocket.send("Received")
+                elif msg.startswith("CHANGE_ROOM="):
+                    decoded = decode_change_room_command(msg)
+                    change_satellite_room(
+                        collection, decoded["addr"], decoded["room"])
+                elif msg.startswith("CALLIBRATE="):
+                    decoded = decode_callibrate_command(msg)
+                    # callibrate(
+                    #     collection, decoded["sat"], decoded["dev"], decoded["distances"], decoded["rssis"], decoded["def"])
+
+                await websocket.send("Received")
         finally:
             CONNECTIONS.remove(websocket)
 
@@ -324,8 +445,6 @@ def run_web_server(collection):
 
         def do_GET(self, collection):
             """Handle GET requests. (browser)"""
-            # access collection here
-            # implement your Web server logic here
             self.send_response(200)
             self.end_headers()
             self.wfile.write(
@@ -348,6 +467,12 @@ def run_web_server(collection):
 
             devices = calculate_devices_positions(collection)
             add_device_to_collection(collection, devices)
+
+            # sat = collection["sats"][data_addr]
+            # # print(sat)
+            # for dev in sat["devs"]:
+            #     print(sat["sat"]["name"], "estimated", dev["name"], dev["rssi"],
+            #           " distance for:", calculate_distance(dev["rssi"], path_loss_exponent=6.0))
 
             broadcast_to_all_clients(dict(collection))
 
@@ -376,6 +501,10 @@ if __name__ == "__main__":
         shared_collection = {
             "sats": {},
             "devs": {},
+            "ple": {
+                # "default": -1.1522843417023894
+                "default": 8.0
+            },
         }
     try:
         # create and start the WebSocket server thread
