@@ -143,6 +143,11 @@
 .sidebar .items .sidebar-item:hover img {
     transform: scale(var(--sidebar-item-icon-hover-scale));
 }
+.sidebar.open .items .sidebar-item.active img,
+.sidebar.open .width-toggle:hover img,
+.sidebar.open .items .sidebar-item:hover img {
+    transform: scale(var(--sidebar-item-icon-hover-scale));
+}
 .sidebar.open .width-toggle:hover img {
     transform: scaleX(-1) scale(var(--sidebar-item-icon-hover-scale));
 }
