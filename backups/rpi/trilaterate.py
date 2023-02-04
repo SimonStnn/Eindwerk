@@ -24,9 +24,11 @@ def calculate_distance(rssi, frequency=2400000000, path_loss_exponent=2.0):
     :return: Estimated distance (in meters).
     """
     # Path Loss model equation
-    fspl = 20 * math.log10(frequency) + 20 * math.log10(math.sqrt((4 * math.pi) / 3)) - 147.55
+    fspl = 20 * math.log10(frequency) + 20 * \
+        math.log10(math.sqrt((4 * math.pi) / 3)) - 147.55
     # Estimated distance
-    distance = 10 ** ((27.55 - fspl + math.fabs(rssi)) / (10 * path_loss_exponent))
+    distance = 10 ** ((27.55 - fspl + math.fabs(rssi)) /
+                      (10 * path_loss_exponent))
     return distance
 
 

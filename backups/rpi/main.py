@@ -131,7 +131,7 @@ def add_satellite_to_collection(collection, satellite_addr: str, data: dict) -> 
 
                 def map_func(x):
                     if x["addr"] == dev["addr"]:
-                        x["rssi"] = sum(vals) / len(vals)
+                        x["rssi"] = round(sum(vals) / len(vals), 2)
                     return x
                 data["devs"] = list(map(map_func, data["devs"]))
 
@@ -143,10 +143,9 @@ def add_satellite_to_collection(collection, satellite_addr: str, data: dict) -> 
         data["sat"]["y"] = 21
     elif data["sat"]["addr"] == "58:BF:25:93:7E:78":  # ESP32-Simon-02
         data["sat"]["room"] = "Living"
-        data["sat"]["x"] = 40
+        # data["sat"]["x"] = 40
+        data["sat"]["x"] = 487
         data["sat"]["y"] = 13
-        # data["sat"]["x"] = 487
-        # data["sat"]["y"] = 11
     elif data["sat"]["addr"] == "0C:B8:15:F3:68:DC":  # ESP32-Maxim
         data["sat"]["room"] = "Living"
         data["sat"]["x"] = 768
@@ -219,7 +218,6 @@ def decode_callibrate_command(cmd: str) -> dict:
         rssis.append(float(rssi))
 
     setDefault = setDefault == "Y" if True else False
-    print(setDefault)
 
     return {
         "sat": str(satellite),
@@ -318,16 +316,28 @@ def extract_coords_and_distances(paired_sats_devs: list):
     for pair in paired_sats_devs:
         coords = []
         distances = []
-        sats = pair['sats']
-        for sat in sats:
+        # sats = pair['sats']
+        
+        for i in range(len(pair["sats"])):
+            sat = pair["sats"][i]
+            dev = pair["devs"][i]
+            
             coords.append(np.array([int(sat['x']), int(sat['y'])]))
-
-        devs = pair['devs']
-        for dev in devs:
-            distance = calculate_distance(int(dev['rssi']), path_loss_exponent=9)
-            print(json.dumps(pair, indent=3))
-            print("calculated distance:", distance)
+            
+            distance = calculate_distance(int(dev["rssi"]), path_loss_exponent=9)
+            # print(json.dumps(pair, indent=3))
+            print(sat["name"],"with rssi:\t", dev["rssi"], "calculated distance:\t", distance)
             distances.append(distance*100)
+
+        # for sat in sats:
+        #     coords.append(np.array([int(sat['x']), int(sat['y'])]))
+
+        # devs = pair['devs']
+        # for dev in devs:
+        #     distance = calculate_distance(int(dev['rssi']), path_loss_exponent=9)
+        #     print(json.dumps(pair, indent=3))
+        #     print("calculated distance:", distance)
+        #     distances.append(distance*100)
 
         yield pair, coords, distances
 
