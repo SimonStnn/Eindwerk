@@ -46,10 +46,10 @@ const Settings = ({
         return str.slice(0, 1).toUpperCase().concat(str.slice(1));
     }
 
-    function formatKey(keyObj) {
+    function formatKey(keyObj, depth) {
         switch (typeof keyObj) {
             case 'object':
-                return FormatObject(keyObj);
+                return FormatObject(keyObj, depth);
             case 'string':
                 return FormatString(keyObj);
             case 'number':
@@ -60,20 +60,18 @@ const Settings = ({
                 return <>{keyObj.toString()}</>;
         }
     }
-    const FormatObject = (obj) => {
-        const [collapse, setCollapse] = useState(true);
+    const FormatObject = (obj, depth) => {
+        const Format = ({ obj, obj_key }) => {
+            const [collapse, setCollapse] = useState(true);
 
-        return Object.keys(obj).map((obj_key, i) => {
-            if (ignored_settings.includes(obj_key)) return null;
             const isObj = typeof obj[obj_key] === 'object';
             return (
-                <div key={i} className={isObj ? 'object-section' : 'section'}>
+                <div className={isObj ? 'object-section' : 'section'}>
                     <div className={isObj ? 'object-title' : 'title'}>
-                        {capitalize(obj_key)}:{' '}
                         {isObj ? (
                             <button
                                 className={`toggle-button ${
-                                    collapse ? 'flipped' : ''
+                                    !collapse ? 'flipped' : ''
                                 }`}
                                 value={true}
                                 onClick={(e) => setCollapse(!collapse)}
@@ -83,16 +81,19 @@ const Settings = ({
                         ) : (
                             <></>
                         )}
+                        {capitalize(obj_key)}:{' '}
                     </div>
                     <div className={isObj ? 'object-value' : ''}>
-                        {formatKey(obj[obj_key])}
-                        {/* <button className="config-button" n>
-                            <img src={icon_plus} alt="icon_plus" />
-                            Add to Object
-                        </button> */}
+                        {collapse ? formatKey(obj[obj_key], depth + 1) : <></>}
                     </div>
                 </div>
             );
+        };
+
+        return Object.keys(obj).map((obj_key, i) => {
+            if (ignored_settings.includes(obj_key)) return null;
+
+            return <Format obj={obj} obj_key={obj_key} key={i} />;
         });
     };
     const FormatString = (str) => {
@@ -290,9 +291,10 @@ const Settings = ({
                 ></iframe>
             </div>
             <hr />
+
             <p>Changes will not be applied.</p>
             <h2>Config file</h2>
-            <div className="config">{FormatObject(config)}</div>
+            <div className="config">{FormatObject(config, 0)}</div>
         </div>
     );
 };
