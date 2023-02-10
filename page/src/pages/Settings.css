@@ -32,11 +32,6 @@
     user-select: none;
 }
 
-.App .settings .config-button {
-    margin: 10px;
-    margin-left: 24px;
-}
-
 .App.theme-light .settings .btn {
     background-color: var(--theme-light-white-color-e);
 }
@@ -66,60 +61,6 @@ input {
 .App.theme-light input {
     /* background-color: var(--theme-light-white-color-d); */
     background-color: var(--theme-light-white-color-e);
-}
-
-/* File display */
-.settings .section,
-.settings .object-section {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    margin-left: 15px;
-    transition: height .2s;
-}
-.settings .section {
-    flex-direction: row;
-    align-items: baseline;
-    gap: 8px;
-}
-.object-section .object-title {
-    display: flex;
-    flex-grow: 0.9;
-    justify-content: left;
-    align-items: left;
-    flex-direction: row;
-    column-gap: var(--settings-col-gap);
-}
-.object-section .object-value {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2px;
-    border-left: 1px solid var(--style-brown-4);
-}
-.object-section .number,
-.object-section .string {
-    font-size: 16px;
-}
-
-.App.theme-dark .object-section .number {
-    color: hsl(99, 28%, 73%);
-    width: 60px;
-}
-.App.theme-dark .object-section .string {
-    color: hsl(17, 60%, 68%);
-}
-.App.theme-dark .object-section .boolean {
-    color: lightskyblue;
-}
-
-.App.theme-light .object-section .number {
-    color: hsl(99, 28%, 40%);
-}
-.App.theme-light .object-section .string {
-    color: hsl(17, 60%, 35%);
-}
-.App.theme-light .object-section .boolean {
-    color: blue;
 }
 
 /* Toggle checkbox */
@@ -194,7 +135,7 @@ input:checked + .slider:before {
     margin: 25px 0;
 }
 
-.settings button.toggle-button {
+.settings button.toggle-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -212,14 +153,11 @@ input:checked + .slider:before {
     transition-timing-function: ease;
     /* visibility: hidden; */
 }
-.settings button.toggle-button img {
+.settings button.toggle-btn img {
     aspect-ratio: 1 / 1;
     width: 15px;
 }
 
-.settings .toggle-button.flipped {
-    transform: rotate(180deg);
-}
 .settings iframe {
     width: 100%;
     height: 500px;

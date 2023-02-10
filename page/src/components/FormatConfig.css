@@ -1,0 +1,61 @@
+/* File display */
+.settings .section,
+.settings .object-section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 15px;
+    transition: height .2s;
+}
+.settings .section {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 8px;
+}
+.object-section .object-title {
+    display: flex;
+    flex-grow: 0.9;
+    justify-content: left;
+    align-items: left;
+    flex-direction: row;
+    column-gap: var(--settings-col-gap);
+    border-radius: var(--style-border-radius);
+}
+.object-section .object-value {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2px;
+    border-left: 1px solid var(--style-brown-4);
+}
+.object-section .number,
+.object-section .string {
+    font-size: 16px;
+}
+
+.App.theme-dark .object-section .number {
+    color: hsl(99, 28%, 73%);
+    width: 60px;
+}
+.App.theme-dark .object-section .string {
+    color: hsl(17, 60%, 68%);
+}
+.App.theme-dark .object-section .boolean {
+    color: lightskyblue;
+}
+
+.App.theme-light .object-section .number {
+    color: hsl(99, 28%, 40%);
+}
+.App.theme-light .object-section .string {
+    color: hsl(17, 60%, 35%);
+}
+.App.theme-light .object-section .boolean {
+    color: blue;
+}
+
+.settings .object-title.btn-flipped .toggle-btn {
+    transform: rotate(180deg);
+}
+.settings .object-title.btn-flipped {
+    background-color: var(--style-brown-4);
+}
