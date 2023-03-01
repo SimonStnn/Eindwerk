@@ -5,7 +5,7 @@
     flex-direction: column;
     margin-top: 10px;
     margin-left: 15px;
-    transition: height .2s;
+    transition: height 0.2s;
 }
 .settings .section {
     flex-direction: row;
@@ -20,6 +20,8 @@
     flex-direction: row;
     column-gap: var(--settings-col-gap);
     border-radius: var(--style-border-radius);
+
+    padding-left: 10px;
 }
 .object-section .object-value {
     display: flex;
@@ -57,5 +59,6 @@
     transform: rotate(180deg);
 }
 .settings .object-title.btn-flipped {
-    background-color: var(--style-brown-4);
+    border-left: var(--style-border);
+    border-radius: 0;
 }
