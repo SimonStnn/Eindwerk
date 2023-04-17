@@ -9,6 +9,7 @@ import Discover from './pages/Discover';
 import Components from './pages/Components';
 import Settings from './pages/Settings';
 import Notification from './components/Notification';
+import Loading from './components/Loading';
 
 const THEME_DEFAULT = config.themes.dark;
 const WEBSOCKET_URL = `${
@@ -16,6 +17,7 @@ const WEBSOCKET_URL = `${
 }:${config.websocket.port.toString()}`;
 
 function App() {
+    const [isLoading, setIsLoading] = useState(true);
     const [theme, setTheme] = useState(THEME_DEFAULT);
     const websocketRef = useRef(null);
     const [collection, setCollection] = useState({});
@@ -42,6 +44,12 @@ function App() {
                 setCollection(data);
             }
         };
+
+        // Add window.onload event listener
+        window.onload = () => {
+            setIsLoading(false);
+        };
+
         // Clean up the WebSocket connection when the component unmounts
         return () => {
             console.log('Disconnected from websocket');
@@ -57,6 +65,7 @@ function App() {
             // setTimeout(() => {
             websocket.close();
             // }, 80);
+            window.onload = null;
         };
     }, []);
 
@@ -81,6 +90,10 @@ function App() {
     };
 
     const websocket = websocketRef.current;
+
+    if (isLoading) {
+        return <Loading />;
+    }
     return (
         <div className={'App theme-' + theme}>
             <Sidebar />

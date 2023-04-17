@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-// import { useState } from 'react';
-// import config from './config.json';
 
 import icon_logo from '../images/icons/sidebar/logo.svg';
 

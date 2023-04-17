@@ -42,3 +42,9 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
         monospace;
 }
+
+.box {
+    border-radius: var(--satelite-border-radius);
+    border: 1px solid var(--style-brown-4);
+    box-shadow: var(--satelite-box-shadow);
+}

@@ -1,0 +1,33 @@
+/* Example Loading.css */
+.loading {
+    /* Add styles for centering the loading screen */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    
+    background-color: var(--theme-dark-gray-color-3);
+    
+}
+
+.loading .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 90px;
+    background-color: var(--theme-dark-gray-color-4);
+}
+
+.loading .loading-icon{
+    width: 200px;
+}
+
+
+.loading .message {
+    color: var(--theme-light-white-color-e);
+    font-size: x-large;
+    font-weight: bold;
+}
