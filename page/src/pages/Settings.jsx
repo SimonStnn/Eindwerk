@@ -192,7 +192,7 @@ const Settings = ({
                 <iframe
                     title="webserver_collection"
                     id="server_iframe"
-                    src={webserver_ip}
+                    src={`${webserver_ip}raw`}
                     ref={iframeRef}
                 ></iframe>
             </div>
