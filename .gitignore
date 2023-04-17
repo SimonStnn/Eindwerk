@@ -3,3 +3,5 @@ page/test_react
 
 test/
 test*
+
+backups/rpi/build/
