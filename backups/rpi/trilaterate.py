@@ -5,6 +5,7 @@ from easy_trilateration.least_squares import easy_least_squares, rssi_to_distanc
 
 
 def calculate_ple(rssi, distance):
+    #  It can range from 2.7 to 4.3
     log_distance = np.log10(distance)
     log_rssi = np.log10(
         np.power(10, (27.55 - (20 * np.log10(2.4)) - rssi) / 20))
@@ -36,7 +37,6 @@ def trilaterate(coordinates: list, distances: list):
     arr = []
     for i in range(len(coordinates)):
         # dist = rssi_to_distance(rssi[i], 15, 30)
-        # print('--- dist:', dist)
         arr.append(Circle(coordinates[i][0], coordinates[i][1], distances[i]))
 
     result, meta = easy_least_squares(arr)

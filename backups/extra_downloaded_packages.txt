@@ -4,3 +4,5 @@ sudo apt-get install libatlas-base-dev
 
 pip install websockets
 pip install easy-trilateration
+
+pip install netifaces

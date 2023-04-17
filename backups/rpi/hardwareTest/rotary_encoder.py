@@ -8,8 +8,8 @@ from RPi import GPIO
 # +     - 3v3 (pin1)
 # GND   - GND (pin6)
 
-clk = 17
-dt = 18
+clk = 16
+dt = 12
 sw = 27
 
 GPIO.setmode(GPIO.BCM)
@@ -34,7 +34,6 @@ try:
         clkLastState = clkState
         if swState == 0:
             print("pressed")
-            print(swState)
             sleep(.3)
         sleep(0.01)
 finally:

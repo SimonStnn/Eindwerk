@@ -4,71 +4,32 @@
 """
 Main file for eindproef from Simon Stijnen.
 """
-
+import os
 import csv
+import sys
 import time
 import json
 import math
+from aiohttp import web
+import signal
 import asyncio
 import threading
-import http.server
 from multiprocessing import Manager, Lock
 import numpy as np
 import websockets
 from trilaterate import trilaterate, calculate_ple, calculate_distance
+from discover import discover
+from displays import handle_displays
+import log
+import logging
+
+_LOGGING = logging.getLogger(__name__)
 
 
-def get_content_for_web_page(collection) -> str:
-    """Make the content from collection to send to the webpage."""
-    def format_dict(dictionary) -> str:
-        """Format a dictionary to be send to webserver."""
-        return json.dumps(dictionary, indent=3)
-
-    col_sats = collection["sats"]
-    # Format collection and serialise
-    json_collection = format_dict(dict(collection))
-    # Get amount of connected satellites
-    connected_sats = list(col_sats.keys())
-    # Check how many devices all sats combined found
-    sats_devs_found = []
-    for val in col_sats.values():
-        for dev in val["devs"]:
-            sats_devs_found.append(dev["addr"])
-    # Check how many different devices were found
-    sats_devs_unique = set()
-    for val in col_sats.values():
-        for dev in val["devs"]:
-            sats_devs_unique.add(dev["addr"])
-
-    pairs = filter_pairs(make_device_pairs(collection))
-
-    string = [
-        f"Webserver: http://{HOST_IP}:{str(WEBSERVER_PORT)}/",
-        f"Websocket: ws://{HOST_IP}:{str(WEBSOCKET_PORT)}/",
-        "",
-        f"Connected satellites:\t{len(connected_sats)}",
-        f"{connected_sats}",
-        f"Found devices:\t\t{len(sats_devs_found)}",
-        f"{sats_devs_found}",
-        f"Found unique devices:\t{len(sats_devs_unique)}",
-        f"{list(sats_devs_unique)}",
-        "",
-        "Collection:",
-        f"{json_collection}",
-        "",
-        f"Websocket connections:\t{len(CONNECTIONS)}",
-        f"{list(CONNECTIONS)}",
-        "",
-        "Common_devs:",
-        str(format_dict(pairs)),
-    ]
-    return "\n".join(string)
-
-
-def decode_incoming_data(data: str) -> dict:
+def decode_incoming_satellite_data(data: str) -> dict:
     """Decode the incoming data from a satellite, and return an object structured like:
     {
-        satellite: { name, addr, ip }
+        satellite: { name, addr }
         devices: [ { name, address, classes, rssi }, ... ]
     }"""
     [section1, *section2] = data.split("|")
@@ -77,7 +38,6 @@ def decode_incoming_data(data: str) -> dict:
     sat = {
         "name": section1[0],
         "addr": section1[1]
-        # ,"ip": section1[2]
     }
 
     devs = []
@@ -85,7 +45,6 @@ def decode_incoming_data(data: str) -> dict:
         dev = section.split("&")
         devs.append({"name": dev[0], "addr": dev[1],
                     "clas": int(dev[2]),
-                     #  "rssi": str(abs(int(dev[3])))})
                      "rssi": int(dev[3])})
 
     return {"sat": sat, "devs": devs}
@@ -112,7 +71,7 @@ def add_satellite_to_collection(collection, satellite_addr: str, data: dict) -> 
     if data["sat"]["addr"] in sats:
         if "queue" in sats[data["sat"]["addr"]]:
             for dev in data["devs"]:
-                prevQueue = sats[data["sat"]["addr"]]["queue"]
+                prevQueue: list = sats[data["sat"]["addr"]]["queue"]
                 if dev["addr"] not in prevQueue:
                     prevQueue[dev["addr"]] = []
 
@@ -135,25 +94,25 @@ def add_satellite_to_collection(collection, satellite_addr: str, data: dict) -> 
                     return x
                 data["devs"] = list(map(map_func, data["devs"]))
 
-    # print(json.dumps(data, indent=3))
+    # _LOGGING.debug(json.dumps(data, indent=3))
 
-    if data["sat"]["addr"] == "58:BF:25:93:7C:88":  # ESP32-Simon-01
-        data["sat"]["room"] = "Living"
-        data["sat"]["x"] = 746
-        data["sat"]["y"] = 21
-    elif data["sat"]["addr"] == "58:BF:25:93:7E:78":  # ESP32-Simon-02
-        data["sat"]["room"] = "Living"
-        # data["sat"]["x"] = 40
-        data["sat"]["x"] = 487
-        data["sat"]["y"] = 13
-    elif data["sat"]["addr"] == "0C:B8:15:F3:68:DC":  # ESP32-Maxim
-        data["sat"]["room"] = "Living"
-        data["sat"]["x"] = 768
-        data["sat"]["y"] = 366
-    elif data["sat"]["addr"] == "58:BF:25:93:7E:84":  # ESP32-Zetel
-        data["sat"]["room"] = "Living"
-        data["sat"]["x"] = 760
-        data["sat"]["y"] = 370
+    # if data["sat"]["addr"] == "58:BF:25:93:7C:88":  # ESP32-Simon-01
+    #     data["sat"]["room"] = "Living"
+    #     data["sat"]["x"] = 746
+    #     data["sat"]["y"] = 21
+    # elif data["sat"]["addr"] == "58:BF:25:93:7E:78":  # ESP32-Simon-02
+    #     data["sat"]["room"] = "Living"
+    #     # data["sat"]["x"] = 40
+    #     data["sat"]["x"] = 487
+    #     data["sat"]["y"] = 13
+    # elif data["sat"]["addr"] == "0C:B8:15:F3:68:DC":  # ESP32-Maxim
+    #     data["sat"]["room"] = "Living"
+    #     data["sat"]["x"] = 768
+    #     data["sat"]["y"] = 366
+    # elif data["sat"]["addr"] == "58:BF:25:93:7E:84":  # ESP32-Zetel
+    #     data["sat"]["room"] = "Living"
+    #     data["sat"]["x"] = 760
+    #     data["sat"]["y"] = 370
 
     sats[satellite_addr] = data
 
@@ -208,7 +167,7 @@ def decode_change_room_command(cmd: str) -> dict:
 def decode_callibrate_command(cmd: str) -> dict:
     """Convert the incoming callibrate command string to dict."""
     cmd = cmd.replace("CALLIBRATE=", "")
-    [devices, *values] = cmd.split("|")
+    [devices, values] = cmd.split("|", 1)
     [satellite, device, setDefault] = devices.split("&")
     rssis = []
     distances = []
@@ -263,8 +222,8 @@ def change_satellite_room(collection, addr: str, room: str):
 def callibrate(collection, sat_addr: str, dev_addr: str, distances: list, signal_strengths: list, default: bool = False):
     """Calculate the path loss exponent and save it to the collection."""
     ple = calculate_ple(signal_strengths, distances)
-    print("Callibrated PLE:", ple, "\n", "Calculated using satellite:",
-          sat_addr, "and device:", dev_addr)
+    _LOGGING.info("Callibrated PLE:", ple, "\n", "Calculated using satellite:",
+                  sat_addr, "and device:", dev_addr)
 
     if math.isnan(ple):
         return
@@ -280,7 +239,7 @@ def callibrate(collection, sat_addr: str, dev_addr: str, distances: list, signal
 
 def make_device_pairs(collection) -> list:
     """Make pairs of multple diveces that are the same."""
-    sats = collection["sats"]
+    sats: object = collection["sats"]
 
     # Create a dictionary to store the child devices with the same address
     common_devs_by_addr = {}
@@ -289,8 +248,6 @@ def make_device_pairs(collection) -> list:
     for sat in sats.values():
         # Iterate over the child devices of this satellite
         for dev in sat['devs']:
-            if dev["addr"] != "f0:65:ae:2f:c5:d5":
-                continue
             # If the address of this device is already in the dictionary, append it to the corresponding list
             if dev['addr'] in common_devs_by_addr:
                 common_devs_by_addr[dev['addr']]['sats'].append(sat["sat"])
@@ -317,16 +274,17 @@ def extract_coords_and_distances(paired_sats_devs: list):
         coords = []
         distances = []
         # sats = pair['sats']
-        
+
         for i in range(len(pair["sats"])):
             sat = pair["sats"][i]
             dev = pair["devs"][i]
-            
+
             coords.append(np.array([int(sat['x']), int(sat['y'])]))
-            
-            distance = calculate_distance(int(dev["rssi"]), path_loss_exponent=9)
-            # print(json.dumps(pair, indent=3))
-            print(sat["name"],"with rssi:\t", dev["rssi"], "calculated distance:\t", distance)
+
+            distance = calculate_distance(
+                int(dev["rssi"]), path_loss_exponent=9)
+            _LOGGING.info(sat["name"], "with rssi:\t", dev["rssi"],
+                          "calculated distance:\t", distance)
             distances.append(distance*100)
 
         # for sat in sats:
@@ -335,8 +293,6 @@ def extract_coords_and_distances(paired_sats_devs: list):
         # devs = pair['devs']
         # for dev in devs:
         #     distance = calculate_distance(int(dev['rssi']), path_loss_exponent=9)
-        #     print(json.dumps(pair, indent=3))
-        #     print("calculated distance:", distance)
         #     distances.append(distance*100)
 
         yield pair, coords, distances
@@ -362,7 +318,6 @@ def calculate_devices_positions(collection) -> dict:
         found_by = [sat['addr'] for entry in pairs for sat in entry['sats']]
 
         x, y, error = trilaterate(coords, distances)
-        # print("--- Result:", x, y, error)
 
         devs[addr] = {
             "name": name,
@@ -395,15 +350,15 @@ def write_to_csv_file(path, addr, devs):
         #             [sat, dev["name"], dev["addr"], dev["rssi"]])
 
 
-def run_websocket_server(collection):
+async def run_websocket_server(collection, stop_event: threading.Event) -> asyncio.AbstractEventLoop:
     """Start the websocket server."""
     async def register(websocket: websockets):
-        # if websocket not in CONNECTIONS:
+        # Client joins
         CONNECTIONS.add(websocket)
         try:
             async for msg in websocket:
+                # Client message
                 msg = str(msg)
-                print("<<< " + msg)
                 if msg == "REQ=collection":
                     await websocket.send(serialize_collection(collection))
                 elif msg.startswith("UPDATE_POS="):
@@ -419,76 +374,140 @@ def run_websocket_server(collection):
                     decoded = decode_callibrate_command(msg)
                     # callibrate(
                     #     collection, decoded["sat"], decoded["dev"], decoded["distances"], decoded["rssis"], decoded["def"])
-
+# heyy simon hoe geet het met je
                 await websocket.send("Received")
         finally:
-            CONNECTIONS.remove(websocket)
+            try:
+                # Client leaves
+                CONNECTIONS.remove(websocket)
+            except (websockets.exceptions.ConnectionClosed, asyncio.CancelledError):
+                pass
+            
+            
 
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    try:
+        websocket_server = await websockets.serve(
+            register, HOST_IP, WEBSOCKET_PORT)
+        _LOGGING.info(f"Websocket serving on: ws://{HOST_IP}:{WEBSOCKET_PORT}/")
 
-    websocket_server = websockets.serve(register, HOST_IP, WEBSOCKET_PORT)
-    print(f"Websocket serving on: ws://{HOST_IP}:{WEBSOCKET_PORT}/")
-    asyncio.get_event_loop().run_until_complete(websocket_server)
-    asyncio.get_event_loop().run_forever()
+        await websocket_server.start_serving()
+        
+        while not stop_event.is_set():
+            await asyncio.sleep(1)
+        
+        await websocket_server.close()
+    except Exception as e:
+        pass
+
 
 
 def run_web_server(collection):
     """Start the web server"""
-    class RequestHandler(http.server.BaseHTTPRequestHandler):
-        """Webserver Request Handler"""
 
-        def handle_one_request(self):
-            self.raw_requestline = self.rfile.readline()
-            if not self.raw_requestline:
-                self.close_connection = 1
-                return
-            if not self.parse_request():  # An error code has been sent, just exit
-                return
-            mname = "do_" + self.command
-            if not hasattr(self, mname):
-                self.send_error(501, f"Unsupported method {self.command}")
-                return
-            method = getattr(self, mname)
-            method(collection)  # Pass collection to the do_GET method
-            self.wfile.flush()  # actually send the response if not already
+    def get_raw_content_for_web_page(collection: dict) -> web.Response:
+        """Make the content from collection to send to the webpage."""
+        def format_dict(dictionary) -> str:
+            """Format a dictionary to be send to webserver."""
+            return json.dumps(dictionary, indent=".  ")
 
-        def do_GET(self, collection):
-            """Handle GET requests. (browser)"""
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(
-                (get_content_for_web_page(collection)).encode("utf-8"))
+        col_sats = collection["sats"]
+        # Format collection and serialise
+        json_collection = format_dict(dict(collection))
+        # Get amount of connected satellites
+        connected_sats = list(col_sats.keys())
+        # Check how many devices all sats combined found
+        sats_devs_found = []
+        for val in col_sats.values():
+            for dev in val["devs"]:
+                sats_devs_found.append(dev["addr"])
+        # Check how many different devices were found
+        sats_devs_unique = set()
+        for val in col_sats.values():
+            for dev in val["devs"]:
+                sats_devs_unique.add(dev["addr"])
 
-        def do_POST(self, collection):
-            """Handle POST requests. (ESP32)"""
-            self.send_response(200)
-            self.end_headers()
-            # Read the data from the request body
-            content_length = int(self.headers["Content-Length"])
-            data = self.rfile.read(content_length).decode()
+        pairs = filter_pairs(make_device_pairs(collection))
 
-            data = decode_incoming_data(data)
+        string = [
+            f"Webserver: http://{HOST_IP}:{str(WEBSERVER_PORT)}/",
+            f"Websocket: ws://{HOST_IP}:{str(WEBSOCKET_PORT)}/",
+            "",
+            f"Connected satellites:\t{len(connected_sats)}",
+            f"{connected_sats}",
+            f"Found devices:\t\t{len(sats_devs_found)}",
+            f"{sats_devs_found}",
+            f"Found unique devices:\t{len(sats_devs_unique)}",
+            f"{list(sats_devs_unique)}",
+            "",
+            "Collection:",
+            f"{json_collection}",
+            "",
+            f"Websocket connections:\t{len(CONNECTIONS)}",
+            f"{list(CONNECTIONS)}",
+            "",
+            "Common_devs:",
+            str(format_dict(pairs)),
+        ]
 
-            data_addr = data["sat"]["addr"]
-            add_satellite_to_collection(
-                collection, data_addr, data
-            )
+        return "\n".join(string)
 
-            devices = calculate_devices_positions(collection)
-            add_device_to_collection(collection, devices)
+    async def handle_post(request: web.Request, collection: dict):
+        """Handle POST requests. (ESP32)"""
+        # Read the data from the request body
+        data = await request.text()
 
-            # sat = collection["sats"][data_addr]
-            # # print(sat)
-            # for dev in sat["devs"]:
-            #     print(sat["sat"]["name"], "estimated", dev["name"], dev["rssi"],
-            #           " distance for:", calculate_distance(dev["rssi"], path_loss_exponent=6.0))
+        data = decode_incoming_satellite_data(data)
 
-            broadcast_to_all_clients(dict(collection))
+        data_addr = data["sat"]["addr"]
+        add_satellite_to_collection(
+            collection, data_addr, data
+        )
 
-    httpd = http.server.HTTPServer((HOST_IP, WEBSERVER_PORT), RequestHandler)
-    print(f"Webserver serving on: http://{HOST_IP}:{WEBSERVER_PORT}/")
-    httpd.serve_forever()
+        devices = calculate_devices_positions(collection)
+        add_device_to_collection(collection, devices)
+
+        # sat = collection["sats"][data_addr]
+        # for dev in sat["devs"]:
+        #     _LOGGING.debug(sat["sat"]["name"], "estimated", dev["name"], dev["rssi"],
+        #           " distance for:", calculate_distance(dev["rssi"], path_loss_exponent=6.0))
+
+        broadcast_to_all_clients(dict(collection))
+        return web.Response()
+
+    async def serve_static(request: web.Request):
+        path = request.match_info.get('path', '')
+        if not path:
+            path = 'index.html'  # Set default path to index.html for '/'
+        file_path = os.path.join('build', path)
+        if os.path.exists(file_path):
+            return web.FileResponse(file_path)
+        else:
+            return web.HTTPNotFound()
+
+    app = web.Application()
+    app.router.add_get('/', serve_static)
+    app.router.add_get('/rooms', serve_static)
+    app.router.add_get('/discover', serve_static)
+    app.router.add_get('/components', serve_static)
+    app.router.add_get('/settings', serve_static)
+    app.router.add_get(
+        '/raw', lambda request: web.Response(text=get_raw_content_for_web_page(collection)))
+    app.router.add_get('/{path:.*}', serve_static)  # Serve other static files
+
+    # Handle post requests
+    app.router.add_post(
+        '/', lambda request: handle_post(request, collection), )
+
+    # Add catch-all route for 404 errors
+    app.router.add_route('*', '/{path:.*}', lambda req: _LOGGING.warning(req))
+
+    web.run_app(
+        app,
+        host=HOST_IP,
+        port=WEBSERVER_PORT,
+        print=_LOGGING.info,
+        access_log_format='%a "%r" %s %b "%{Referer}i" "%{User-Agent}i"'
+    )
 
 
 if __name__ == "__main__":
@@ -502,6 +521,9 @@ if __name__ == "__main__":
     ESP32_TRANSMIT_GAIN = 2.15
     ESP32_RECEIVE_GAIN = 2.15
 
+    # Settup the logger
+    log.setup(sys)
+
     # Declare the shared variable as a multiprocessing.Value object
     shared_collection = Manager().dict()
     # Create a lock object
@@ -512,21 +534,60 @@ if __name__ == "__main__":
             "sats": {},
             "devs": {},
             "ple": {
-                # "default": -1.1522843417023894
                 "default": 8.0
             },
         }
-    try:
-        # create and start the WebSocket server thread
-        websocket_thread = threading.Thread(
-            target=run_websocket_server, args=(shared_collection,)
-        )
-        websocket_thread.start()
 
-        # create and start the Web server thread
-        webserver_thread = threading.Thread(
-            target=run_web_server, args=(shared_collection,)
-        )
-        webserver_thread.start()
-    except KeyboardInterrupt:
-        pass
+    # Define stop event var
+    stop_event = threading.Event()
+
+    # Define stop signal
+    sig = signal.SIGUSR1
+    sig2 = signal.SIGUSR2
+
+    # Define a signal handler function
+    def signal_handler(signum, frame):
+        global stop_event
+        print()
+        _LOGGING.info('Shutting down...')
+        stop_event.set()
+
+    # Register signal handler for SIGINT signal (Ctrl+C)
+    signal.signal(sig, signal_handler)
+  
+    # Websocket thread
+    websocket_thread = threading.Thread(
+        target=asyncio.run, args=[run_websocket_server(shared_collection, stop_event)],
+        name="WebsocketThread"
+    )
+
+    # create and start thread that handles the display
+    display_thread = threading.Thread(
+        target=handle_displays, args=(shared_collection, stop_event),
+        name="DisplayThread"
+    )
+    # create and start discover thread
+    discover_thread = threading.Thread(
+        target=discover, args=(shared_collection, stop_event),
+        name="DiscoverThread"
+    )
+
+    # Start threads
+    display_thread.start()
+    discover_thread.start()
+    websocket_thread.start()
+
+    # Keep webserver in the main thread and wait for it to close
+    run_web_server(shared_collection)
+    
+    # code for closing the app
+    # Send stop signal
+    os.kill(os.getpid(), sig)
+    
+    # Wait for threads to finish
+    display_thread.join()
+    _LOGGING.debug("Display thread terminated")
+    discover_thread.join()
+    _LOGGING.debug("Discover thread terminated")
+    websocket_thread.join()
+    _LOGGING.debug("Websocket thread terminated")
