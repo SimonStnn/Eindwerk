@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import icon_move from '../images/icons/canvas/move.svg';
-import icon_movetoRoom from '../images/icons/canvas/moveToRoom.svg';
 import icon_cross from '../images/icons/canvas/cross.svg';
+import icon_movetoRoom from '../images/icons/other/login.svg';
+import icon_rename from '../images/icons/other/info.svg';
 import Device from './Device';
 
 import config from '../config.json';
@@ -64,6 +65,13 @@ const DotInfo = React.memo(
             handleCloseDotInfo(event);
         };
 
+        const handleRename = (event, newName) => {
+            if (!newName) return;
+
+            websocket.send(`RENAME=${dot.addr}&${newName}`);
+            handleCloseDotInfo(event);
+        };
+
         const Button = ({ icon, text, cb }) => {
             return (
                 <button className="dot-info-btn btn" onClick={cb}>
@@ -73,17 +81,42 @@ const DotInfo = React.memo(
             );
         };
 
+        const TextBox = ({ icon, text, cb }) => {
+            const nameRef = useRef();
+            return (
+                <div className="dot-info-btn btn">
+                    <img className="icon" src={icon} alt={`icon_${text}`} />{' '}
+                    {text}
+                    <input
+                        type="text"
+                        name="rename-input"
+                        id="rename-input"
+                        ref={nameRef}
+                    />
+                    <button
+                        className="btn"
+                        onClick={(e) => cb(e, nameRef.current.value)}
+                    >
+                        {'submit'}
+                    </button>
+                </div>
+            );
+        };
+
         const DropDown = ({ icon, text, id, name, options, cb }) => {
             return (
-                <select className="dot-info-btn btn" onChange={cb}>
-                    {options
-                        .filter((val) => val !== undefined)
-                        .map((val, i) => (
-                            <option key={i} value={val}>
-                                Change room: {val}
-                            </option>
-                        ))}
-                </select>
+                <div className="dot-info-btn btn">
+                    <img className="icon" src={icon} alt={`icon_${text}`} />{' '}
+                    <select className="btn" onChange={cb}>
+                        {options
+                            .filter((val) => val !== undefined)
+                            .map((val, i) => (
+                                <option key={i} value={val}>
+                                    Change room: {val}
+                                </option>
+                            ))}
+                    </select>
+                </div>
             );
         };
 
@@ -91,7 +124,7 @@ const DotInfo = React.memo(
             <div
                 className={`dot-info-background ${
                     showDotInfo ? 'visible' : ''
-                }`}
+                    }`}
             >
                 <div className="dot-info-container">
                     <div className="dot-info-content-wrapper">
@@ -116,6 +149,11 @@ const DotInfo = React.memo(
                                             icon={icon_move}
                                             text={'Update Satellite Position'}
                                             cb={handleUpdateDotPosition}
+                                        />
+                                        <TextBox
+                                            icon={icon_rename}
+                                            text={'Rename Satellite'}
+                                            cb={handleRename}
                                         />
                                         <DropDown
                                             icon={icon_movetoRoom}
