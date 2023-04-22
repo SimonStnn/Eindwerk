@@ -1,5 +1,6 @@
 """Automatically discover satellites."""
 import socket
+import asyncio
 import threading
 import netifaces
 from datetime import datetime, timedelta
@@ -35,8 +36,8 @@ SERVER_IP = get_server_address()
 BROADCAST_ADDRESS = get_broadcast_address()
 BROADCAST_PORT: int = 12346
 BROADCAST_INTERVAL = 60 * 3
+CHECK_PACKET_INTERVAL = 2
 _LOGGING = logging.getLogger(__name__)
-
 
 
 def sendConfigInfo(addr: str):
@@ -58,11 +59,11 @@ def onPacket(sock: socket.socket, addr: str, packet: str):
         _LOGGING.info(f"Received discovery response from {addr}")
         pass
 
+
 def discover(collection, stop_event: threading.Event):
     time.sleep(2)
 
     # start timer at broadcast interval seconds
-    start_time = datetime.now() - timedelta(seconds=BROADCAST_INTERVAL)
 
     def check_data() -> list[str, str]:
         try:
@@ -78,30 +79,41 @@ def discover(collection, stop_event: threading.Event):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    sock.setblocking(False)
+    sock.setblocking(True)
+    sock.settimeout(2)
     sock.bind((BROADCAST_ADDRESS, BROADCAST_PORT))
 
-    _LOGGING.info(f"Receiving UDP packages on {BROADCAST_ADDRESS}:{BROADCAST_PORT}")
-    while not stop_event.is_set():
-        # * Send UDP package
-        # make a timer
-        current_time = datetime.now()
-        elapsed_time = (current_time - start_time).total_seconds()
+    _LOGGING.info(
+        f"Receiving UDP packages on {BROADCAST_ADDRESS}:{BROADCAST_PORT}")
+    async def loop():
+        broadcast_start_time = datetime.now() - timedelta(seconds=BROADCAST_INTERVAL)
+        check_start_time = datetime.now() - timedelta(seconds=CHECK_PACKET_INTERVAL)
+        while not stop_event.is_set():
+            # * Send UDP package
+            # make a timer
+            current_time = datetime.now()
+            broadcast_elapsed_time = (current_time - broadcast_start_time).total_seconds()
+            check_elapsed_time = (current_time - check_start_time).total_seconds()
+            # Run every x seconds
+            if broadcast_elapsed_time >= BROADCAST_INTERVAL:
+                broadcast_start_time = current_time  # reset timer
 
-        # Run every x seconds
-        if elapsed_time >= BROADCAST_INTERVAL:
-            start_time = current_time  # reset timer
+                # send package
+                message = "D="
+                sock.sendto(message.encode(),
+                            (str(BROADCAST_ADDRESS), int(BROADCAST_PORT)))
+                _LOGGING.info(f"Send discovery message: {message}")
 
-            # send package
-            message = "D="
-            sock.sendto(message.encode(),
-                        (str(BROADCAST_ADDRESS), int(BROADCAST_PORT)))
-            _LOGGING.info(f"Send discovery message: {message}")
+            if check_elapsed_time>= CHECK_PACKET_INTERVAL:
+                check_start_time = current_time  # reset timer
+                # * Check for new packets
+                # * Receive UDP packages
+                packet, addr = check_data()
+                if not packet:  # If no packet was received
+                    continue
 
-        # * Receive UDP packages
-        packet, addr = check_data()
-        if not packet:  # If no packet was received
-            continue
+                # once a packet is received. trigger onPacket event
+                onPacket(sock, addr, packet)
+    
+    asyncio.new_event_loop().run_until_complete(loop())
 
-        # once a packet is received. trigger onPacket event
-        onPacket(sock, addr, packet)

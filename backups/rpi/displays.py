@@ -13,6 +13,7 @@ import Adafruit_CharLCD as LCD
 from RPi import GPIO
 # Digit display library
 import tm1637
+from collection import Collection
 
 _LOGGING = logging.getLogger(__name__)
 
@@ -60,7 +61,7 @@ lcd.message(
 tm.brightness(1)
 
 
-def handle_displays(collection, stop_event: threading.Event):
+def handle_displays(collection: Collection, stop_event: threading.Event):
     global lcd
     global tm
 
@@ -166,10 +167,10 @@ def handle_displays(collection, stop_event: threading.Event):
             return mac_address_pattern.match(string) is not None
 
         if is_mac_address(key):
-            if key in collection["sats"]:
-                name = collection["sats"][key]["sat"]["name"]
-            elif key in collection["devs"]:
-                dev = collection["devs"][key]
+            if key in collection.dic["sats"]:
+                name = collection.dic["sats"][key]["sat"]["name"]
+            elif key in collection.dic["devs"]:
+                dev = collection.dic["devs"][key]
                 if "name" in dev:
                     name = dev["name"]
 
@@ -384,6 +385,7 @@ def handle_displays(collection, stop_event: threading.Event):
         clkState = GPIO.input(rot_clk)
         dtState = GPIO.input(rot_dt)
         swState = GPIO.input(rot_sw)
+                
         # Check states
         if clkState != clkLastState:
             if dtState != clkState:
@@ -414,7 +416,7 @@ def handle_displays(collection, stop_event: threading.Event):
         return current_item
 
     def get_unique_devs():
-        col_sats: dict = collection["sats"]
+        col_sats: dict = collection.dic["sats"]
         sats_devs_unique = set()
         for val in col_sats.values():
             for dev in val["devs"]:
@@ -431,9 +433,9 @@ def handle_displays(collection, stop_event: threading.Event):
                 "SSID": SSID,
                 "host IP": HOST_IP,
             },
-            "sats": lambda: len(collection["sats"]),
-            "devs": lambda: len(collection["devs"]),
-            "collection": collection,
+            "sats": lambda: len(collection.dic["sats"]),
+            "devs": lambda: len(collection.dic["devs"]),
+            "collection": collection.dic,
             "unique devices": lambda: len(get_unique_devs()),
         }
 
@@ -445,16 +447,14 @@ def handle_displays(collection, stop_event: threading.Event):
             # Keep track of the passed time
             current_time = datetime.now()
             elapsed_time = (current_time - start_time).total_seconds()
-
             # Check if the display should be updated
+            # print("ll")
             if prevIndex != current_menu.index or clicked or elapsed_time >= 3:  # Update displays
                 # Reset some variables
                 start_time = current_time
                 prevIndex = current_menu.index
-
                 # Re-build the menu
                 current_menu.update_menu(menu)
-
                 # Update digit display
                 num = str(current_menu.index).rjust(2, " ") + \
                     "" + str(len(menu_stack)).rjust(2, " ")

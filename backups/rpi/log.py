@@ -2,17 +2,21 @@
 import logging
 import colorlog
 import sys
-import traceback
 import types
 
 _LOGGING = logging.getLogger(__name__)
 
-log_level = logging.INFO
+log_level = logging.DEBUG
 
 
 def setup(system: sys):
     # Format for log messages
     log_format = "%(log_color)s[%(asctime)s] [%(threadName)s] [%(name)s] [%(levelname)s]: %(message)s%(reset)s"
+    
+    # logging.getLogger("__main__").setLevel(logging.DEBUG)
+    # logging.getLogger("websockets.server").setLevel(logging.DEBUG)
+    # logging.getLogger("discover").setLevel(logging.DEBUG)
+    # logging.getLogger("display").setLevel(logging.DEBUG)
 
     # Set up logging with colorlog
     handler = colorlog.StreamHandler()
@@ -38,3 +42,19 @@ def setup(system: sys):
 
     # Configure logging to use the colorlog handler
     logging.basicConfig(level=log_level, handlers=[handler])
+
+
+def set_level(name: str, level):
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+
+
+def getloggers() -> dict:
+    # Dictionary to store logger names and debug logging status
+    logger_dict = {}
+
+    # Iterate over all loggers and check if debug logging is enabled
+    for logger_name in sorted(logging.Logger.manager.loggerDict):
+        logger = logging.getLogger(logger_name)
+        logger_dict[logger_name] = logger.getEffectiveLevel() == logging.DEBUG
+    return logger_dict
