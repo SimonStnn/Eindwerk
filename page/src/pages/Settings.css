@@ -186,3 +186,15 @@ input:checked + .slider:before {
 
     padding: 3px;
 }
+
+.settings .loggers {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.settings .loggers h3 {
+    margin-top: 0;
+}
+.settings .loggers .logger {
+     padding: 24px;
+}

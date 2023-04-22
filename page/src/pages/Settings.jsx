@@ -2,9 +2,13 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import Callibrate from '../components/Callibrate';
 import config from '../config.json';
-import FormatConfig from '../components/FormatConfig'
+import FormatConfig from '../components/FormatConfig';
 
 const webserver_ip = 'http://10.250.3.99:7891/';
+
+function capitalize(str) {
+    return str.slice(0, 1).toUpperCase().concat(str.slice(1));
+}
 
 const Settings = ({
     collection,
@@ -16,7 +20,6 @@ const Settings = ({
     const iframeRef = useRef(null);
     const [callibrating, setCallibrating] = useState(false);
     const [callibrate, setCallibrate] = useState({
-        dev: 'dmlfsqkjm',
         default: true,
     });
 
@@ -48,6 +51,33 @@ const Settings = ({
                 </>
             ),
         });
+    };
+
+    const LoggerModule = ({ name, state, websocket }) => {
+        const [enabled, setEnabled] = useState(state);
+        return (
+            <div className="box logger">
+                <h3>{capitalize(name)}</h3>
+                <span>Enable debug logging: </span>
+                <label className="switch">
+                    <input
+                        type={'checkbox'}
+                        className="boolean"
+                        defaultValue={enabled}
+                        defaultChecked={enabled}
+                        readOnly={true}
+                        onClick={(e) => {
+                            collection.loggers[name] = !enabled;
+                            websocket.send(
+                                `DEBUG=${name}&${!enabled ? '1' : '0'}`
+                                );
+                            setEnabled(!enabled);
+                        }}
+                    ></input>
+                    <span className="slider round"></span>
+                </label>{' '}
+            </div>
+        );
     };
 
     return (
@@ -197,7 +227,24 @@ const Settings = ({
                 ></iframe>
             </div>
             <hr />
-
+            <h2>Logging</h2>
+            <div className="loggers">
+                {collection.loggers ? (
+                    Object.keys(collection.loggers).map((item, i) => {
+                        return (
+                            <LoggerModule
+                                name={item}
+                                state={collection.loggers[item]}
+                                websocket={websocket}
+                                key={i}
+                            />
+                        );
+                    })
+                ) : (
+                    <>No loggers available</>
+                )}
+            </div>
+            <hr />
             <p>Changes will not be applied.</p>
             <h2>Config file</h2>
             <FormatConfig config={config} />
