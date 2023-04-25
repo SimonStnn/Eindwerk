@@ -66,6 +66,7 @@ function App() {
             websocket.close();
             // }, 80);
             window.onload = null;
+            setTimeout(() => setIsLoading(false), 5000);
         };
     }, []);
 
