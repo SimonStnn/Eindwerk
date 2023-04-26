@@ -29,12 +29,12 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
         };
 
         return class Dot {
-            constructor(room, x, y) {
+            constructor(room, x, y, name = '', addr = '') {
                 this.room = room;
                 this.x = x;
                 this.y = y;
-                this.name = '';
-                this.addr = '';
+                this.name = name;
+                this.addr = addr;
                 this.moveble = false;
                 this.radius = dot_radius;
 
@@ -46,8 +46,8 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
             }
 
             getDotSVG(i) {
-                const x = this.x ? parseInt(this.x) + padding : 0 + padding;
-                const y = this.y ? parseInt(this.y) + padding : 0 + padding;
+                const x = (this.x ? parseInt(this.x) : 0) * scale + padding;
+                const y = (this.y ? parseInt(this.y) : 0) * scale + padding;
 
                 return (
                     <g
@@ -82,12 +82,7 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
     const Satellite = useMemo(() => {
         return class Satellite extends Dot {
             constructor(room, x, y, name, addr) {
-                super(x, y, name, addr, room);
-                this.room = room;
-                this.x = x;
-                this.y = y;
-                this.name = name;
-                this.addr = addr;
+                super(room, x, y, name, addr);
                 this.devices = [];
                 this.moveble = true;
                 this.radius = dot_radius;
@@ -111,6 +106,12 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
 
                 websocket.send(`CHANGE_ROOM=${this.addr}&${this.room}`);
             }
+
+            rename(new_name) {
+                this.name = new_name;
+
+                websocket.send(`RENAME=${this.addr}&${new_name}`);
+            }
         };
     }, [Dot, websocket]);
 
@@ -130,10 +131,7 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
     const Device = useMemo(() => {
         return class Device extends Dot {
             constructor(room, x, y, name, addr, clas, radius) {
-                super(room, x, y, name, addr, clas, radius);
-                this.room = room;
-                this.x = x;
-                this.y = y;
+                super(room, x, y, name, addr);
                 this.name = name;
                 this.addr = addr;
                 this.clas = clas;
@@ -159,16 +157,20 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
                 collection?.sats ? collection.sats : {}
             )) {
                 const s = new Satellite(
-                    collection.sats[addr].sat?.room,
-                    collection.sats[addr].sat?.x,
-                    collection.sats[addr].sat?.y,
-                    collection.sats[addr].sat.name,
-                    collection.sats[addr].sat.addr
+                    collection.sats[addr].room
+                        ? collection.sats[addr].room
+                        : room.name,
+                    collection.sats[addr].x,
+                    collection.sats[addr].y,
+                    collection.sats[addr].name,
+                    collection.sats[addr].addr
                 );
-                for (const dev of collection.sats[addr].devs) {
+                for (const dev of Object.values(
+                    collection.sats[addr].found_devices
+                )) {
                     s.addDevice(
                         new Found_Device(
-                            collection.sats[addr].sat?.room,
+                            collection.sats[addr].room,
                             dev.name,
                             dev.addr,
                             dev.clas,
@@ -196,7 +198,7 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
             }
             return [...sats, ...devs];
         });
-    }, [collection, Satellite, Found_Device, Device]);
+    }, [collection, Satellite, Found_Device, Device, room]);
 
     const drawRoom = (points) => {
         const handleRoomClick = (event) => {
@@ -204,8 +206,8 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
             setWaitingForRoomClick(false);
 
             const svgRect = event.currentTarget.getBoundingClientRect();
-            const x = event.clientX - svgRect.left;
-            const y = event.clientY - svgRect.top;
+            const x = (event.clientX - svgRect.left) / scale;
+            const y = (event.clientY - svgRect.top) / scale;
             addNotification({
                 content: `Changed from ${
                     updatePosition.dot.name
@@ -249,16 +251,12 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
                         width={(maxX + padding + padding) * scale + padding}
                     >
                         {drawRoom(room.corners)}
-                            {dots
-                                // sort from biggest to smallest
-                                // this way the biggest are below the smaller dots
+                        {dots
+                            // sort from biggest to smallest
+                            // this way the biggest are below the smaller dots
                             .sort((a, b) => b.radius - a.radius)
                             .map((dot, i) => {
-                                if (
-                                    dot.room !== room.name &&
-                                    dot.room !== undefined
-                                )
-                                    return null;
+                                if (dot.room !== room.name) return null;
                                 return dot.getDotSVG(i);
                             })}
                     </svg>

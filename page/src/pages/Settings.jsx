@@ -113,8 +113,7 @@ const Settings = ({
                                     Select a satellite to callibrate
                                 </option>
                                 {Object.values(collection.sats)?.map(
-                                    (val, i) => {
-                                        const sat = val.sat;
+                                    (sat, i) => {
                                         if (
                                             i === 0 &&
                                             (callibrate.sat !== sat.addr ||

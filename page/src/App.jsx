@@ -23,32 +23,13 @@ function App() {
     const [collection, setCollection] = useState({});
     const [notifications, setNotifications] = useState([]);
 
+    // Add window.onload event listener
+    window.onload = () => {
+        setIsLoading(false);
+    };
     useEffect(() => {
         const websocket = new WebSocket(WEBSOCKET_URL);
         websocketRef.current = websocket;
-        websocket.onopen = (e) => {
-            console.log('Connected to websocket: ', WEBSOCKET_URL);
-            websocket.send('REQ=collection');
-        };
-
-        websocket.onmessage = ({ data }) => {
-            if (data.toLowerCase() === 'received') return;
-
-            if (data.startsWith('{') && data.endsWith('}')) {
-                data = JSON.parse(data);
-                console.log('Incoming data:', data);
-                // addNotification({
-                //     content: 'Received data',
-                // });
-
-                setCollection(data);
-            }
-        };
-
-        // Add window.onload event listener
-        window.onload = () => {
-            setIsLoading(false);
-        };
 
         // Clean up the WebSocket connection when the component unmounts
         return () => {
@@ -92,9 +73,48 @@ function App() {
 
     const websocket = websocketRef.current;
 
-    if (isLoading) {
+    if (isLoading || !websocket) {
         return <Loading />;
     }
+
+    websocket.onopen = (e) => {
+        console.log('Connected to websocket: ', WEBSOCKET_URL);
+        websocket.send('REQ=collection');
+    };
+
+    websocket.onmessage = ({ data }) => {
+        if (data.startsWith('COLLECTION=')) {
+            data = data.replace('COLLECTION=', '');
+            data = JSON.parse(data);
+            setCollection(data);
+        } else if (data.startsWith('CHANGE=')) {
+            if (collection === {}) return;
+            data = data.replace('CHANGE=', '');
+            const [mac_addr, change] = data.split('&', 2);
+
+            // Check for existence of mac_addr in collection.sats
+            if (collection.sats && mac_addr in collection.sats) {
+                setCollection((prevCollection) => {
+                    prevCollection.sats[mac_addr] = JSON.parse(change);
+                    return prevCollection;
+                });
+            } else if (collection.devs && mac_addr in collection.devs) {
+                setCollection((prevCollection) => {
+                    prevCollection.devs[mac_addr] = JSON.parse(change);
+                    return prevCollection;
+                });
+            }
+
+            console.log("change",collection);
+            return;
+        }
+
+        // addNotification({
+        //     content: 'Received data',
+        // });
+        console.log('Incoming data:', data);
+    };
+
     return (
         <div className={'App theme-' + theme}>
             <Sidebar />

@@ -68,7 +68,7 @@ const DotInfo = React.memo(
         const handleRename = (event, newName) => {
             if (!newName) return;
 
-            websocket.send(`RENAME=${dot.addr}&${newName}`);
+            dot.rename(newName)
             handleCloseDotInfo(event);
         };
 
