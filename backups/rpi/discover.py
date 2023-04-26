@@ -36,7 +36,7 @@ SERVER_IP = get_server_address()
 BROADCAST_ADDRESS = get_broadcast_address()
 BROADCAST_PORT: int = 12346
 BROADCAST_INTERVAL = 60 * 3
-CHECK_PACKET_INTERVAL = 2
+CHECK_PACKET_INTERVAL = 1
 _LOGGING = logging.getLogger(__name__)
 
 
@@ -85,9 +85,11 @@ def discover(collection, stop_event: threading.Event):
 
     _LOGGING.info(
         f"Receiving UDP packages on {BROADCAST_ADDRESS}:{BROADCAST_PORT}")
+    
     async def loop():
         broadcast_start_time = datetime.now() - timedelta(seconds=BROADCAST_INTERVAL)
         check_start_time = datetime.now() - timedelta(seconds=CHECK_PACKET_INTERVAL)
+        
         while not stop_event.is_set():
             # * Send UDP package
             # make a timer

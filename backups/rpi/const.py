@@ -1,4 +1,15 @@
 import netifaces
+import subprocess
+import re
+
+
+def arp(mac_address):
+    output: str = subprocess.check_output(["arp", "-a"]).decode("utf-8")
+    for line in output.split("\n"):
+        if mac_address in line:
+            ip_address = line.split()[0]
+            return ip_address
+    return None
 
 
 def get_ip_address(exclude: list):
@@ -15,6 +26,14 @@ def get_ip_address(exclude: list):
     for ip in local_ips:
         if ip not in exclude:
             return ip
+
+
+def is_mac_address(string: str) -> bool:
+    # Regular expression pattern for a MAC address
+    mac_address_pattern = re.compile(
+        "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
+    # Return True if the string matches the pattern, False otherwise
+    return mac_address_pattern.match(string) is not None
 
 
 HOST_IP = get_ip_address(exclude=["127.0.0.1", ""])

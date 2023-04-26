@@ -14,7 +14,7 @@ from RPi import GPIO
 # Digit display library
 import tm1637
 from collection import Collection
-
+from const import is_mac_address
 _LOGGING = logging.getLogger(__name__)
 
 # * LCD pin configuration:
@@ -159,20 +159,12 @@ def handle_displays(collection: Collection, stop_event: threading.Event):
     def name_register(key: str):
         name = key
 
-        def is_mac_address(string):
-            # Regular expression pattern for a MAC address
-            mac_address_pattern = re.compile(
-                "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$")
-            # Return True if the string matches the pattern, False otherwise
-            return mac_address_pattern.match(string) is not None
-
         if is_mac_address(key):
-            if key in collection.dic["sats"]:
-                name = collection.dic["sats"][key]["sat"]["name"]
-            elif key in collection.dic["devs"]:
-                dev = collection.dic["devs"][key]
-                if "name" in dev:
-                    name = dev["name"]
+            if key in collection.satellites:
+                name = collection.satellites[key].name
+            elif key in collection.devices:
+                device = collection.devices[key]
+                name = device.name
 
         register = {
             "sats": "satellites",
@@ -416,11 +408,11 @@ def handle_displays(collection: Collection, stop_event: threading.Event):
         return current_item
 
     def get_unique_devs():
-        col_sats: dict = collection.dic["sats"]
+        col_sats = collection.get_satellites()
         sats_devs_unique = set()
-        for val in col_sats.values():
-            for dev in val["devs"]:
-                sats_devs_unique.add(dev["addr"])
+        for satellite in col_sats.values():
+            for device in satellite.found_devices.values():
+                sats_devs_unique.add(device.addr)
         return sats_devs_unique
 
     try:
@@ -433,9 +425,9 @@ def handle_displays(collection: Collection, stop_event: threading.Event):
                 "SSID": SSID,
                 "host IP": HOST_IP,
             },
-            "sats": lambda: len(collection.dic["sats"]),
-            "devs": lambda: len(collection.dic["devs"]),
-            "collection": collection.dic,
+            "sats": lambda: len(collection.satellites),
+            "devs": lambda: len(collection.devices),
+            "collection": dict(collection.__dict__),
             "unique devices": lambda: len(get_unique_devs()),
         }
 
