@@ -4,7 +4,7 @@ import Callibrate from '../components/Callibrate';
 import config from '../config.json';
 import FormatConfig from '../components/FormatConfig';
 
-const webserver_ip = 'http://10.250.3.99:7891/';
+const webserver_ip = `${config.webserver.url}:${config.webserver.port}/`;
 
 function capitalize(str) {
     return str.slice(0, 1).toUpperCase().concat(str.slice(1));
@@ -70,7 +70,7 @@ const Settings = ({
                             collection.loggers[name] = !enabled;
                             websocket.send(
                                 `DEBUG=${name}&${!enabled ? '1' : '0'}`
-                                );
+                            );
                             setEnabled(!enabled);
                         }}
                     ></input>
@@ -156,30 +156,26 @@ const Settings = ({
                                         Select a device to use as callibrator
                                     </option>
 
-                                    {collection?.sats[callibrate.sat].devs.map(
-                                        (dev, i) => {
-                                            if (
-                                                i === 0 &&
-                                                (callibrate.dev !== dev.addr ||
-                                                    callibrate.dev === null)
-                                            ) {
-                                                // setCallibrate({
-                                                //     ...callibrate,
-                                                //     dev: dev.addr,
-                                                // });
-                                            }
-                                            return (
-                                                <option
-                                                    key={i}
-                                                    value={dev.addr}
-                                                >
-                                                    {dev.name
-                                                        ? dev.name
-                                                        : dev.addr}
-                                                </option>
-                                            );
+                                    {Object.values(
+                                        collection?.sats[callibrate.sat]
+                                            .found_devices
+                                    ).map((dev, i) => {
+                                        if (
+                                            i === 0 &&
+                                            (callibrate.dev !== dev.addr ||
+                                                callibrate.dev === null)
+                                        ) {
+                                            // setCallibrate({
+                                            //     ...callibrate,
+                                            //     dev: dev.addr,
+                                            // });
                                         }
-                                    )}
+                                        return (
+                                            <option key={i} value={dev.addr}>
+                                                {dev.name ? dev.name : dev.addr}
+                                            </option>
+                                        );
+                                    })}
                                 </>
                             ) : (
                                 <></>
