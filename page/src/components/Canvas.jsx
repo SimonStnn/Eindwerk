@@ -198,7 +198,7 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
             }
             return [...sats, ...devs];
         });
-    }, [collection, Satellite, Found_Device, Device, room]);
+    }, [collection, Satellite, Found_Device, Device, room.name]);
 
     const drawRoom = (points) => {
         const handleRoomClick = (event) => {
@@ -237,13 +237,13 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
     const maxY = room.corners.reduce((max, point) => Math.max(max, point.y), 0);
 
     function isRoomAvailable(room) {
-        return room.corners.length === 0;
+        return room.corners.length !== 0;
     }
 
     return (
         <>
             <div className="canvas">
-                {isRoomAvailable(room) ? (
+                {!isRoomAvailable(room) ? (
                     <div className="no-room">This room is not available.</div>
                 ) : (
                     <svg
