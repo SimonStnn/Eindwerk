@@ -4,7 +4,8 @@ import Callibrate from '../components/Callibrate';
 import config from '../config.json';
 import FormatConfig from '../components/FormatConfig';
 
-const webserver_ip = `${config.webserver.url}:${config.webserver.port}/`;
+// const webserver_ip = `${config.webserver.url}:${config.webserver.port}/`;
+const webserver_ip = `http://${window.location.hostname}:${config.webserver.port}/`;
 
 function capitalize(str) {
     return str.slice(0, 1).toUpperCase().concat(str.slice(1));
