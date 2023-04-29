@@ -4,6 +4,10 @@
         "url": "ws://10.250.3.99",
         "port": 7890
     },
+    "webserver": {
+        "url": "http://10.250.3.99",
+        "port": 7891
+    },
     "themes": {
         "light": "light",
         "dark": "dark"
@@ -115,7 +119,24 @@
         },
         "Klaslokaal": {
             "name":"Klaslokaal",
-            "corners": []
+            "corners": [
+                {
+                    "x": 0,
+                    "y": 0
+                },
+                {
+                    "x": 580,
+                    "y": 0
+                },
+                {
+                    "x": 580,
+                    "y": 750
+                },
+                {
+                    "x": 0,
+                    "y": 750
+                }
+            ]
         }
     }
 }

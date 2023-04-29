@@ -13,7 +13,8 @@ import Loading from './components/Loading';
 
 const THEME_DEFAULT = config.themes.dark;
 const WEBSOCKET_URL = `${
-    config.websocket.url
+    // config.websocket.url
+    'ws://' + window.location.hostname
 }:${config.websocket.port.toString()}`;
 
 function App() {
@@ -79,40 +80,70 @@ function App() {
 
     websocket.onopen = (e) => {
         console.log('Connected to websocket: ', WEBSOCKET_URL);
+        setCollection({
+            sats: {},
+            devs: {},
+            ple: {},
+            loggers: {},
+        });
         websocket.send('REQ=collection');
     };
 
     websocket.onmessage = ({ data }) => {
-        if (data.startsWith('COLLECTION=')) {
-            data = data.replace('COLLECTION=', '');
-            data = JSON.parse(data);
-            setCollection(data);
-        } else if (data.startsWith('CHANGE=')) {
-            if (collection === {}) return;
-            data = data.replace('CHANGE=', '');
-            const [mac_addr, change] = data.split('&', 2);
+        const cmd_type = data.substring(0, data.indexOf('='))
+        switch (cmd_type) {
+            case 'COLLECTION':
+                data = data.replace('COLLECTION=', '');
+                setCollection(JSON.parse(data));
+                break;
+            case 'CHANGE':
+                if (Object.keys(collection).length === 0) {
+                    console.log(
+                        'Collection was empty, requesting collection...'
+                    );
+                    websocket.send('REQ=collection');
+                    return;
+                }
 
-            // Check for existence of mac_addr in collection.sats
-            if (collection.sats && mac_addr in collection.sats) {
-                setCollection((prevCollection) => {
-                    prevCollection.sats[mac_addr] = JSON.parse(change);
-                    return prevCollection;
-                });
-            } else if (collection.devs && mac_addr in collection.devs) {
-                setCollection((prevCollection) => {
-                    prevCollection.devs[mac_addr] = JSON.parse(change);
-                    return prevCollection;
-                });
-            }
+                data = data.replace('CHANGE=', '');
+                const [channel_type, mac_addr, c] = data.split('&', 3);
+                const change = JSON.parse(c);
 
-            console.log("change",collection);
-            return;
+                switch (channel_type) {
+                    case 's':
+                        setCollection((prevCollection) => {
+                            const updatedSats = {
+                                ...prevCollection.sats,
+                                [mac_addr]: change,
+                            };
+                            const updatedCollection = {
+                                ...prevCollection,
+                                sats: updatedSats,
+                            };
+                            return updatedCollection;
+                        });
+                        break;
+                    case 'd':
+                        setCollection((prevCollection) => {
+                            const updatedDevs = {
+                                ...prevCollection.devs,
+                                [mac_addr]: change,
+                            };
+                            const updatedCollection = {
+                                ...prevCollection,
+                                devs: updatedDevs,
+                            };
+                            return updatedCollection;
+                        });
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                return;
         }
-
-        // addNotification({
-        //     content: 'Received data',
-        // });
-        console.log('Incoming data:', data);
+        console.log('New collection:', collection, "\nCommand type:", cmd_type);
     };
 
     return (
