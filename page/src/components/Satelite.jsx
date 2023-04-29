@@ -12,7 +12,7 @@ const Satelite = ({ name, addr, ip, x, y }) => {
                     <div className="coords">Y: {y}</div>
                 </div>
                 <div className="section right">
-                    <div>{name}</div>
+                    <div><b>{name}</b></div>
                     <div>{addr}</div>
                     {ip ? <div>{ip}</div> : null}
                 </div>

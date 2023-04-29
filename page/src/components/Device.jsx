@@ -136,7 +136,7 @@ const Device = ({ name, addr, clas, rssi }) => {
                 <div>
                     {config.showNames ? (
                         <>
-                            <div>{name}</div>
+                            <div><b>{name}</b></div>
                         </>
                     ) : (
                         <></>
