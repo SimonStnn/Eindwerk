@@ -3,16 +3,24 @@ import json
 from typing import Callable, Union
 from const import arp
 
+
 class Channel:
-    def __init__(self, mac_addr: str, name="New Channel", ip: str = None, room: str = None, x: int = None, y: int = None) -> None:
+    def __init__(self, mac_addr: str, name="New Channel", ip: str = None, room: str = None, x: int = None, y: int = None, radius: int = None) -> None:
         self.name: str = name
         self.addr: str = mac_addr
         self.ip: str = ip if ip else (a if (a := arp(mac_addr)) else None)
         self.room: str = room
         self._x = x
-        self.x: int = property(lambda: self._x)
         self._y = y
-        self.y: int = property(lambda: self._y)
+        self.radius: int = radius
+
+    @property
+    def x(self) -> int:
+        return self._x
+
+    @property
+    def y(self) -> int:
+        return self._y
 
     def __str__(self):
         return json.dumps(self.__dict__, cls=Encoder)
@@ -23,11 +31,14 @@ class Channel:
             raise ValueError("Coordinates cannot be negative")
         self._x = x
         self._y = y
+        
+    def has_coords(self) -> bool:
+        return self._x is not None and self._y is not None
 
 
 class Device(Channel):
-    def __init__(self, mac_addr: str, clas: int, rssi: int, *, name="New Device", ip="", found_by: list[str]=[]) -> None:
-        super().__init__(mac_addr, name, ip)
+    def __init__(self, mac_addr: str, clas: int, rssi: int, *, name="New Device", ip=None, found_by: list[str] = [], room: str=None, x: int=None, y: int=None, radius=None) -> None:
+        super().__init__(mac_addr, name, ip, room, x, y, radius)
         self.clas: int = clas
         self._rssi = rssi
         self.rssi: int = property(lambda: self._rssi)
@@ -51,7 +62,7 @@ class Device(Channel):
 
 class Satellite(Channel):
     def __init__(self, mac_addr: str, *, name="New Satellite", ip="") -> None:
-        super().__init__(mac_addr,  name, ip)
+        super().__init__(mac_addr,  name, ip, radius=8)
         self.found_devices: dict[str, Device] = {}
         self.timestamp = time.time()
 
@@ -73,7 +84,7 @@ class Satellite(Channel):
 
     def get_device(self, mac_addr: str) -> Union[Device, None]:
         return self.found_devices[mac_addr] if mac_addr in self.found_devices else None
-    
+
     def rename(self, new_name: str) -> None:
         self.name = new_name
 

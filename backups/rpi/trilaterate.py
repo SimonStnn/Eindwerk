@@ -16,24 +16,24 @@ def calculate_ple(rssi, distance):
 # def estimate_distance(rssi, frequency, ple):
 #     return 10**((27.55 - (20 * math.log10(frequency)) + math.fabs(rssi)) / (20 * ple))
 
-def calculate_distance(rssi, C: int = 17, R: int = 38) -> float:
-    return float(rssi_to_distance(rssi, C, R))
+# def calculate_distance(rssi, C: int = 17, R: int = 38) -> float:
+#     return float(rssi_to_distance(rssi, C, R))
 
 
-# def calculate_distance(rssi, frequency=2400000000, path_loss_exponent=2.0):
-#     """
-#     Calculates the estimated distance from the device using the RSSI value and the Free Space Path Loss model.
-#     :param rssi: Received Signal Strength Indicator (RSSI) value (in dBm).
-#     :param frequency: Frequency of the signal (in MHz). Default is 2400 MHz (Bluetooth 2.4GHz).
-#     :return: Estimated distance (in meters).
-#     """
-#     # Path Loss model equation
-#     fspl = 20 * math.log10(frequency) + 20 * \
-#         math.log10(math.sqrt((4 * math.pi) / 3)) - 147.55
-#     # Estimated distance
-#     distance = 10 ** ((27.55 - fspl + math.fabs(rssi)) /
-#                       (10 * path_loss_exponent))
-#     return distance
+def calculate_distance(rssi, frequency=2400000000, path_loss_exponent=2.0):
+    """
+    Calculates the estimated distance from the device using the RSSI value and the Free Space Path Loss model.
+    :param rssi: Received Signal Strength Indicator (RSSI) value (in dBm).
+    :param frequency: Frequency of the signal (in MHz). Default is 2400 MHz (Bluetooth 2.4GHz).
+    :return: Estimated distance (in meters).
+    """
+    # Path Loss model equation
+    fspl = 20 * math.log10(frequency) + 20 * \
+        math.log10(math.sqrt((4 * math.pi) / 3)) - 147.55
+    # Estimated distance
+    distance = 10 ** ((27.55 - fspl + math.fabs(rssi)) /
+                      (10 * path_loss_exponent))
+    return distance
 
 
 def trilaterate(coordinates: list, distances: list):

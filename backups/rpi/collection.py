@@ -45,7 +45,6 @@ class Collection:
 
     def change_wrapper(func):
         """When a Channel gets updated, send the update to all clients."""
-
         def wrapper(self: "Collection", *args, **kwargs):
             func(self, *args, **kwargs)
             # Find the mac address of the Channel that changes in the args
@@ -63,8 +62,9 @@ class Collection:
                 channel = self.get_device(addr)
 
             if channel:
+                change = json.dumps(channel.__dict__, cls=Encoder).replace('"_x"', '"x"').replace('"_y"', '"y"')
                 self.broadcast_to_all_clients(
-                    f"CHANGE={addr}&{json.dumps(channel.__dict__, cls=Encoder)}")
+                    f"CHANGE={'s' if type(channel) == Satellite else 'd'}&{addr}&{change}")
             else:
                 _LOGGING.warning(f"Channel {addr} not found")
                 _LOGGING.warning(f"Args: {args}")
@@ -83,10 +83,10 @@ class Collection:
     @change_wrapper
     def update_satellite(self, satellite: Satellite) -> None:
         """Update the satellite in the collection."""
-        if not (satellite := self.get_satellite(satellite.addr)):
+        if not (sat := self.get_satellite(satellite.addr)):
             raise Exception(f"Satellite {satellite.addr} not found")
 
-        satellite.update(satellite)
+        satellite.update(sat)
 
     @lock_wrapper
     def get_satellite(self, addr: str) -> Union[Satellite, None]:
@@ -111,13 +111,12 @@ class Collection:
     @change_wrapper
     def update_device(self, device: Device) -> None:
         """Update the device in the collection"""
-        if not (device := self.get_device(device.addr)):
+        if not (dev := self.get_device(device.addr)):
             raise Exception(f"Device {device.addr} not found")
 
-        device.update(device)
+        device.update(dev)
 
     @lock_wrapper
-    @change_wrapper
     def get_device(self, addr: str) -> Union[Device, None]:
         """Get the device from the collection"""
         return self.devices[addr] if addr in self.devices else None
@@ -136,7 +135,7 @@ class Collection:
             "devs": self.devices,
             "ple": self.ple,
             "loggers": self.loggers,
-        }, cls=Encoder)
+        }, cls=Encoder).replace('"_x"', '"x"').replace('"_y"', '"y"')
 
     def broadcast_to_all_clients(self, content: str) -> None:
         """Broadcast the whole collection to all Websocket connections."""
@@ -183,20 +182,22 @@ class Collection:
     def make_device_pairs(self) -> list[dict[str, list[Channel]]]:
         """Make pairs of multple diveces that are the same."""
         # Create a dictionary to store the child devices with the same address
-        common_devs_by_addr = {}
+        common_devs_by_addr: dict[str, dict[str, list[Channel]]] = {}
 
-        # Iterate over the child devices
-        for device in self.devices.values():
-            # If the address of this device is already in the dictionary, append it to the corresponding list
-            if device.addr in common_devs_by_addr:
-                common_devs_by_addr[device.addr]['sats'] = device
-                common_devs_by_addr[device.addr]['devs'] = device
-            # If the address of this device is not in the dictionary, add it as a new entry
-            else:
-                common_devs_by_addr[device.addr]: dict[str, list[Channel]] = {
-                    'sats': [device],
-                    'devs': [device]
-                }
+        # Iterate over all connected satellites
+        for satellite in self.satellites.values():
+            # Iterate over the child devices
+            for device in satellite.found_devices.values():
+                # If the address of this device is already in the dictionary, append it to the corresponding list
+                if device.addr in common_devs_by_addr:
+                    common_devs_by_addr[device.addr]['sats'].append(satellite)
+                    common_devs_by_addr[device.addr]['devs'].append(device)
+                # If the address of this device is not in the dictionary, add it as a new entry
+                else:
+                    common_devs_by_addr[device.addr] = {
+                        'sats': [satellite],
+                        'devs': [device]
+                    }
 
         # Convert the dictionary to a list of dictionaries and return it
         return list(common_devs_by_addr.values())
@@ -222,8 +223,8 @@ class Collection:
             # sats = pair['sats']
 
             for i in range(len(pair["sats"])):
-                satellite = pair["sats"][i]
-                device = pair["devs"][i]
+                satellite: Satellite = pair["sats"][i]
+                device: Device = pair["devs"][i]
 
                 coords.append(np.array([int(satellite.x), int(satellite.y)]))
 
@@ -231,8 +232,7 @@ class Collection:
                     int(device.rssi), path_loss_exponent=9)
                 distances.append(distance*100)
 
-                _LOGGING.info(satellite.name, "with rssi:\t", device.rssi,
-                              "calculated distance:\t", distance)
+                # _LOGGING.debug(f"{satellite.name}, with rssi: {device.rssi} calculated distance: {distance}")
 
             yield pair, coords, distances
 
@@ -244,7 +244,6 @@ class Collection:
         if len(pairs) == 0:
             return
 
-        devs = {}
         for pair, coords, distances in self.extract_coords_and_distances(pairs):
             # Locate the device
             x, y, error = trilaterate.trilaterate(coords, distances)
@@ -258,9 +257,17 @@ class Collection:
 
             device: Device = pair["devs"][0]
             found_by = [sat.addr for entry in pairs for sat in entry['sats']]
-            
+
             device.set_coords(x, y)
             device.found_by = found_by
+
+            device.room = pair["sats"][0].room
+            device.radius = error
+
+            if device.addr in self.devices:
+                self.update_device(device)
+            else:
+                self.add_device(device)
 
     def write_to_csv_file(path, addr, devs):
         """Write incoming satellite data to csv file."""

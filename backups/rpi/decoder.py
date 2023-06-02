@@ -28,7 +28,7 @@ def incoming_satellite_data(collection: Collection, data: str) -> Satellite:
     # Create a new satellite object if one doesn't exist yet in the collection
     if satellite := collection.get_satellite(sat_addr):
         # Update if a satellite is found
-        satellite.update(Satellite(sat_addr, name=str(sat_name)))
+        satellite.update(Satellite(sat_addr, name=str(sat_name), ip=satellite.ip))
     else:
         satellite = Satellite(sat_addr, name=str(sat_name))
 
@@ -40,7 +40,7 @@ def incoming_satellite_data(collection: Collection, data: str) -> Satellite:
         # Create a new device object if one doesn't exist yet in the satellite
         if device := satellite.get_device(dev_addr):
             # Update if a device is found
-            device.update(Device(dev_addr, int(dev_class), int(dev_rssi), name=dev_name))
+            device.update(Device(dev_addr, int(dev_class), int(dev_rssi), name=dev_name, ip=device.ip))
         else:
             device = Device(dev_addr, int(dev_class), int(dev_rssi), name=dev_name)
         # Add the device to the satellite

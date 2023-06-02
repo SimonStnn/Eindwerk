@@ -12,7 +12,9 @@ _LOGGING = logging.getLogger(__name__)
 
 
 def run_webserver(collection: Collection):
-    """Start the web server"""
+    """Start and run the web server.
+    
+    Function ends when server is closed."""
 
     def get_raw_content_for_web_page(request: web.Request) -> web.Response:
         """Make the content from collection to send to the webpage."""
@@ -22,7 +24,7 @@ def run_webserver(collection: Collection):
 
         col_sats = collection.satellites
         # Format collection and serialise
-        json_collection = format_dict(dict(collection.__dict__), Encoder)
+        json_collection = format_dict(json.loads(collection.serialize()), Encoder)
         # Get amount of connected satellites
         connected_sats = list(col_sats.keys())
         # Check how many devices all sats combined found
@@ -56,7 +58,7 @@ def run_webserver(collection: Collection):
             f"{list(CONNECTIONS)}",
             "",
             "Common_devs:",
-            str(format_dict(pairs)),
+            str(format_dict(pairs, Encoder)),
         ]
 
         return "\n".join(string)
@@ -67,6 +69,16 @@ def run_webserver(collection: Collection):
         data = await request.text()
 
         sat: Satellite = decoder.incoming_satellite_data(data)
+        
+        if not sat.has_coords() and sat.addr == "58:BF:25:93:7E:84": # ESP Kerstboom
+            sat.room = "Living"
+            sat.set_coords(1000,10)
+        elif not sat.has_coords() and sat.addr == "58:BF:25:93:7C:88": # New Satellite
+            sat.room = "Living"
+            sat.set_coords(1500,10)
+        elif not sat.has_coords() and sat.addr == "58:BF:25:93:7E:78": # ESP Zetel
+            sat.room = "Living"
+            sat.set_coords(1500,750)
 
         if sat.addr in collection.satellites:
             collection.update_satellite(sat)
@@ -74,13 +86,7 @@ def run_webserver(collection: Collection):
             collection.add_satellite(sat)
 
         collection.update_devices_positions()
-        
-        # sat = collection["sats"][data_addr]
-        # for dev in sat["devs"]:
-        #     _LOGGING.debug(sat["sat"]["name"], "estimated", dev["name"], dev["rssi"],
-        #           " distance for:", calculate_distance(dev["rssi"], path_loss_exponent=6.0))
 
-        # collection.broadcast_to_all_clients(f"COLLECTION={collection.serialize()}")
         return web.Response()
 
     async def serve_static(request: web.Request):

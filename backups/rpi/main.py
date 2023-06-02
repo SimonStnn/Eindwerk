@@ -19,6 +19,7 @@ import logging
 
 _LOGGING = logging.getLogger(__name__)
 
+
 if __name__ == "__main__":
 
     # Settup the logger

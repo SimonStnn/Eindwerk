@@ -425,8 +425,8 @@ def handle_displays(collection: Collection, stop_event: threading.Event):
                 "SSID": SSID,
                 "host IP": HOST_IP,
             },
-            "sats": lambda: len(collection.satellites),
-            "devs": lambda: len(collection.devices),
+            "sats": lambda: len(collection.satellites.values()),
+            "devs": lambda: len(collection.devices.values()),
             "collection": dict(collection.__dict__),
             "unique devices": lambda: len(get_unique_devs()),
         }

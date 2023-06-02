@@ -49,6 +49,8 @@ async def run_websocket_server(collection: Collection, stop_event: threading.Eve
                         f"{'Enabled' if newstate else 'Disabled'} debugging for {name}.")
 
                 # heyy simon hoe geet het met je
+        except (websockets.exceptions.ConnectionClosed, asyncio.CancelledError) as e:
+            _LOGGING.error(f"Connection closed. {e}")
         finally:
             try:
                 # Client leaves
