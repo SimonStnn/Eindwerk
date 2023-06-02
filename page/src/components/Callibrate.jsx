@@ -100,10 +100,9 @@ const Callibrate = React.memo(
 
         const getDeviceRssi = useCallback(
             (addr) => {
-                const dev = collection.sats[callibrate.sat].devs.find(
-                    (dev) => dev.addr === addr
-                );
-
+                const dev = Object.values(
+                    collection.sats[callibrate.sat].found_devices
+                ).find((dev) => dev.addr === addr);
                 return dev.rssi;
             },
             [collection.sats, callibrate.sat]
@@ -179,9 +178,9 @@ const Callibrate = React.memo(
         useEffect(() => {
             if (
                 autoCollect &&
-                collection.sats[callibrate.sat].devs.find(
-                    (dev) => dev.addr === callibrate.dev
-                )
+                Object.values(
+                    collection.sats[callibrate.sat].found_devices
+                ).find((dev) => dev.addr === callibrate.dev)
             ) {
                 setDistances((prevDistances) =>
                     prevDistances.map((dist) =>
@@ -197,7 +196,13 @@ const Callibrate = React.memo(
                     )
                 );
             }
-        }, [collection, autoCollect, callibrate.sat, callibrate.dev, getDeviceRssi]);
+        }, [
+            collection,
+            autoCollect,
+            callibrate.sat,
+            callibrate.dev,
+            getDeviceRssi,
+        ]);
 
         return (
             <>
