@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <h2>Waarvoor wordt het gebruikt</h2>
+    <p>Dit component geeft via verschillende kleuren de status van de ESP weer.</p>
+    <style type="text/css">
+        .tg {
+            border-collapse: collapse;
+            border-color: #ccc;
+            border-spacing: 0;
+        }
+
+        .tg td {
+            background-color: #fff;
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 1px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg th {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+            border-style: solid;
+            border-width: 1px;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            overflow: hidden;
+            padding: 10px 5px;
+            word-break: normal;
+        }
+
+        .tg .tg-0pky {
+            border-color: inherit;
+            text-align: left;
+            vertical-align: top;
+            font-size: 20px;
+        }
+    </style>
+    <table class="tg">
+        <thead>
+            <tr>
+                <th class="tg-0pky">Kleur</th>
+                <th class="tg-0pky">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="tg-0pky" style="color:red;">Rood</td>
+                <td class="tg-0pky">Iets klopt niet</td>
+            </tr>
+            <tr>
+                <td class="tg-0pky" style="color:yellow; -webkit-text-stroke-width: 1px;  -webkit-text-stroke-color: black; font-weight: bold;"><b>Geel</b></td>
+                <td class="tg-0pky">Niet verbonden met wifi</td>
+            </tr>
+            <tr>
+                <td class="tg-0pky" style="color:hotpink;">Paars</td>
+                <td class="tg-0pky">Nog geen config gekregen</td>
+            </tr>
+            <tr>
+                <td class="tg-0pky" style="color:blue;">Blauw</td>
+                <td class="tg-0pky">Data aan het versturen<br>naar master</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
