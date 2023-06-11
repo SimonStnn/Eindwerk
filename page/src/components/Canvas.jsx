@@ -257,6 +257,12 @@ const Canvas = ({ collection, websocket, room, addNotification }) => {
                             .sort((a, b) => b.radius - a.radius)
                             .map((dot, i) => {
                                 if (dot.room !== room.name) return null;
+                                if (
+                                    updatePosition.bool &&
+                                    (dot instanceof Device ||
+                                        dot instanceof Found_Device)
+                                )
+                                    return null;
                                 return dot.getDotSVG(i);
                             })}
                     </svg>
